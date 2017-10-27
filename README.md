@@ -13,7 +13,7 @@
 [![twitter][twitter]][twitter-url]
 
 
-A boilerplate for playing around with react, redux and react-router with the help of webpack.
+A digital humanities resources to explore the (lack of) performativity in the current version available of Joseph Cornell’s short film Rose Hobart.
 
 The [deployed boilerplate](https://rose-hobart.herokuapp.com/) can be found here.
 
@@ -66,6 +66,12 @@ Don't hesitate to create a pull request. Every contribution is appreciated. In d
         src="https://avatars.githubusercontent.com/JoeKarlsson?v=3">
         <br />
         <a href="https://github.com/JoeKarlsson">Joe Karlsson</a>
+      </td>
+			<td align="center">
+        <img width="150 height="150"
+        src="https://avatars.githubusercontent.com/laurelcarlson?v=3">
+        <br />
+        <a href="https://github.com/laurelcarlson">Laurel Karlsson</a>
       </td>
     <tr>
   <tbody>
