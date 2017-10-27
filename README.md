@@ -15,7 +15,7 @@
 
 A boilerplate for playing around with react, redux and react-router with the help of webpack.
 
-The [deployed boilerplate](https://react-redux-boilerplate1.herokuapp.com/) can be found here.
+The [deployed boilerplate](https://rose-hobart.herokuapp.com/) can be found here.
 
 
 ## Introduction
@@ -54,7 +54,7 @@ efficient tooling and cleanest project structure.
 
 <h2 align="center">Contributing</h2>
 
-Don't hesitate to create a pull request. Every contribution is appreciated. In development you can start the tests by calling `npm test`. Checkout our [contribution README](https://github.com/JoeKarlsson/react-redux-boilerplate/blob/master/CONTRIBUTING.md) for more info.
+Don't hesitate to create a pull request. Every contribution is appreciated. In development you can start the tests by calling `npm test`. Checkout our [contribution README](https://github.com/JoeKarlsson/rose-hobart/blob/master/CONTRIBUTING.md) for more info.
 
 <h2 align="center">Maintainers</h2>
 
@@ -75,26 +75,26 @@ Don't hesitate to create a pull request. Every contribution is appreciated. In d
 
 #### [MIT](./LICENSE)
 
-[deps]: https://david-dm.org/JoeKarlsson/react-redux-boilerplate/status.svg
-[deps-url]: https://david-dm.org/JoeKarlsson/react-redux-boilerplate
+[deps]: https://david-dm.org/JoeKarlsson/rose-hobart/status.svg
+[deps-url]: https://david-dm.org/JoeKarlsson/rose-hobart
 
-[tests]: https://travis-ci.org/JoeKarlsson/react-redux-boilerplate.svg?branch=master
-[tests-url]: https://travis-ci.org/JoeKarlsson/react-redux-boilerplate
+[tests]: https://travis-ci.org/JoeKarlsson/rose-hobart.svg?branch=master
+[tests-url]: https://travis-ci.org/JoeKarlsson/rose-hobart
 
 [maintainability]: https://api.codeclimate.com/v1/badges/7d2a095c01bb88557a41/maintainability
-[maintainability-url]: https://codeclimate.com/github/JoeKarlsson/react-redux-boilerplate/maintainability
+[maintainability-url]: https://codeclimate.com/github/JoeKarlsson/rose-hobart/maintainability
 
 [pr]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
 [pr-url]: CONTRIBUTING.md
 
-[cover]: https://coveralls.io/repos/github/JoeKarlsson/react-redux-boilerplate/badge.svg?branch=master
-[cover-url]: https://coveralls.io/github/JoeKarlsson/react-redux-boilerplate?branch=master
+[cover]: https://coveralls.io/repos/github/JoeKarlsson/rose-hobart/badge.svg?branch=master
+[cover-url]: https://coveralls.io/github/JoeKarlsson/rose-hobart?branch=master
 
-[stars]: https://img.shields.io/github/stars/JoeKarlsson/react-redux-boilerplate.svg?style=flat-square
-[stars-url]: https://github.com/JoeKarlsson/react-redux-boilerplate/stargazers
+[stars]: https://img.shields.io/github/stars/JoeKarlsson/rose-hobart.svg?style=flat-square
+[stars-url]: https://github.com/JoeKarlsson/rose-hobart/stargazers
 
-[license]: https://img.shields.io/github/license/JoeKarlsson/react-redux-boilerplate.svg
-[license-url]: https://github.com/JoeKarlsson/react-redux-boilerplate/blob/master/LICENSE
+[license]: https://img.shields.io/github/license/JoeKarlsson/rose-hobart.svg
+[license-url]: https://github.com/JoeKarlsson/rose-hobart/blob/master/LICENSE
 
-[twitter]: https://img.shields.io/twitter/url/https/github.com/JoeKarlsson/react-redux-boilerplate.svg?style=social&style=flat-square
-[twitter-url]: https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FJoeKarlsson%2Freact-redux-boilerplate
+[twitter]: https://img.shields.io/twitter/url/https/github.com/JoeKarlsson/rose-hobart.svg?style=social&style=flat-square
+[twitter-url]: https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FJoeKarlsson%2Frose-hobart
