@@ -1,4 +1,4 @@
-![](http://jpsierens.com/wp-content/uploads/2016/06/react-eco-wp.gif)
+![rose-hobart-1936](https://user-images.githubusercontent.com/4650739/32082463-66f9c3d4-ba81-11e7-87c2-cc8ac7cf9973.jpg)
 
 
 # Rose Hobart
@@ -13,34 +13,11 @@
 [![twitter][twitter]][twitter-url]
 
 
+## Introduction
+
 A digital humanities resources to explore the (lack of) performativity in the current version available of Joseph Cornell’s short film Rose Hobart.
 
 The [deployed boilerplate](https://rose-hobart.herokuapp.com/) can be found here.
-
-
-## Introduction
-
-The JavaScript ecosystem evolves at incredible speed: staying current can feel
-overwhelming. So, instead of you having to stay on top of every new tool,
-feature and technique to hit the headlines, this project aims to lighten the
-load by providing a curated baseline of the most valuable ones.
-
-Using React Boilerplate, you get to start your app with our community's current
-ideas on what represents optimal developer experience, best practice, most
-efficient tooling and cleanest project structure.
-
-
-### Contains:
-
-* a working example of a filterable table which you can play around with (look below).
-* ES6 - 7 Support with Babel
-* Redux dev tools to help you keep track of the app's state
-* Routing
-* hot module replacement support so you can change modules or react components without having to reload the browser
-* a webpack production config so you can build the app and make it ready for production
-* Sass support, just import your styles wherever you need them
-* eslint to keep your js readable
-* much more...
 
 
 ### Getting Started
