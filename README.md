@@ -15,7 +15,7 @@
 
 ## Introduction
 
-A digital humanities resources to explore the (lack of) performativity in the current version available of Joseph Cornell’s short film Rose Hobart.
+A digital humanities project to explore the (lack of) performativity in the current version available of Joseph Cornell’s short film Rose Hobart.
 
 The [deployed boilerplate](https://rose-hobart.herokuapp.com/) can be found here.
 
@@ -24,16 +24,13 @@ The [deployed boilerplate](https://rose-hobart.herokuapp.com/) can be found here
 
 * run `npm install && npm start`
 
-### Deployment
 
-* Add the project to Coveralls and travis-ci then link up the project to Heroku. Be sure to enable auto deployments through Travis when running this project.
-
-
-<h2 align="center">Contributing</h2>
+### Contributing
 
 Don't hesitate to create a pull request. Every contribution is appreciated. In development you can start the tests by calling `npm test`. Checkout our [contribution README](https://github.com/JoeKarlsson/rose-hobart/blob/master/CONTRIBUTING.md) for more info.
 
-<h2 align="center">Maintainers</h2>
+
+### Maintainers
 
 <table>
   <tbody>

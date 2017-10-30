@@ -14,7 +14,7 @@ export class RedditPage extends React.Component {
 	render() {
 		return (
 			<div className="RedditPage">
-				<h1>Rose Hobart</h1>
+				<h1>Reddit</h1>
 				<RedditList redditData={this.props.redditData} />
 			</div>
 		);
