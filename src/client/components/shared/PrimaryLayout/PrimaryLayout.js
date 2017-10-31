@@ -9,7 +9,7 @@ import About from '../../static/about/About';
 import NoMatch from '../../static/noMatch/NoMatch';
 import Home from '../../static/home/Home';
 import './PrimaryLayout.scss';
-import '../../../styles/main.scss';
+import '../../../assets/styles/main.scss';
 
 export const PrimaryLayout = () => {
 	return (

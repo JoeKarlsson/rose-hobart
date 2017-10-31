@@ -6,12 +6,14 @@ import {
 	ForwardControl,
 	CurrentTimeDisplay,
 	TimeDivider,
+	LoadingSpinner,
 	PlaybackRateMenuButton,
 	VolumeMenuButton,
 } from 'video-react';
 import 'video-react/dist/video-react.css';
 import './VideoPlayer.scss';
-import poster from '../../images/poster.png';
+import poster from '../../assets/images/poster.png';
+import video from '../../assets/video/video.mp4';
 
 export default () => {
 	return (
@@ -19,8 +21,8 @@ export default () => {
 			<Player
 				poster={poster}
 			>
-				<source src="http://peach.themazzone.com/durian/movies/sintel-1024-surround.mp4" />
-				<source src="http://mirrorblender.top-ix.org/movies/sintel-1024-surround.mp4" />
+				<source src={video} />
+				<LoadingSpinner />
 
 				<ControlBar>
 					<ReplayControl seconds={10} order={1.1} />

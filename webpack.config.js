@@ -72,7 +72,7 @@ module.exports = {
 			use: 'file-loader',
 		}, {
 			test: /\.(mp4|webm)$/,
-			use: 'url?limit=10000',
+			use: 'url-loader?limit=10000',
 		}, {
 			test: /(\.scss$|\.css$)/,
 			use: ExtractTextPlugin.extract({
