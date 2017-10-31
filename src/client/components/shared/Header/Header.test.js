@@ -12,7 +12,7 @@ import Header from './Header';
 
 configure({ adapter: new Adapter() });
 
-describe('Footer', () => {
+describe('Header', () => {
 	let wrapper;
 
 	beforeEach(() => {
@@ -48,7 +48,7 @@ describe('Footer', () => {
 			});
 
 			it('should render to static HTML', () => {
-				expect(wrapper.dive().dive().text()).toContain('React Reddit');
+				expect(wrapper.dive().dive().text()).toContain('<Link /><Link />');
 			});
 
 			it('should have correct inital instance', () => {
