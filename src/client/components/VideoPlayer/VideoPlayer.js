@@ -4,6 +4,8 @@
 	react/no-string-refs: 0
 */
 
+// https://gl-react-cookbook.surge.sh/blurvideo?map=%22https%3A%2F%2Fi.imgur.com%2Fwh0On3P.png%22&menu=true&passes=4
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Shaders, GLSL, Node } from 'gl-react';
