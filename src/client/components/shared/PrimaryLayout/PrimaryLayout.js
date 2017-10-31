@@ -7,7 +7,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import About from '../../static/about/About';
 import NoMatch from '../../static/noMatch/NoMatch';
-import RedditPage from '../../reddit/RedditPage/RedditPage';
+import Home from '../../static/home/Home';
 import './PrimaryLayout.scss';
 import '../../../styles/main.scss';
 
@@ -17,7 +17,7 @@ export const PrimaryLayout = () => {
 			<Header />
 			<div>
 				<Switch>
-					<Route exact path="/" component={RedditPage} />
+					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />
 					<Route component={NoMatch} />
 				</Switch>
