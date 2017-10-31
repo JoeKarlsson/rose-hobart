@@ -9,6 +9,7 @@ import About from '../../static/about/About';
 import NoMatch from '../../static/noMatch/NoMatch';
 import RedditPage from '../../reddit/RedditPage/RedditPage';
 import './PrimaryLayout.scss';
+import '../../../styles/main.scss';
 
 export const PrimaryLayout = () => {
 	return (

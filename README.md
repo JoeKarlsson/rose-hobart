@@ -51,9 +51,14 @@ Don't hesitate to create a pull request. Every contribution is appreciated. In d
   <tbody>
 </table>
 
-<h2 align="center">LICENSE</h2>
+### License
 
 #### [MIT](./LICENSE)
+
+
+### Resources
+
+* WebGl Video Hue Demo - Ghttps://github.com/gre/gl-react-dom-v2/tree/master/Examples/VideoBlur
 
 [deps]: https://david-dm.org/JoeKarlsson/rose-hobart/status.svg
 [deps-url]: https://david-dm.org/JoeKarlsson/rose-hobart

@@ -21,7 +21,7 @@
     "healthcheck": "npm run lint && npm run lint:css && npm run test:coverage",
     "stats": "webpack --json > webpack.stats.json",
     "commit": "commit-wizard",
-    "postinstall": "rimraf dist && set NODE_ENV=production && webpack --config ./webpack.config.js --progress --profile --colors",
+    "postinstall": "rimraf dist && cross-env NODE_ENV=production && webpack --config ./webpack.config.js --progress --profile --colors",
     "runProd": "export NODE_ENV=production && export PORT=8081 && node src/server.js"
   },
   "jest": {
@@ -51,20 +51,6 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "\\.(css|scss)$": "identity-obj-proxy"
-    }
-  },
-  "stylelint": {
-    "extends": "stylelint-config-standard",
-    "rules": {
-      "indentation": "tab",
-      "declaration-block-no-redundant-longhand-properties": [
-        true,
-        {
-          "ignoreShorthands": [
-            "/border/"
-          ]
-        }
-      ]
     }
   },
   "keywords": [
@@ -122,6 +108,7 @@
     "style-loader": "0.19.x",
     "stylelint": "8.2.x",
     "stylelint-config-standard": "17.0.x",
+    "stylelint-scss": "^2.1.0",
     "stylelint-webpack-plugin": "0.9.x",
     "supertest": "3.0.x",
     "webpack": "3.8.x",
