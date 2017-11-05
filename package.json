@@ -123,7 +123,8 @@
     "xmlhttprequest": "1.8.x"
   },
   "devDependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.26.0"
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "favicons-webpack-plugin": "0.0.7"
   },
   "release": {
     "analyzeCommits": "simple-commit-message"

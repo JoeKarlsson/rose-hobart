@@ -4,6 +4,7 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StatsPlugin = require('stats-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
 	entry: [
@@ -20,6 +21,7 @@ module.exports = {
 			filename: '[name]-[hash].css',
 			allChunks: true,
 		}),
+		new FaviconsWebpackPlugin('./src/client/assets/images/myLogo.jpg'),
 		new HtmlWebpackPlugin({
 			template: 'src/client/index.tpl.html',
 			inject: 'body',
