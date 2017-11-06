@@ -9,7 +9,7 @@ import { Bus } from 'gl-react';
 import { Surface } from 'gl-react-dom';
 import { BlurV } from './helper/blurMap';
 import { Saturate } from './helper/saturation';
-import StaticBlurMap from './helper/staticBlurMap';
+import StaticBlurMap from './helper/StaticBlurMap';
 import SplitColor from './helper/SplitColor';
 import { Video, videoMP4 } from './Video';
 // import toolbox from './helper/meta';
@@ -34,10 +34,8 @@ class VideoPlayer extends Component {
 		this.onChange = this.onChange.bind(this);
 	}
 
-	onChange(val) {
-		this.setState({
-			contrast: val,
-		});
+	onChange(newState) {
+		this.setState(newState);
 	}
 
 	render() {
@@ -76,11 +74,44 @@ class VideoPlayer extends Component {
 
 				</Surface>
 				<FloatSlider
+					title="contrast"
 					min={0}
 					max={2}
 					step={0.05}
 					handleChange={this.onChange}
 					value={contrast}
+				/>
+				<FloatSlider
+					title="saturation"
+					min={0}
+					max={2}
+					step={0.05}
+					handleChange={this.onChange}
+					value={saturation}
+				/>
+				<FloatSlider
+					title="brightness"
+					min={0}
+					max={2}
+					step={0.05}
+					handleChange={this.onChange}
+					value={brightness}
+				/>
+				<FloatSlider
+					title="factor"
+					min={0}
+					max={8}
+					step={0.2}
+					handleChange={this.onChange}
+					value={factor}
+				/>
+				<FloatSlider
+					title="passes"
+					min={1}
+					max={8}
+					step={1}
+					handleChange={this.onChange}
+					value={passes}
 				/>
 			</div>
 		);

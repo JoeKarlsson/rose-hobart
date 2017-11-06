@@ -17,8 +17,9 @@ class FloatSlider extends Component {
 		this.setState({
 			value: val,
 		});
-
-		this.props.handleChange(val);
+		const obj = {};
+		obj[this.props.title] = val;
+		this.props.handleChange(obj);
 	}
 
 	render() {
@@ -49,6 +50,7 @@ class FloatSlider extends Component {
 }
 
 FloatSlider.propTypes = {
+	title: PropTypes.string,
 	min: PropTypes.number,
 	max: PropTypes.number,
 	step: PropTypes.number,
@@ -56,6 +58,7 @@ FloatSlider.propTypes = {
 };
 
 FloatSlider.defaultProps = {
+	title: '',
 	min: 0,
 	max: 1,
 	step: 1,

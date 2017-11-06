@@ -1,9 +1,8 @@
-//@flow
 import React, { Component } from "react";
 import { Shaders, Node, GLSL, connectSize } from "gl-react";
 import { Surface } from "gl-react-dom";
 import { directionForPass } from "./blurMulti";
-import StaticBlurMap from "./staticBlurMap";
+import StaticBlurMap from "./StaticBlurMap";
 
 const shaders = Shaders.create({
   blurV1D: {
