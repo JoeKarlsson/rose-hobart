@@ -7,6 +7,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import raf from 'raf';
+import videoMP4 from '../../assets/video/video.mp4';
+
+export { videoMP4 };
+
 
 // We implement a component <Video> that is like <video>
 // but provides a onFrame hook so we can efficiently only render
@@ -36,7 +40,7 @@ export class Video extends Component {
 }
 
 Video.propTypes = {
-	onFrame: PropTypes.func.isRequired, // eslint-disable-line react/forbid-prop-types
+	onFrame: PropTypes.func.isRequired,
 };
 
 export default Video;
