@@ -10,6 +10,7 @@ import { Surface } from 'gl-react-dom';
 import { BlurV } from './helper/blurMap';
 import { Saturate } from './helper/saturation';
 import StaticBlurMap from './helper/staticBlurMap';
+import SplitColor from './helper/SplitColor';
 import { Video, videoMP4 } from './Video';
 // import toolbox from './helper/meta';
 import FloatSlider from './helper/FloatSlider';
@@ -37,14 +38,9 @@ class VideoPlayer extends Component {
 		this.setState({
 			contrast: val,
 		});
-
-		console.log(this.state);
 	}
 
 	render() {
-
-		console.log(this.state);
-
 		const {
 			factor,
 			passes,
@@ -57,18 +53,20 @@ class VideoPlayer extends Component {
 
 		return (
 			<div>
-				<Surface width={480} height={360} pixelRatio={1}>
+				<Surface width={880} height={1000} pixelRatio={1}>
 					<Bus ref="vid">
 						<Saturate
 							contrast={contrast}
 							saturation={saturation}
 							brightness={brightness}
 						>
-							{redraw => (
-								<Video onFrame={redraw} autoPlay loop>
-									<source type="video/mp4" src={videoMP4} />
-								</Video>
-							)}
+							<SplitColor>
+								{redraw => (
+									<Video onFrame={redraw} autoPlay loop>
+										<source type="video/mp4" src={videoMP4} />
+									</Video>
+								)}
+							</SplitColor>
 						</Saturate>
 					</Bus>
 					<BlurV map={map} passes={passes} factor={factor}>
