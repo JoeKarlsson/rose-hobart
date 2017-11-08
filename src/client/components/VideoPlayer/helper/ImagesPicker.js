@@ -3,62 +3,27 @@
 	react/forbid-prop-types: 0
 */
 
-import React, { PureComponent, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-class ImagePickable extends PureComponent {
-
-	onClick() {
-		this.props.onChange(this.props.src);
-	}
-
-	render() {
-		const { src, selected, style } = this.props;
-		return (
-			<img
-				alt=""
-				src={src}
-				onClick={this.onClick}
-				style={{
-					borderWidth: 2,
-					borderColor: selected ? '#F00' : 'transparent',
-					borderStyle: 'solid',
-					...style,
-				}}
-			/>
-		);
-	}
-}
-
-ImagePickable.propTypes = {
-	style: PropTypes.any,
-	src: PropTypes.string,
-	selected: PropTypes.bool,
-	onChange: PropTypes.func,
-};
-
-ImagePickable.defaultProps = {
-	style: '',
-	src: '',
-	selected: false,
-	onChange: () => '',
-};
+import ImagePickable from './ImagePickable';
 
 class ImagesPicker extends Component {
+	constructor() {
+		super();
+		this.imageNodewBuilder = this.imageNodewBuilder.bind(this);
+	}
 
-	static imageNodewBuilder(src) {
+	imageNodewBuilder(src) {
 		const {
 			value,
-			onChange,
+			handleChange,
 			imageStyle,
 		} = this.props;
-
-		console.log(this.props);
 
 		return (
 			<ImagePickable
 				key={src}
-				onChange={onChange}
+				onChange={handleChange}
 				src={src}
 				selected={src === value}
 				style={imageStyle}
@@ -73,7 +38,7 @@ class ImagesPicker extends Component {
 			style,
 		} = this.props;
 
-		const imageNode = images.map(ImagesPicker.imageNodewBuilder);
+		const imageNode = images.map(this.imageNodewBuilder);
 
 
 		return (
@@ -97,7 +62,7 @@ ImagesPicker.propTypes = {
 	style: PropTypes.any,
 	value: PropTypes.string,
 	images: PropTypes.array,
-	onChange: PropTypes.any,
+	handleChange: PropTypes.func.isRequired,
 };
 
 ImagesPicker.defaultProps = {
@@ -105,7 +70,6 @@ ImagesPicker.defaultProps = {
 	style: '',
 	value: '',
 	images: [''],
-	onChange: () => '',
 };
 
 export default ImagesPicker;

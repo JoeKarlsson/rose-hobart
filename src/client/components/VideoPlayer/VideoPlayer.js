@@ -8,11 +8,10 @@ import React, { Component } from 'react';
 import { Bus } from 'gl-react';
 import { Surface } from 'gl-react-dom';
 import { BlurV } from './helper/blurMap';
-import { Saturate } from './helper/saturation';
+import Saturate from './helper/Saturate';
 import StaticBlurMap from './helper/StaticBlurMap';
 import SplitColor from './helper/SplitColor';
 import { Video, videoMP4 } from './Video';
-// import toolbox from './helper/meta';
 import FloatSlider from './helper/FloatSlider';
 
 // We must use a <Bus> if we don't want the <video> element to be duplicated
@@ -32,10 +31,17 @@ class VideoPlayer extends Component {
 		};
 
 		this.onChange = this.onChange.bind(this);
+		this.onStaticBlurMapChange = this.onStaticBlurMapChange.bind(this);
 	}
 
 	onChange(newState) {
 		this.setState(newState);
+	}
+
+	onStaticBlurMapChange(img) {
+		this.setState({
+			map: img,
+		});
 	}
 
 	render() {
@@ -113,6 +119,7 @@ class VideoPlayer extends Component {
 					handleChange={this.onChange}
 					value={passes}
 				/>
+				<StaticBlurMap handleChange={this.onStaticBlurMapChange} />
 			</div>
 		);
 	}
