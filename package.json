@@ -65,6 +65,7 @@
     "babel-core": "6.x.x",
     "babel-jest": "21.x.x",
     "babel-loader": "7.1.x",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "6.24.x",
     "browserslist": "^2.8.0",
@@ -82,6 +83,7 @@
     "eslint-plugin-react": "7.4.x",
     "express": "4.16.x",
     "extract-text-webpack-plugin": "3.0.x",
+    "favicons-webpack-plugin": "0.0.7",
     "fetch-mock": "5.13.x",
     "gl-react": "3.13.x",
     "gl-react-dom": "3.13.x",
@@ -123,10 +125,7 @@
     "whatwg-fetch": "2.0.x",
     "xmlhttprequest": "1.8.x"
   },
-  "devDependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "favicons-webpack-plugin": "0.0.7"
-  },
+  "devDependencies": {},
   "release": {
     "analyzeCommits": "simple-commit-message"
   },
