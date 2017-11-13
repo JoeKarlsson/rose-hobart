@@ -13,6 +13,9 @@ import StaticBlurMap from './helper/StaticBlurMap';
 import SplitColor from './helper/SplitColor';
 import { Video, videoMP4 } from './Video';
 import FloatSlider from './helper/FloatSlider';
+import VideoControlButton from './helper/VideoControlButton';
+import hash from '../../helper/hash';
+
 
 // We must use a <Bus> if we don't want the <video> element to be duplicated
 // per Blur pass.. Also since we can dynamically change the number of passes,
@@ -30,7 +33,10 @@ class VideoPlayer extends Component {
 			map: StaticBlurMap.images[0],
 		};
 
+		this.controls = ['play', 'pause', 'mute'];
+
 		this.onChange = this.onChange.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 		this.onStaticBlurMapChange = this.onStaticBlurMapChange.bind(this);
 	}
 
@@ -42,6 +48,25 @@ class VideoPlayer extends Component {
 		this.setState({
 			map: img,
 		});
+	}
+
+	handleClick(method) {
+		// https://codepen.io/OddlyTimbot/pen/DvGst
+		const { video } = this.video.refs;
+		switch (method) {
+
+		case ('pause'):
+			video.pause();
+			break;
+		case ('play'):
+			video.play();
+			break;
+		case ('playbackRate'):
+			video.playbackRate += 0.1;
+			break;
+		default:
+			break;
+		}
 	}
 
 	render() {
@@ -66,7 +91,12 @@ class VideoPlayer extends Component {
 						>
 							<SplitColor>
 								{redraw => (
-									<Video onFrame={redraw} autoPlay loop>
+									<Video
+										onFrame={redraw}
+										autoPlay
+										loop
+										ref={(input) => { this.video = input; }}
+									>
 										<source type="video/mp4" src={videoMP4} />
 									</Video>
 								)}
@@ -79,6 +109,15 @@ class VideoPlayer extends Component {
 					</BlurV>
 
 				</Surface>
+
+				{this.controls.map(control => (
+					<VideoControlButton
+						key={hash(control)}
+						control={control}
+						onItemClick={this.handleClick}
+					/>
+				))}
+
 				<FloatSlider
 					title="contrast"
 					min={0}
