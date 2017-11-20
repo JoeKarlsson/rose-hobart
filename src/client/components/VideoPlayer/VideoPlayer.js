@@ -9,11 +9,10 @@ import { Bus } from 'gl-react';
 import { Surface } from 'gl-react-dom';
 import { BlurV } from './helper/blurMap';
 import Saturate from './helper/Saturate';
-import StaticBlurMap from './helper/StaticBlurMap';
 import SplitColor from './helper/SplitColor';
-import { Video, videoMP4 } from './Video';
-import VideoControls from './VideoControls';
-import './Video.scss';
+import { Video, videoMP4 } from '../Video/Video';
+import VideoControls from '../VideoControls/VideoControls';
+import images from '../../helper/images';
 import './VideoPlayer.scss';
 
 // We must use a <Bus> if we don't want the <video> element to be duplicated
@@ -29,7 +28,7 @@ class VideoPlayer extends Component {
 			brightness: 1,
 			factor: 2,
 			passes: 4,
-			map: StaticBlurMap.images[0],
+			map: images[0],
 		};
 
 		this.controls = ['play', 'pause', 'mute'];

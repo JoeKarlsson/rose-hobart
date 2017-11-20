@@ -30,9 +30,11 @@ export class Video extends Component {
 		};
 		this._raf = raf(loop);
 	}
+
 	componentWillUnmount() {
 		raf.cancel(this._raf);
 	}
+
 	render() {
 		const { onFrame, ...rest } = this.props;
 		return (

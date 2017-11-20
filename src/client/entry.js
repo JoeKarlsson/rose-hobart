@@ -5,19 +5,14 @@ import ReactDOM from 'react-dom';
 import {
 	BrowserRouter as Router,
 } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import configureStore from './configureStore';
 import PrimaryLayout from './components/shared/PrimaryLayout/PrimaryLayout';
 import ErrorBoundary from './components/shared/ErrorBoundary/ErrorBoundary';
 
-const store = configureStore();
 
 ReactDOM.render((
-	<Provider store={store}>
-		<Router >
-			<ErrorBoundary>
-				<PrimaryLayout />
-			</ErrorBoundary>
-		</Router>
-	</Provider>
+	<Router >
+		<ErrorBoundary>
+			<PrimaryLayout />
+		</ErrorBoundary>
+	</Router>
 ), document.getElementById('root'));

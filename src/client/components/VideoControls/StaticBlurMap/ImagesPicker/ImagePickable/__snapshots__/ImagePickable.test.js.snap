@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImagePickable rendering initial state match the snapshot 1`] = `
+<button
+  onClick={[Function]}
+  onKeyPress={[Function]}
+  tabIndex="0"
+>
+  <img
+    alt="Blur"
+    src=""
+    style={
+      Object {
+        "borderColor": "transparent",
+        "borderStyle": "solid",
+        "borderWidth": 2,
+      }
+    }
+  />
+</button>
+`;

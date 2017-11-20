@@ -43,14 +43,13 @@ ImagePickable.propTypes = {
 	style: PropTypes.any,
 	src: PropTypes.string,
 	selected: PropTypes.bool,
-	onChange: PropTypes.func,
+	onChange: PropTypes.func.isRequired,
 };
 
 ImagePickable.defaultProps = {
 	style: '',
 	src: '',
 	selected: false,
-	onChange: () => '',
 };
 
 export default ImagePickable;

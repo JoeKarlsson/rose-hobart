@@ -15,9 +15,11 @@ class FloatSlider extends Component {
 
 	onChange(e) {
 		const val = parseFloat(e.target.value);
+
 		this.setState({
 			value: val,
 		});
+
 		const obj = {};
 		obj[this.props.title] = val;
 		this.props.handleChange(obj);
@@ -64,6 +66,5 @@ FloatSlider.defaultProps = {
 	max: 1,
 	step: 1,
 };
-
 
 export default FloatSlider;

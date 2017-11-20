@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VideoControls rendering initial state match the snapshot 1`] = `
+<aside
+  className="VideoControls"
+>
+  <button
+    onClick={[Function]}
+  >
+    play
+  </button>
+  <button
+    onClick={[Function]}
+  >
+    pause
+  </button>
+  <button
+    onClick={[Function]}
+  >
+    mute
+  </button>
+  <div>
+    <label>
+      <strong>
+        Blur Factor
+      </strong>
+    </label>
+    <input
+      max={8}
+      min={0}
+      onChange={[Function]}
+      step={0.2}
+      style={
+        Object {
+          "flex": 1,
+          "width": "100%",
+        }
+      }
+      type="range"
+      value={0}
+    />
+  </div>
+  <div>
+    <label>
+      <strong>
+        Blur Passes
+      </strong>
+    </label>
+    <input
+      max={8}
+      min={1}
+      onChange={[Function]}
+      step={1}
+      style={
+        Object {
+          "flex": 1,
+          "width": "100%",
+        }
+      }
+      type="range"
+      value={0}
+    />
+  </div>
+  <div>
+    <label>
+      <strong>
+        Saturation
+      </strong>
+    </label>
+    <input
+      max={2}
+      min={0}
+      onChange={[Function]}
+      step={0.05}
+      style={
+        Object {
+          "flex": 1,
+          "width": "100%",
+        }
+      }
+      type="range"
+      value={0}
+    />
+  </div>
+  <div>
+    <label>
+      <strong>
+        Brightness
+      </strong>
+    </label>
+    <input
+      max={2}
+      min={0}
+      onChange={[Function]}
+      step={0.05}
+      style={
+        Object {
+          "flex": 1,
+          "width": "100%",
+        }
+      }
+      type="range"
+      value={0}
+    />
+  </div>
+  <div>
+    <label>
+      <strong>
+        Contrast
+      </strong>
+    </label>
+    <input
+      max={2}
+      min={0}
+      onChange={[Function]}
+      step={0.05}
+      style={
+        Object {
+          "flex": 1,
+          "width": "100%",
+        }
+      }
+      type="range"
+      value={0}
+    />
+  </div>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "row",
+        "flexWrap": "wrap",
+        "justifyContent": "space-around",
+      }
+    }
+  >
+    <button
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      tabIndex="0"
+    >
+      <img
+        alt="Blur"
+        src="https://i.imgur.com/SzbbUvX.png"
+        style={
+          Object {
+            "borderColor": "transparent",
+            "borderStyle": "solid",
+            "borderWidth": 2,
+            "width": 80,
+          }
+        }
+      />
+    </button>
+    <button
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      tabIndex="0"
+    >
+      <img
+        alt="Blur"
+        src="https://i.imgur.com/0PkQEk1.png"
+        style={
+          Object {
+            "borderColor": "transparent",
+            "borderStyle": "solid",
+            "borderWidth": 2,
+            "width": 80,
+          }
+        }
+      />
+    </button>
+    <button
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      tabIndex="0"
+    >
+      <img
+        alt="Blur"
+        src="https://i.imgur.com/z2CQHpg.png"
+        style={
+          Object {
+            "borderColor": "transparent",
+            "borderStyle": "solid",
+            "borderWidth": 2,
+            "width": 80,
+          }
+        }
+      />
+    </button>
+    <button
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      tabIndex="0"
+    >
+      <img
+        alt="Blur"
+        src="https://i.imgur.com/k9Eview.png"
+        style={
+          Object {
+            "borderColor": "transparent",
+            "borderStyle": "solid",
+            "borderWidth": 2,
+            "width": 80,
+          }
+        }
+      />
+    </button>
+    <button
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      tabIndex="0"
+    >
+      <img
+        alt="Blur"
+        src="https://i.imgur.com/wh0On3P.png"
+        style={
+          Object {
+            "borderColor": "transparent",
+            "borderStyle": "solid",
+            "borderWidth": 2,
+            "width": 80,
+          }
+        }
+      />
+    </button>
+  </div>
+  <a
+    className="twitter"
+    href="https://twitter.com/bennettfeely"
+  >
+    @bennettfeely
+  </a>
+</aside>
+`;

@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ImagePickable from './ImagePickable';
+import ImagePickable from './ImagePickable/ImagePickable';
 
 class ImagesPicker extends Component {
 	constructor() {

@@ -7,9 +7,9 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import StaticBlurMap from './helper/StaticBlurMap';
-import FloatSlider from './helper/FloatSlider';
-import VideoControlButton from './helper/VideoControlButton';
+import StaticBlurMap from './StaticBlurMap/StaticBlurMap';
+import FloatSlider from './FloatSlider/FloatSlider';
+import VideoControlButton from './VideoControlButton/VideoControlButton';
 import hash from '../../helper/hash';
 import './VideoControls.scss';
 
