@@ -5,7 +5,6 @@ import ErrorBoundary from '../../shared/ErrorBoundary/ErrorBoundary';
 const Home = () => {
 	return (
 		<div className="Home">
-      Home
 			<ErrorBoundary>
 				<VideoPlayer />
 			</ErrorBoundary>

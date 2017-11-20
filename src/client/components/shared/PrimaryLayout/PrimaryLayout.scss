@@ -1,5 +1,19 @@
-$orange: orange;
+* {
+	box-sizing: border-box;
+}
+
+body {
+	display: box;
+	background: #333;
+}
 
 .PrimaryLayout {
-	background-color: $orange;
+	background-color: darkgrey;
+	min-width: 768px;
+
+	.content {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 }

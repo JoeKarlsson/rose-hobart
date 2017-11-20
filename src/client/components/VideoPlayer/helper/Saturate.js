@@ -44,7 +44,7 @@ Saturate.propTypes = {
 	contrast: PropTypes.number.isRequired,
 	saturation: PropTypes.number.isRequired,
 	brightness: PropTypes.number.isRequired,
-	children: PropTypes.number.isRequired,
+	children: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 Saturate.defaultProps = {};

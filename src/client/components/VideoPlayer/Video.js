@@ -35,7 +35,13 @@ export class Video extends Component {
 	}
 	render() {
 		const { onFrame, ...rest } = this.props;
-		return <video {...rest} ref="video" />;
+		return (
+			<video
+				className="video"
+				ref="video"
+				{...rest}
+			/>
+		);
 	}
 }
 

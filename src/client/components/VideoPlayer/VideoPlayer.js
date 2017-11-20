@@ -12,10 +12,9 @@ import Saturate from './helper/Saturate';
 import StaticBlurMap from './helper/StaticBlurMap';
 import SplitColor from './helper/SplitColor';
 import { Video, videoMP4 } from './Video';
-import FloatSlider from './helper/FloatSlider';
-import VideoControlButton from './helper/VideoControlButton';
-import hash from '../../helper/hash';
-
+import VideoControls from './VideoControls';
+import './Video.scss';
+import './VideoPlayer.scss';
 
 // We must use a <Bus> if we don't want the <video> element to be duplicated
 // per Blur pass.. Also since we can dynamically change the number of passes,
@@ -61,8 +60,8 @@ class VideoPlayer extends Component {
 		case ('play'):
 			video.play();
 			break;
-		case ('playbackRate'):
-			video.playbackRate += 0.1;
+		case ('mute'):
+			video.muted = true;
 			break;
 		default:
 			break;
@@ -81,7 +80,7 @@ class VideoPlayer extends Component {
 
 
 		return (
-			<div>
+			<div className="VideoPlayer">
 				<Surface width={880} height={1000} pixelRatio={1}>
 					<Bus ref="vid">
 						<Saturate
@@ -110,55 +109,17 @@ class VideoPlayer extends Component {
 
 				</Surface>
 
-				{this.controls.map(control => (
-					<VideoControlButton
-						key={hash(control)}
-						control={control}
-						onItemClick={this.handleClick}
-					/>
-				))}
+				<VideoControls
+					factor={factor}
+					passes={passes}
+					contrast={contrast}
+					saturation={saturation}
+					brightness={brightness}
+					onStaticBlurMapChange={this.onStaticBlurMapChange}
+					handleClick={this.handleClick}
+					onChange={this.onChange}
+				/>
 
-				<FloatSlider
-					title="contrast"
-					min={0}
-					max={2}
-					step={0.05}
-					handleChange={this.onChange}
-					value={contrast}
-				/>
-				<FloatSlider
-					title="saturation"
-					min={0}
-					max={2}
-					step={0.05}
-					handleChange={this.onChange}
-					value={saturation}
-				/>
-				<FloatSlider
-					title="brightness"
-					min={0}
-					max={2}
-					step={0.05}
-					handleChange={this.onChange}
-					value={brightness}
-				/>
-				<FloatSlider
-					title="factor"
-					min={0}
-					max={8}
-					step={0.2}
-					handleChange={this.onChange}
-					value={factor}
-				/>
-				<FloatSlider
-					title="passes"
-					min={1}
-					max={8}
-					step={1}
-					handleChange={this.onChange}
-					value={passes}
-				/>
-				<StaticBlurMap handleChange={this.onStaticBlurMapChange} />
 			</div>
 		);
 	}
