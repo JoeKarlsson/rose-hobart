@@ -105,7 +105,6 @@ class VideoPlayer extends Component {
 						{// as a texture, we give a function that resolve the video ref
 							() => this.refs.vid}
 					</BlurV>
-
 				</Surface>
 
 				<VideoControls
