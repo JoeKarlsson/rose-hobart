@@ -10,14 +10,14 @@ const activeStyles = {
 
 const Header = () => {
 	return (
-		<div className="header_bar">
-			<header>
-				<NavLink className="header_logo" to="/">Home</NavLink>
-				<ul className="header_nav" role="navigation">
+		<nav>
+			<div className="nav-wrapper">
+				<NavLink className="brand-logo" to="/">Home</NavLink>
+				<ul id="nav-mobile" className="right hide-on-med-and-down">
 					<li><NavLink to="/about" activeStyle={activeStyles}>About</NavLink></li>
 				</ul>
-			</header>
-		</div>
+			</div>
+		</nav>
 	);
 };
 

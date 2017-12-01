@@ -38,77 +38,81 @@ class VideoControls extends Component {
 		} = this.props;
 
 		return (
-			<aside className="VideoControls">
-				{this.controls.map(control => (
-					<VideoControlButton
-						key={hash(control)}
-						control={control}
-						onItemClick={handleClick}
-					/>
-				))}
-				<div>
-					<label>
-						<strong>Blur Factor</strong>
-					</label>
-					<FloatSlider
-						title="factor"
-						min={0}
-						max={8}
-						step={0.2}
-						handleChange={onChange}
-						value={factor}
-					/>
-				</div>
-				<div>
-					<label><strong>Blur Passes</strong></label>
-					<FloatSlider
-						title="passes"
-						min={1}
-						max={8}
-						step={1}
-						handleChange={onChange}
-						value={passes}
-					/>
-				</div>
-				<div>
-					<label><strong>Saturation</strong></label>
-					<FloatSlider
-						title="saturation"
-						min={0}
-						max={2}
-						step={0.05}
-						handleChange={onChange}
-						value={saturation}
-					/>
-				</div>
-				<div>
-					<label><strong>Brightness</strong></label>
-					<FloatSlider
-						title="brightness"
-						min={0}
-						max={2}
-						step={0.05}
-						handleChange={onChange}
-						value={brightness}
-					/>
-				</div>
-				<div>
-					<label><strong>Contrast</strong></label>
-					<FloatSlider
-						title="contrast"
-						min={0}
-						max={2}
-						step={0.05}
-						handleChange={onChange}
-						value={contrast}
-					/>
-				</div>
+			<div className="VideoControls row">
+				<form className="col s12">
+					<div className="row">
+						{this.controls.map(control => (
+							<VideoControlButton
+								key={hash(control)}
+								control={control}
+								onItemClick={handleClick}
+							/>
+						))}
+						<div>
+							<label>
+								<strong>Blur Factor</strong>
+							</label>
+							<FloatSlider
+								title="factor"
+								min={0}
+								max={8}
+								step={0.2}
+								handleChange={onChange}
+								value={factor}
+							/>
+						</div>
+						<div>
+							<label><strong>Blur Passes</strong></label>
+							<FloatSlider
+								title="passes"
+								min={1}
+								max={8}
+								step={1}
+								handleChange={onChange}
+								value={passes}
+							/>
+						</div>
+						<div>
+							<label><strong>Saturation</strong></label>
+							<FloatSlider
+								title="saturation"
+								min={0}
+								max={2}
+								step={0.05}
+								handleChange={onChange}
+								value={saturation}
+							/>
+						</div>
+						<div>
+							<label><strong>Brightness</strong></label>
+							<FloatSlider
+								title="brightness"
+								min={0}
+								max={2}
+								step={0.05}
+								handleChange={onChange}
+								value={brightness}
+							/>
+						</div>
+						<div>
+							<label><strong>Contrast</strong></label>
+							<FloatSlider
+								title="contrast"
+								min={0}
+								max={2}
+								step={0.05}
+								handleChange={onChange}
+								value={contrast}
+							/>
+						</div>
 
-				<StaticBlurMap handleChange={onStaticBlurMapChange} />
+						<StaticBlurMap handleChange={onStaticBlurMapChange} />
 
-				<a className="twitter" href="https://twitter.com/bennettfeely">@bennettfeely</a>
+						<a className="twitter" href="https://twitter.com/bennettfeely">@bennettfeely</a>
 
-			</aside>
+					</div>
+				</form>
+			</div>
 		);
 	}
 }

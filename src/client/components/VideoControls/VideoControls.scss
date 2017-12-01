@@ -1,38 +1,5 @@
 .VideoControls {
 
-	aside {
-		width: 360px;
-		margin: 0 0 15px 15px;
-	}
-
-	aside div {
-		padding: 10px;
-		border-bottom: 1px solid #888;
-		border-top: 1px solid #bbb;
-		transition: background 0.3s ease;
-		background: #aaa;
-	}
-
-	aside div:first-child {
-		padding-top: 20px;
-	}
-
-	aside div:hover {
-		background: #bbb;
-	}
-
-	label {
-		display: block;
-		font: 13px "Helvetica", sans-serif;
-		color: #222;
-	}
-
-	strong {
-		font-weight: bold;
-		padding: 0 3px;
-		user-select: none;
-	}
-
 	.twitter {
 		display: block;
 		background: #3a3a3a;
