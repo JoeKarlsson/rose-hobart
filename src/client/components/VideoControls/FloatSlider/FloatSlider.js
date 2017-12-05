@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './FloatSlider.scss';
 
 class FloatSlider extends Component {
 	constructor() {
