@@ -35,31 +35,23 @@ ToolboxFooter.defaultProps = {};
 class VideoControls extends Component {
 	constructor() {
 		super();
-		this.state = {
-			color: 'monochrome',
-		};
 
 		this.controls = ['play', 'pause', 'mute'];
-		this.handleColorChange = this.handleColorChange.bind(this);
-	}
-
-	handleColorChange(e) {
-		console.log('e', e);
 	}
 
 	render() {
 		const {
+			color,
 			factor,
 			passes,
 			contrast,
 			saturation,
 			brightness,
 			onStaticBlurMapChange,
+			handleColorChange,
 			handleClick,
 			onChange,
 		} = this.props;
-
-		const { color } = this.state;
 
 		const choices = Object.keys(colorScales).map((cs) => {
 			return { key: cs, label: cs };
@@ -71,7 +63,7 @@ class VideoControls extends Component {
 					<div className="row">
 						<ToolboxFooter color={color} />
 
-						<Selector choices={choices} onChange={this.handleColorChange} />
+						<Selector choices={choices} onChange={handleColorChange} currColor={color} />
 					</div>
 					<div className="row">
 						{this.controls.map(control => (
@@ -149,12 +141,14 @@ class VideoControls extends Component {
 }
 
 VideoControls.propTypes = {
+	color: PropTypes.string.isRequired,
 	factor: PropTypes.number.isRequired,
 	passes: PropTypes.number.isRequired,
 	contrast: PropTypes.number.isRequired,
 	saturation: PropTypes.number.isRequired,
 	brightness: PropTypes.number.isRequired,
 	onStaticBlurMapChange: PropTypes.func.isRequired,
+	handleColorChange: PropTypes.func.isRequired,
 	handleClick: PropTypes.func.isRequired,
 	onChange: PropTypes.func.isRequired,
 };

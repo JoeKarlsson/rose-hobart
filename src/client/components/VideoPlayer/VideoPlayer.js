@@ -25,6 +25,7 @@ class VideoPlayer extends Component {
 	constructor() {
 		super();
 		this.state = {
+			color: 'monochrome',
 			contrast: 1,
 			saturation: 1,
 			brightness: 1,
@@ -38,6 +39,7 @@ class VideoPlayer extends Component {
 		this.onChange = this.onChange.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 		this.onStaticBlurMapChange = this.onStaticBlurMapChange.bind(this);
+		this.handleColorChange = this.handleColorChange.bind(this);
 	}
 
 	onChange(newState) {
@@ -47,6 +49,12 @@ class VideoPlayer extends Component {
 	onStaticBlurMapChange(img) {
 		this.setState({
 			map: img,
+		});
+	}
+
+	handleColorChange(color) {
+		this.setState({
+			color,
 		});
 	}
 
@@ -71,6 +79,7 @@ class VideoPlayer extends Component {
 
 	render() {
 		const {
+			color,
 			factor,
 			passes,
 			contrast,
@@ -82,7 +91,7 @@ class VideoPlayer extends Component {
 
 		return (
 			<div className="VideoPlayer">
-				<Surface width={880} height={1000} pixelRatio={1}>
+				<Surface width={880} height={500} pixelRatio={1}>
 					<Bus ref="vid">
 						<Saturate
 							contrast={contrast}
@@ -90,7 +99,7 @@ class VideoPlayer extends Component {
 							brightness={brightness}
 						>
 							<Colorify
-								colorScale={colorScales['monochrome']}
+								colorScale={colorScales[color]}
 							>
 								{redraw => (
 									<Video
@@ -113,12 +122,14 @@ class VideoPlayer extends Component {
 				</Surface>
 
 				<VideoControls
+					color={color}
 					factor={factor}
 					passes={passes}
 					contrast={contrast}
 					saturation={saturation}
 					brightness={brightness}
 					onStaticBlurMapChange={this.onStaticBlurMapChange}
+					handleColorChange={this.handleColorChange}
 					handleClick={this.handleClick}
 					onChange={this.onChange}
 				/>
