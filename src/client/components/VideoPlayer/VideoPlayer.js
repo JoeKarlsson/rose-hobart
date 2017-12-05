@@ -71,6 +71,17 @@ class VideoPlayer extends Component {
 		case ('mute'):
 			video.muted = true;
 			break;
+		case ('unmute'):
+			video.muted = false;
+			break;
+		case ('slow'):
+			video.playbackRate -= 0.1;
+			console.log('video.playbackRate', video.playbackRate);
+			break;
+		case ('fast'):
+			video.playbackRate += 0.1;
+			console.log('video.playbackRate', video.playbackRate);
+			break;
 		default:
 			break;
 		}

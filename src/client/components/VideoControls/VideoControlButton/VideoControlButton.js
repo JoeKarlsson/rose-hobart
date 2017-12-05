@@ -26,6 +26,15 @@ class VideoControlButton extends Component {
 		case ('mute'):
 			icon = 'volume_off';
 			break;
+		case ('unmute'):
+			icon = 'volume_up';
+			break;
+		case ('slow'):
+			icon = 'trending_down';
+			break;
+		case ('fast'):
+			icon = 'trending_up';
+			break;
 		default:
 			icon = 'view_headline';
 
