@@ -8,14 +8,33 @@ class VideoControlButton extends Component {
 		this._onClick = this._onClick.bind(this);
 	}
 
-	_onClick() {
+	_onClick(e) {
+		e.preventDefault();
 		this.props.onItemClick(this.props.control);
 	}
 
 	render() {
+		let icon;
+
+		switch (this.props.control) {
+		case ('play'):
+			icon = 'play_circle_outline';
+			break;
+		case ('pause'):
+			icon = 'pause_circle_outline';
+			break;
+		case ('mute'):
+			icon = 'volume_off';
+			break;
+		default:
+			icon = 'view_headline';
+
+		}
 		return (
-			<button onClick={this._onClick}>
-				{this.props.control}
+			<button onClick={this._onClick} className="waves-effect waves-light btn">
+				<i className="material-icons left">
+					{icon}
+				</i>
 			</button>
 		);
 	}

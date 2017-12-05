@@ -4,7 +4,7 @@
 
 body {
 	display: box;
-	background: #333;
+	background-color: darkgrey;
 }
 
 .PrimaryLayout {
@@ -12,6 +12,7 @@ body {
 	min-width: 768px;
 
 	.content {
+		padding-top: 2%;
 		display: flex;
 		align-items: center;
 		justify-content: center;

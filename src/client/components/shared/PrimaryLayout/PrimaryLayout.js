@@ -15,7 +15,7 @@ export const PrimaryLayout = () => {
 	return (
 		<div className="PrimaryLayout">
 			<Header />
-			<div className="content">
+			<div className="content blue-grey lighten-5">
 				<Switch>
 					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />

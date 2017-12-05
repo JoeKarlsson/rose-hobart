@@ -108,8 +108,6 @@ class VideoControls extends Component {
 
 						<StaticBlurMap handleChange={onStaticBlurMapChange} />
 
-						<a className="twitter" href="https://twitter.com/bennettfeely">@bennettfeely</a>
-
 					</div>
 				</form>
 			</div>
