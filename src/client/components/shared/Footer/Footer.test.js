@@ -40,10 +40,6 @@ describe('Footer', () => {
 				expect(wrapper.find('.footer').length).toBe(1);
 			});
 
-			it('should render to static HTML', () => {
-				expect(wrapper.text()).toEqual('site by joe');
-			});
-
 			it('should have correct inital instance', () => {
 				const initialInstance = wrapper.instance();
 				const expectedInstance = null;

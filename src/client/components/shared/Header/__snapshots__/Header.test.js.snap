@@ -1,22 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Header rendering initial state is rendered 1`] = `
-<div
-  className="header_bar"
->
-  <header>
+<nav>
+  <div
+    className="nav-wrapper purple darken-1"
+  >
     <a
       aria-current="true"
-      className="header_logo active"
+      className="brand-logo header-logo active"
       href="/"
       onClick={[Function]}
       style={Object {}}
     >
-      Home
+      Rose Hobart
     </a>
     <ul
-      className="header_nav"
-      role="navigation"
+      className="right hide-on-med-and-down"
+      id="nav-mobile"
     >
       <li>
         <a
@@ -30,6 +30,6 @@ exports[`Header rendering initial state is rendered 1`] = `
         </a>
       </li>
     </ul>
-  </header>
-</div>
+  </div>
+</nav>
 `;

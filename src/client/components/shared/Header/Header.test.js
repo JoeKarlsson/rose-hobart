@@ -39,14 +39,6 @@ describe('Header', () => {
 				expect(wrapper).toHaveLength(1);
 			});
 
-			it('should be selectable by the class `header`', () => {
-				expect(wrapper.dive().dive().is('.header_bar')).toBe(true);
-			});
-
-			it('should mount in the full DOM', () => {
-				expect(wrapper.dive().dive().find('.header_bar').length).toBe(1);
-			});
-
 			it('should have correct inital instance', () => {
 				const initialState = wrapper.dive().dive().instance();
 				const expectedIntialState = null;

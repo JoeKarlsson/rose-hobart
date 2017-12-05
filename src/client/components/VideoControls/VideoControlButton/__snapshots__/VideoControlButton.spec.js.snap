@@ -2,8 +2,13 @@
 
 exports[`VideoControlButton rendering initial state match the snapshot 1`] = `
 <button
+  className="waves-effect waves-light btn"
   onClick={[Function]}
 >
-  saturation
+  <i
+    className="material-icons left"
+  >
+    view_headline
+  </i>
 </button>
 `;

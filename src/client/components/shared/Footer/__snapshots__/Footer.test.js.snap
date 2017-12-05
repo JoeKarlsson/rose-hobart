@@ -2,23 +2,35 @@
 
 exports[`Footer rendering initial state is rendered 1`] = `
 <div
-  className="footer"
+  className="footer purple darken-1"
 >
-  <h2>
-    <div
-      className="footer_content"
-    >
-      <p>
-        site by 
-        <a
-          href="http://www.callmejoe.net/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          joe
-        </a>
-      </p>
-    </div>
-  </h2>
+  <div
+    className="container"
+  >
+    <h2>
+      <div
+        className="footer_content page-footer transparent"
+      >
+        <p>
+          site by 
+          <a
+            href="http://www.callmejoe.net/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            joe 
+          </a>
+           & 
+          <a
+            href="http://www.callmejoe.net/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            laurel
+          </a>
+        </p>
+      </div>
+    </h2>
+  </div>
 </div>
 `;
