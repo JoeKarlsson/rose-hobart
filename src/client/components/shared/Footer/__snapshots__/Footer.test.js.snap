@@ -5,13 +5,22 @@ exports[`Footer rendering initial state is rendered 1`] = `
   className="footer purple darken-1"
 >
   <div
-    className="container"
+    className="footer-copyright"
   >
-    <h2>
+    <div
+      className="container"
+    >
       <div
-        className="footer_content page-footer transparent"
+        className="row"
       >
-        <p>
+        <p
+          className="grey-text text-lighten-4 left"
+        >
+          © 2018 Karlsson - For Study Purposes Only
+        </p>
+        <p
+          className="grey-text text-lighten-4 right"
+        >
           site by 
           <a
             href="http://www.callmejoe.net/"
@@ -30,7 +39,7 @@ exports[`Footer rendering initial state is rendered 1`] = `
           </a>
         </p>
       </div>
-    </h2>
+    </div>
   </div>
 </div>
 `;
