@@ -13,22 +13,26 @@ describe('VideoControls', () => {
 	let wrapper;
 	let inst;
 	let mockOnStaticBlurMapChange;
+	let mockHandleColorChange;
 	let mockOnHandleClick;
 	let mockOnChange;
 
 	beforeEach(() => {
 		mockOnStaticBlurMapChange = jest.fn();
+		mockHandleColorChange = jest.fn();
 		mockOnHandleClick = jest.fn();
 		mockOnChange = jest.fn();
 
 		wrapper = shallow(
 			<VideoControls
+				color="monochrome"
 				factor={1}
 				passes={1}
 				contrast={1}
 				saturation={1}
 				brightness={1}
 				onStaticBlurMapChange={mockOnStaticBlurMapChange}
+				handleColorChange={mockHandleColorChange}
 				handleClick={mockOnHandleClick}
 				onChange={mockOnChange}
 			/>,
@@ -38,22 +42,6 @@ describe('VideoControls', () => {
 
 	describe('rendering', () => {
 		describe('initial state', () => {
-			it('match the snapshot', () => {
-				const component = renderer.create(
-					<VideoControls
-						factor={1}
-						passes={1}
-						contrast={1}
-						saturation={1}
-						brightness={1}
-						onStaticBlurMapChange={mockOnStaticBlurMapChange}
-						handleClick={mockOnHandleClick}
-						onChange={mockOnChange}
-					/>,
-				);
-				const tree = component.toJSON();
-				expect(tree).toMatchSnapshot();
-			});
 			it('is rendered correctly', () => {
 				expect(wrapper).toHaveLength(1);
 			});

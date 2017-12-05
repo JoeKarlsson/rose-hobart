@@ -24,7 +24,7 @@ class VideoPlayer extends Component {
 	constructor() {
 		super();
 		this.state = {
-			color: 'monochrome',
+			color: Object.keys(colorScales)[0],
 			contrast: 1,
 			saturation: 1,
 			brightness: 1,
