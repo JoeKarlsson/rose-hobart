@@ -12,7 +12,8 @@ class ImagePickable extends PureComponent {
 		this.onClick = this.onClick.bind(this);
 	}
 
-	onClick() {
+	onClick(e) {
+		e.preventDefault();
 		this.props.onChange(this.props.src);
 	}
 

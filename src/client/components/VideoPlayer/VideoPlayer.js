@@ -9,7 +9,6 @@ import { Bus } from 'gl-react';
 import { Surface } from 'gl-react-dom';
 import { BlurV } from './helper/blurMap';
 import Saturate from './helper/Saturate';
-// import SplitColor from './helper/SplitColor';
 import Colorify from './helper/ColorScale';
 import colorScales from './helper/colorScales';
 import { Video, videoMP4 } from '../Video/Video';
