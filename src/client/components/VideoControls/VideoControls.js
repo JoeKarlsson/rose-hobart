@@ -3,15 +3,30 @@
 	jsx-a11y/label-has-for: 0
 */
 
-// https://codepen.io/bennettfeely/pen/kmhBI?depth=everything&order=popularity&page=9&q=video&show_forks=false
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { NearestCopy } from 'gl-react';
+import { Surface } from 'gl-react-dom';
 import StaticBlurMap from './StaticBlurMap/StaticBlurMap';
 import FloatSlider from './FloatSlider/FloatSlider';
 import VideoControlButton from './VideoControlButton/VideoControlButton';
+import Selector from './Selector';
+import colorScales from '../VideoPlayer/helper/colorScales';
 import hash from '../../helper/hash';
 import './VideoControls.scss';
+
+const ToolboxFooter = ({ color }) => (
+	<Surface style={{ minWidth: '100%' }} width={400} height={20}>
+		<NearestCopy>{colorScales[color]}</NearestCopy>
+	</Surface>
+);
+
+
+ToolboxFooter.propTypes = {
+	color: PropTypes.string.isRequired,
+};
+
+ToolboxFooter.defaultProps = {};
 
 // We must use a <Bus> if we don't want the <video> element to be duplicated
 // per Blur pass.. Also since we can dynamically change the number of passes,
@@ -20,9 +35,16 @@ import './VideoControls.scss';
 class VideoControls extends Component {
 	constructor() {
 		super();
-		this.state = {};
+		this.state = {
+			color: 'monochrome',
+		};
 
 		this.controls = ['play', 'pause', 'mute'];
+		this.handleColorChange = this.handleColorChange.bind(this);
+	}
+
+	handleColorChange(e) {
+		console.log('e', e);
 	}
 
 	render() {
@@ -37,9 +59,20 @@ class VideoControls extends Component {
 			onChange,
 		} = this.props;
 
+		const { color } = this.state;
+
+		const choices = Object.keys(colorScales).map((cs) => {
+			return { key: cs, label: cs };
+		});
+
 		return (
 			<div className="VideoControls row">
 				<form className="col s12">
+					<div className="row">
+						<ToolboxFooter color={color} />
+
+						<Selector choices={choices} onChange={this.handleColorChange} />
+					</div>
 					<div className="row">
 						{this.controls.map(control => (
 							<VideoControlButton

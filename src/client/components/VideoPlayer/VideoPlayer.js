@@ -9,7 +9,9 @@ import { Bus } from 'gl-react';
 import { Surface } from 'gl-react-dom';
 import { BlurV } from './helper/blurMap';
 import Saturate from './helper/Saturate';
-import SplitColor from './helper/SplitColor';
+// import SplitColor from './helper/SplitColor';
+import Colorify from './helper/ColorScale';
+import colorScales from './helper/colorScales';
 import { Video, videoMP4 } from '../Video/Video';
 import VideoControls from '../VideoControls/VideoControls';
 import images from '../../helper/images';
@@ -87,7 +89,9 @@ class VideoPlayer extends Component {
 							saturation={saturation}
 							brightness={brightness}
 						>
-							<SplitColor>
+							<Colorify
+								colorScale={colorScales['monochrome']}
+							>
 								{redraw => (
 									<Video
 										onFrame={redraw}
@@ -98,7 +102,8 @@ class VideoPlayer extends Component {
 										<source type="video/mp4" src={videoMP4} />
 									</Video>
 								)}
-							</SplitColor>
+							</Colorify>
+
 						</Saturate>
 					</Bus>
 					<BlurV map={map} passes={passes} factor={factor}>
