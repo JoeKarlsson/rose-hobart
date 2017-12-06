@@ -24,6 +24,7 @@ class VideoPlayer extends Component {
 	constructor() {
 		super();
 		this.state = {
+			showOrginalVid: false,
 			color: Object.keys(colorScales)[0],
 			contrast: 1,
 			saturation: 1,
@@ -54,6 +55,7 @@ class VideoPlayer extends Component {
 	handleColorChange(color) {
 		this.setState({
 			color,
+			showOrginalVid: false,
 		});
 	}
 
@@ -76,11 +78,14 @@ class VideoPlayer extends Component {
 			break;
 		case ('slow'):
 			video.playbackRate -= 0.1;
-			console.log('video.playbackRate', video.playbackRate);
 			break;
 		case ('fast'):
 			video.playbackRate += 0.1;
-			console.log('video.playbackRate', video.playbackRate);
+			break;
+		case ('original'):
+			this.setState({
+				showOrginalVid: true,
+			});
 			break;
 		default:
 			break;
@@ -89,6 +94,7 @@ class VideoPlayer extends Component {
 
 	render() {
 		const {
+			showOrginalVid,
 			color,
 			factor,
 			passes,
@@ -101,35 +107,48 @@ class VideoPlayer extends Component {
 
 		return (
 			<div className="VideoPlayer">
-				<Surface width={880} height={500} pixelRatio={1}>
-					<Bus ref="vid">
-						<Saturate
-							contrast={contrast}
-							saturation={saturation}
-							brightness={brightness}
-						>
-							<Colorify
-								colorScale={colorScales[color]}
+				{showOrginalVid ?
+					<iframe
+						title="Rose Hobart"
+						width="560"
+						height="315"
+						src="https://www.youtube.com/embed/pQxtZlQlTDA?rel=0"
+						frameBorder="0"
+						gesture="media"
+						allow="encrypted-media"
+						allowFullScreen
+					/>
+					:
+					<Surface width={880} height={500} pixelRatio={1}>
+						<Bus ref="vid">
+							<Saturate
+								contrast={contrast}
+								saturation={saturation}
+								brightness={brightness}
 							>
-								{redraw => (
-									<Video
-										onFrame={redraw}
-										autoPlay
-										loop
-										ref={(input) => { this.video = input; }}
-									>
-										<source type="video/mp4" src={videoMP4} />
-									</Video>
-								)}
-							</Colorify>
+								<Colorify
+									colorScale={colorScales[color]}
+								>
+									{redraw => (
+										<Video
+											onFrame={redraw}
+											autoPlay
+											loop
+											ref={(input) => { this.video = input; }}
+										>
+											<source type="video/mp4" src={videoMP4} />
+										</Video>
+									)}
+								</Colorify>
 
-						</Saturate>
-					</Bus>
-					<BlurV map={map} passes={passes} factor={factor}>
-						{// as a texture, we give a function that resolve the video ref
-							() => this.refs.vid}
-					</BlurV>
-				</Surface>
+							</Saturate>
+						</Bus>
+						<BlurV map={map} passes={passes} factor={factor}>
+							{// as a texture, we give a function that resolve the video ref
+								() => this.refs.vid}
+						</BlurV>
+					</Surface>
+				}
 
 				<VideoControls
 					color={color}

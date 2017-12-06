@@ -24,7 +24,10 @@ const Colorify = ({ children, colorScale, interpolation }) => (
 	<Node
 		shader={shaders.colorify}
 		uniformsOptions={{ colorScale: { interpolation } }}
-		uniforms={{ colorScale, children }}
+		uniforms={{
+			colorScale,
+			children,
+		}}
 	/>
 );
 

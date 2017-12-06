@@ -13,7 +13,7 @@ import '../../../assets/styles/main.scss';
 
 export const PrimaryLayout = () => {
 	return (
-		<div className="PrimaryLayout">
+		<main className="PrimaryLayout">
 			<Header />
 			<div className="content blue-grey lighten-5">
 				<Switch>
@@ -23,7 +23,7 @@ export const PrimaryLayout = () => {
 				</Switch>
 			</div>
 			<Footer />
-		</div>
+		</main>
 	);
 };
 

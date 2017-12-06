@@ -36,7 +36,7 @@ class VideoControls extends Component {
 	constructor() {
 		super();
 
-		this.controls = ['play', 'pause', 'mute', 'unmute', 'slow', 'fast'];
+		this.controls = ['play', 'pause', 'mute', 'unmute', 'slow', 'fast', 'original'];
 	}
 
 	render() {

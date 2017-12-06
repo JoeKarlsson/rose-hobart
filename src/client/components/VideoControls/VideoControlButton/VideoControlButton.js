@@ -35,6 +35,9 @@ class VideoControlButton extends Component {
 		case ('fast'):
 			icon = 'trending_up';
 			break;
+		case ('original'):
+			icon = 'camera';
+			break;
 		default:
 			icon = 'view_headline';
 
