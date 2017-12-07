@@ -30,9 +30,6 @@ describe('About Page', () => {
 			it('is rendered correctly', () => {
 				expect(wrapper).toHaveLength(1);
 			});
-			it('should render without throwing an error', () => {
-				expect(wrapper.text()).toEqual('About');
-			});
 			it('should be selectable by the class `ChatDrawer`', () => {
 				expect(wrapper.is('.About')).toBe(true);
 			});

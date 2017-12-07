@@ -1,10 +1,49 @@
+/*
+  eslint
+	max-len: 0
+*/
+
 import React from 'react';
 import './About.scss';
 
 const About = () => {
 	return (
 		<div className="About">
-      About
+			<p>
+				The first showing of Joseph Cornell’s short film Rose Hobart is the stuff of legend. Famously, the film’s 1936 premier ended with Salvador Dalí storming out, claiming that the film had been stolen directly from his subconscious (Pigott 5). Very little else is known about this original showing; Cornell would not show the film again for nearly thirty years. Currently, only one version of Rose Hobart continues to be circulated; this version comes from Cornell’s 1960s showings, leaving the performative details of the premier shrouded in mystery (Pigott 21).
+			</p>
+			<p>
+				Screenings of Rose Hobart were originally highly performative. In contrast to the currently available digital version which is “frozen” in time, several aspects of Cornell’s screenings were subject to change. First, the film was shown with a tinted filter. While the current version shows a deep blue tint being used, any number of colors could have been used in the other showings, with some evidence pointing to the use of a pink filter (Pigott 20). Second, the film was shown either at the standard 24 frames per second or 16 frames per second, also known as “silent speed” (Pigott 21). Today’s surviving version shows the film in the slightly slower “silent speed,” giving the short film a dreamier quality that is practically undetectable to the untrained eye. Lastly, due to the silence of the film itself, different music was paired with the film as it was shown. The version that remains today is paired with two jaunty tracks by Nestor Amaral and His Continentals, from their 1957 album Holiday in Brazil (Pigott 24). Because these songs were not released until 1957, it’s clear that different music was used in the original 1936 screening, and likely in other screenings as well. Unfortunately, there is no documentation of what that music might have been.
+			</p>
+			<p>
+				This collaborative digital humanities project is an exploration of the lack of performativity in the current version available of Joseph Cornell’s Rose Hobart. It is an attempt to bring the performative aspects of screening Rose Hobart back to the film by allowing viewers to change the soundtrack, filter, speed, and other options as they view the film. Due to the digital nature of this project, it is by no means an attempt to perfectly imitate Cornell’s original screenings. Rather, it is an attempt to “unfreeze” the currently available version of Rose Hobart from its place in time.
+			</p>
+			<p>
+				This project also emphasizes the digital nature of the film today. While there are physical copies of Rose Hobart available for viewing, the film is widely circulated online, which suggests that most viewers are accessing the film via the internet rather than through physical media. Due to the film’s transfer from physical to digital, signs of physical degradation of the film have been “frozen” or stopped in their tracks, bringing the film from the material film archive to the immaterial film archive (Baron 481). Jaimie Baron argues that both types of archive present viewers with a different experience of mediation: either bearing traces of the physical world or of digital technologies, both of which signal a relationship with the past (481). In order to simulate digital degradation, this project provides an option for viewers to blur and glitch the video, simulating the digital archival process that occurs when a digital video is damaged and continually copied.
+			</p>
+			<p>
+				Rose Hobart cannot be discussed without addressing its primary subject matter: the actress Rose Hobart herself. Due to the film’s nearly obsessive focus on a female body that has been rendered silent, the film lends itself to feminist critique. It seems plainly obvious, as Janet Harbord argues, that “Cornell’s film plays on the beauty and emotional intensity of the star, Rose Hobart, given shape through rhythmic repetition of certain sequences” (69). Thus, does the film ask its viewers to admire the physical beauty of Rose Hobart? Critic Jodi Hauptman writes that through his film, Cornell “forces Hobart’s body to act as a voice . . . Such a collapse of distance between feelings and expression, body and mind, is another indicator of [the hysterical body of the woman]” (qtd. in Lowenstein). Is Rose Hobart the subject of the film, or is her body the subject of the film? By presenting a project that not only recognizes the degradation of the filmic image but also emphasizes it, we ask our viewers to consider how this changes the representation of Hobart’s feminine beauty as well as how this changes the film as a whole.
+			</p>
+			<p>
+				Works Consulted
+			</p>
+			<p>
+				Barefoot, Guy. “Recycled Images: Rose Hobart, East of Borneo, and The Perils of Pauline.”
+				Adaptation, vol. 5, no. 2, 2011, pp. 152-168.
+				Baron, Jaimie. “The Experimental Film Remake and the Digital Archive Effect: A Movie by Jen
+				Proctor and Man with a Movie Camera: The Global Remake.” Framework, vol. 53, no. 2,
+				Fall 2012, pp. 467-490.
+				Frye, Brian L. “Rose Hobart.” Sense of Cinema, no. 17, 2001.
+				Harbord, Janet. “The Potency of Film Editing: Rose Hobart Stop Return.” Contemporary
+				Theatre Review, vol. 5, no. 1, 2015, pp. 68-72.
+				Lowenstein, Adam. “The Surrealism of the Starts: From Rose Hobart to Mrs. Rock Hudson.”
+				Dreaming of Cinema: Spectatorship, Surrealism, and the Age of Digital Media.
+				Columbia UP, 2015.
+				Pigott, Michael. “Found Footage.” Joseph Cornell Versus Cinema. London: Bloomsbury
+				Academic, 2013, pp. 9-44.
+				Rose Hobart. Directed by Joseph Cornell, 1936.
+				“Rose Hobart.” Monthly Film Bulletin, vol. 54, no. 646, 1987, p. 349.
+			</p>
 		</div>
 	);
 };
