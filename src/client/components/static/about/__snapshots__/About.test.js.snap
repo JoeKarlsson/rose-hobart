@@ -4,6 +4,9 @@ exports[`About Page rendering initial state match the snapshot 1`] = `
 <div
   className="About"
 >
+  <h1>
+    Supporting Statement
+  </h1>
   <p>
     The first showing of Joseph Cornell’s short film Rose Hobart is the stuff of legend. Famously, the film’s 1936 premier ended with Salvador Dalí storming out, claiming that the film had been stolen directly from his subconscious (Pigott 5). Very little else is known about this original showing; Cornell would not show the film again for nearly thirty years. Currently, only one version of Rose Hobart continues to be circulated; this version comes from Cornell’s 1960s showings, leaving the performative details of the premier shrouded in mystery (Pigott 21).
   </p>
@@ -23,7 +26,36 @@ exports[`About Page rendering initial state match the snapshot 1`] = `
     Works Consulted
   </p>
   <p>
-    Barefoot, Guy. “Recycled Images: Rose Hobart, East of Borneo, and The Perils of Pauline.” Adaptation, vol. 5, no. 2, 2011, pp. 152-168. Baron, Jaimie. “The Experimental Film Remake and the Digital Archive Effect: A Movie by Jen Proctor and Man with a Movie Camera: The Global Remake.” Framework, vol. 53, no. 2, Fall 2012, pp. 467-490. Frye, Brian L. “Rose Hobart.” Sense of Cinema, no. 17, 2001. Harbord, Janet. “The Potency of Film Editing: Rose Hobart Stop Return.” Contemporary Theatre Review, vol. 5, no. 1, 2015, pp. 68-72. Lowenstein, Adam. “The Surrealism of the Starts: From Rose Hobart to Mrs. Rock Hudson.” Dreaming of Cinema: Spectatorship, Surrealism, and the Age of Digital Media. Columbia UP, 2015. Pigott, Michael. “Found Footage.” Joseph Cornell Versus Cinema. London: Bloomsbury Academic, 2013, pp. 9-44. Rose Hobart. Directed by Joseph Cornell, 1936. “Rose Hobart.” Monthly Film Bulletin, vol. 54, no. 646, 1987, p. 349.
+    Barefoot, Guy. “Recycled Images: Rose Hobart, East of Borneo, and The Perils of Pauline.” 
+    <br />
+    Adaptation, vol. 5, no. 2, 2011, pp. 152-168. 
+    <br />
+    Baron, Jaimie. “The Experimental Film Remake and the Digital Archive Effect: A Movie by Jen 
+    <br />
+    Proctor and Man with a Movie Camera: The Global Remake.” Framework, vol. 53, no. 2, 
+    <br />
+    Fall 2012, pp. 467-490. 
+    <br />
+    Frye, Brian L. “Rose Hobart.” Sense of Cinema, no. 17, 2001. 
+    <br />
+    Harbord, Janet. “The Potency of Film Editing: Rose Hobart Stop Return.” Contemporary 
+    <br />
+    Theatre Review, vol. 5, no. 1, 2015, pp. 68-72. 
+    <br />
+    Lowenstein, Adam. “The Surrealism of the Starts: From Rose Hobart to Mrs. Rock Hudson.” 
+    <br />
+    Dreaming of Cinema: Spectatorship, Surrealism, and the Age of Digital Media. 
+    <br />
+    Columbia UP, 2015. 
+    <br />
+    Pigott, Michael. “Found Footage.” Joseph Cornell Versus Cinema. London: Bloomsbury 
+    <br />
+    Academic, 2013, pp. 9-44.
+    <br />
+    Rose Hobart. Directed by Joseph Cornell, 1936. 
+    <br />
+    “Rose Hobart.” Monthly Film Bulletin, vol. 54, no. 646, 1987, p. 349. 
+    <br />
   </p>
 </div>
 `;
