@@ -22,7 +22,9 @@
     "stats": "webpack --json > webpack.stats.json",
     "commit": "commit-wizard",
     "postinstall": "rimraf dist && cross-env NODE_ENV=production && webpack --config ./webpack.config.js --progress --profile --colors",
-    "runProd": "export NODE_ENV=production && export PORT=8081 && node src/server/server.js"
+    "runProd": "export NODE_ENV=production && export PORT=8081 && node src/server/server.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "keywords": [
     "react",
@@ -88,7 +90,8 @@
     "webpack": "3.8.x",
     "webpack-dev-middleware": "1.x.x",
     "webpack-dev-server": "2.9.x",
-    "webpack-hot-middleware": "2.x.x"
+    "webpack-hot-middleware": "2.x.x",
+    "snyk": "^1.61.2"
   },
   "config": {
     "pre-git": {
@@ -111,5 +114,6 @@
         "npm install --loglevel=error"
       ]
     }
-  }
+  },
+  "snyk": true
 }
