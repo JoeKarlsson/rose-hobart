@@ -91,7 +91,7 @@
     "webpack-dev-middleware": "1.x.x",
     "webpack-dev-server": "2.9.x",
     "webpack-hot-middleware": "2.x.x",
-    "snyk": "^1.61.2"
+    "snyk": "^1.69.7"
   },
   "config": {
     "pre-git": {
