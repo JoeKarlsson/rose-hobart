@@ -63,7 +63,7 @@
     "html-webpack-plugin": "2.x.x",
     "identity-obj-proxy": "3.0.x",
     "install": "^0.10.2",
-    "jest": "21.2.x",
+    "jest": "23.0.0",
     "ndarray": "^1.0.18",
     "node-sass": "4.x.x",
     "npm": "^5.5.1",
@@ -91,7 +91,7 @@
     "webpack-dev-middleware": "1.x.x",
     "webpack-dev-server": "2.9.x",
     "webpack-hot-middleware": "2.x.x",
-    "snyk": "^1.61.2"
+    "snyk": "^1.85.0"
   },
   "config": {
     "pre-git": {
