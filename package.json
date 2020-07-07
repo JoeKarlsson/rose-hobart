@@ -66,7 +66,7 @@
     "jest": "21.2.x",
     "ndarray": "^1.0.18",
     "node-sass": "4.x.x",
-    "npm": "^5.5.1",
+    "npm": "^6.14.6",
     "nyc": "11.x.x",
     "pre-git": "3.x.x",
     "prop-types": "15.6.x",
