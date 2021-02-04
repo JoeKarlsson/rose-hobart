@@ -56,7 +56,7 @@
     "eslint-plugin-react": "7.4.x",
     "express": "4.16.x",
     "extract-text-webpack-plugin": "3.0.x",
-    "favicons-webpack-plugin": "0.0.7",
+    "favicons-webpack-plugin": "5.0.0",
     "fetch-mock": "5.13.x",
     "gl-react": "3.13.x",
     "gl-react-dom": "3.13.x",
