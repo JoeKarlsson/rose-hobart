@@ -65,7 +65,7 @@
     "install": "^0.10.2",
     "jest": "21.2.x",
     "ndarray": "^1.0.18",
-    "node-sass": "4.x.x",
+    "node-sass": "5.0.0",
     "npm": "^5.5.1",
     "nyc": "11.x.x",
     "pre-git": "3.x.x",
