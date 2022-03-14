@@ -89,8 +89,8 @@
     "video-react": "0.8.x",
     "webpack": "3.8.x",
     "webpack-dev-middleware": "1.x.x",
-    "webpack-dev-server": "2.9.x",
-    "webpack-hot-middleware": "2.x.x",
+    "webpack-dev-server": "3.11.3",
+    "webpack-hot-middleware": "2.25.1",
     "snyk": "^1.61.2"
   },
   "config": {
