@@ -1,119 +1,42 @@
 {
   "name": "rose-hobart",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "engines": {
-    "node": "8.8.0"
-  },
+  "description": "A digital humanities project to explore the (lack of) performativity in Joseph Cornell's short film Rose Hobart",
+  "type": "module",
   "scripts": {
-    "start": "cross-env NODE_ENV=development node src/server/server.js",
-    "test": "cross-env NODE_ENV=test jest --coverage",
-    "coverage": "nyc report --temp-directory=coverage --reporter=text-lcov | coveralls",
-    "test:watch": "cross-env NODE_ENV=test jest --watch --silent",
-    "test:updateSnapshot": "jest --updateSnapshot",
-    "test:coverage": "jest --coverage",
-    "lint": "eslint src && npm run lint:css",
-    "lint:fix": "npm run lint -- --fix",
-    "lint:out": "npm run lint -- -f checkstyle -o coverage/checkstyle.xml",
-    "lint:css": "stylelint 'src/**/*.scss' --syntax scss",
-    "lint:css:fix": "stylelint 'src/**/*.scss' --syntax scss --fix",
-    "healthcheck": "npm run lint && npm run lint:css && npm run test:coverage",
-    "stats": "webpack --json > webpack.stats.json",
-    "commit": "commit-wizard",
-    "postinstall": "rimraf dist && cross-env NODE_ENV=production && webpack --config ./webpack.config.js --progress --profile --colors",
-    "runProd": "export NODE_ENV=production && export PORT=8081 && node src/server/server.js",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "prop-types": "^15.8.1",
+    "gl-react": "^3.15.0",
+    "gl-react-dom": "^3.15.0",
+    "video-react": "^0.16.0",
+    "ndarray": "^1.0.19",
+    "raf": "^3.4.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.1",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/jest-dom": "^6.4.2",
+    "jsdom": "^25.0.1",
+    "sass": "^1.77.8"
   },
   "keywords": [
     "react",
-    "redux",
-    "rose-hobart"
+    "digital-humanities",
+    "rose-hobart",
+    "video",
+    "interactive"
   ],
   "author": "Joe Karlson and Laurel Karlsson",
-  "license": "ISC",
-  "dependencies": {
-    "autoprefixer": "7.x.x",
-    "babel-core": "6.x.x",
-    "babel-jest": "21.x.x",
-    "babel-loader": "7.1.x",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "6.24.x",
-    "browserslist": "^2.8.0",
-    "core-js": "2.5.x",
-    "coveralls": "3.0.x",
-    "cross-env": "5.1.x",
-    "css-loader": "0.x.x",
-    "enzyme": "3.1.x",
-    "enzyme-adapter-react-16": "1.0.x",
-    "es6-promise": "4.1.x",
-    "eslint": "4.x.x",
-    "eslint-config-airbnb": "16.1.x",
-    "eslint-plugin-import": "2.8.x",
-    "eslint-plugin-jsx-a11y": "6.0.x",
-    "eslint-plugin-react": "7.4.x",
-    "express": "4.16.x",
-    "extract-text-webpack-plugin": "3.0.x",
-    "favicons-webpack-plugin": "0.0.7",
-    "fetch-mock": "5.13.x",
-    "gl-react": "3.13.x",
-    "gl-react-dom": "3.13.x",
-    "html-webpack-plugin": "2.x.x",
-    "identity-obj-proxy": "3.0.x",
-    "install": "^0.10.2",
-    "jest": "21.2.x",
-    "ndarray": "^1.0.18",
-    "node-sass": "4.x.x",
-    "npm": "^5.5.1",
-    "nyc": "11.x.x",
-    "pre-git": "3.x.x",
-    "prop-types": "15.6.x",
-    "raf": "3.4.x",
-    "react": "^16.2.0",
-    "react-addons-test-utils": "15.6.x",
-    "react-dom": "16.0.x",
-    "react-redux": "5.0.x",
-    "react-router": "4.2.x",
-    "react-router-dom": "4.2.x",
-    "react-scripts": "1.0.x",
-    "react-test-renderer": "^16.2.0",
-    "sass-loader": "6.0.x",
-    "stats-webpack-plugin": "0.6.x",
-    "style-loader": "0.19.x",
-    "stylelint": "8.2.x",
-    "stylelint-config-standard": "17.0.x",
-    "stylelint-scss": "2.1.x",
-    "stylelint-webpack-plugin": "0.9.x",
-    "video-react": "0.8.x",
-    "webpack": "3.8.x",
-    "webpack-dev-middleware": "1.x.x",
-    "webpack-dev-server": "2.9.x",
-    "webpack-hot-middleware": "2.x.x",
-    "snyk": "^1.61.2"
-  },
-  "config": {
-    "pre-git": {
-      "enabled": true,
-      "pre-commit": [
-        "npm run lint",
-        "npm run lint:css"
-      ],
-      "pre-push": [
-        "npm prune",
-        "npm install --loglevel=error",
-        "npm run healthcheck"
-      ],
-      "post-commit": [
-        "git status"
-      ],
-      "post-checkout": [],
-      "post-merge": [
-        "git fetch -p &",
-        "npm install --loglevel=error"
-      ]
-    }
-  },
-  "snyk": true
+  "license": "ISC"
 }

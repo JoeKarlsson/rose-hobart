@@ -6,7 +6,7 @@
 
 import ndarray from 'ndarray';
 
-module.exports = {
+export default {
 	heatmap: ndarray(new Float64Array([
 		1, 0, 0,
 		1, 0.6, 0,

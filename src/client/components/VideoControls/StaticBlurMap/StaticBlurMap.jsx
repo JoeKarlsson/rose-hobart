@@ -4,7 +4,7 @@
 */
 
 import React, { Component } from 'react';
-import ImagesPicker from './ImagesPicker/ImagesPicker';
+import ImagesPicker from './ImagesPicker/ImagesPicker.jsx';
 import images from '../../../helper/images';
 
 class StaticBlurMap extends Component {

@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class FloatSlider extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.state = {
-			value: 0,
+			value: props.value || 0,
 		};
 
 		this.onChange = this.onChange.bind(this);
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.value !== this.props.value) {
+			this.setState({ value: this.props.value });
+		}
 	}
 
 	onChange(e) {
@@ -56,6 +62,7 @@ FloatSlider.propTypes = {
 	min: PropTypes.number,
 	max: PropTypes.number,
 	step: PropTypes.number,
+	value: PropTypes.number,
 	handleChange: PropTypes.func.isRequired,
 };
 
