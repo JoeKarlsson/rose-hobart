@@ -4,8 +4,6 @@
 */
 
 import React, { useRef, useEffect, forwardRef } from 'react';
-import PropTypes from 'prop-types';
-import raf from 'raf';
 import videoMP4 from '../../assets/video/video.mp4';
 
 export { videoMP4 };
@@ -20,7 +18,7 @@ export const Video = forwardRef(({ onFrame, ...rest }, ref) => {
 
 	useEffect(() => {
 		const loop = () => {
-			rafRef.current = raf(loop);
+			rafRef.current = requestAnimationFrame(loop);
 			const video = videoRef.current;
 			if (!video) return;
 			const { currentTime } = video;
@@ -30,11 +28,11 @@ export const Video = forwardRef(({ onFrame, ...rest }, ref) => {
 				onFrame(currentTime);
 			}
 		};
-		rafRef.current = raf(loop);
+		rafRef.current = requestAnimationFrame(loop);
 
 		return () => {
 			if (rafRef.current) {
-				raf.cancel(rafRef.current);
+				cancelAnimationFrame(rafRef.current);
 			}
 		};
 	}, [onFrame]);
@@ -55,9 +53,7 @@ export const Video = forwardRef(({ onFrame, ...rest }, ref) => {
 	);
 });
 
-Video.propTypes = {
-	onFrame: PropTypes.func.isRequired,
-};
+// PropTypes removed for production optimization
 
 Video.displayName = 'Video';
 

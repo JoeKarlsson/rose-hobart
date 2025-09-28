@@ -1,10 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Bus } from 'gl-react';
 import { Surface } from 'gl-react-dom';
-import { BlurV } from './shaders/BlurShader';
 import SaturateShader from './shaders/SaturateShader';
-import ColorifyShader from './shaders/ColorifyShader';
-import DistortShader from './shaders/DistortShader';
 import { Video } from './Video';
 import videoMP4 from '../../assets/video/video.mp4';
 
@@ -21,6 +18,18 @@ const WebGLVideoPlayer = () => {
 		waveIntensity: 0,
 		timeOffset: 0
 	});
+	const [webglError, setWebglError] = useState(null);
+	const [webglSupported, setWebglSupported] = useState(true);
+
+	// Check WebGL support
+	React.useEffect(() => {
+		const canvas = document.createElement('canvas');
+		const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+		if (!gl) {
+			setWebglSupported(false);
+			setWebglError('WebGL is not supported in this browser');
+		}
+	}, []);
 
 	// Animation for time-based effects
 	React.useEffect(() => {
@@ -50,7 +59,7 @@ const WebGLVideoPlayer = () => {
 	};
 
 	const handleVideoControl = (action) => {
-		const video = videoRef.current?.refs?.video;
+		const video = videoRef.current?.refs?.video || videoRef.current;
 		if (!video) return;
 
 		switch (action) {
@@ -69,6 +78,9 @@ const WebGLVideoPlayer = () => {
 			case 'fast':
 				video.playbackRate = Math.min(3, video.playbackRate + 0.1);
 				break;
+			case 'original':
+				setSettings(prev => ({ ...prev, showOriginal: !prev.showOriginal }));
+				break;
 			default:
 				break;
 		}
@@ -78,55 +90,71 @@ const WebGLVideoPlayer = () => {
 		<div style={{ margin: '20px 0', textAlign: 'center' }}>
 			<h3>WebGL Video Player with Advanced Effects</h3>
 			
-			{settings.showOriginal ? (
-				<video
-					ref={videoRef}
-					width="800"
-					height="450"
-					controls
-					style={{ maxWidth: '100%', height: 'auto' }}
-				>
-					<source type="video/mp4" src={videoMP4} />
-					Your browser does not support the video tag.
-				</video>
+			{settings.showOriginal || !webglSupported ? (
+				<div>
+					<video
+						ref={videoRef}
+						width="800"
+						height="450"
+						controls
+						style={{ maxWidth: '100%', height: 'auto' }}
+					>
+						<source type="video/mp4" src={videoMP4} />
+						<source type="video/mp4" src="https://www.w3schools.com/html/mov_bbb.mp4" />
+						Your browser does not support the video tag.
+					</video>
+					{!webglSupported && (
+						<p style={{ margin: '10px 0', color: '#ff6b6b', fontSize: '14px' }}>
+							⚠️ WebGL is not supported in this browser. Showing original video.
+						</p>
+					)}
+				</div>
+			) : webglError ? (
+				<div style={{ border: '2px solid #ff6b6b', padding: '20px', borderRadius: '8px', backgroundColor: '#ffe6e6' }}>
+					<h4 style={{ color: '#d63031', margin: '0 0 10px 0' }}>WebGL Error</h4>
+					<p style={{ color: '#666', margin: '0 0 10px 0' }}>{webglError}</p>
+					<button 
+						onClick={() => setWebglError(null)}
+						style={{ padding: '8px 16px', backgroundColor: '#4ecdc4', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+					>
+						Try Again
+					</button>
+				</div>
 			) : (
-				<Surface width={800} height={450} pixelRatio={1}>
-					<Bus ref={busRef}>
-						<DistortShader
-							distortion={settings.distortion}
-							waveIntensity={settings.waveIntensity}
-							timeOffset={settings.timeOffset}
-						>
+				<div style={{ border: '2px solid #4ecdc4', padding: '10px', borderRadius: '8px' }}>
+					<Surface 
+						width={800} 
+						height={450} 
+						pixelRatio={1}
+						onError={(error) => {
+							console.error('WebGL Error:', error);
+							setWebglError(error.message || 'WebGL rendering failed');
+						}}
+					>
+						<Bus ref={busRef}>
 							<SaturateShader
 								contrast={settings.contrast}
 								saturation={settings.saturation}
 								brightness={settings.brightness}
 							>
-								<ColorifyShader
-									colorScale={colorScales[settings.color]}
-								>
-									{redraw => (
-										<Video
-											onFrame={redraw}
-											autoPlay
-											loop
-											ref={videoRef}
-										>
-											<source type="video/mp4" src={videoMP4} />
-										</Video>
-									)}
-								</ColorifyShader>
+								{redraw => (
+									<Video
+										onFrame={redraw}
+										autoPlay
+										loop
+										ref={videoRef}
+									>
+										<source type="video/mp4" src={videoMP4} />
+										<source type="video/mp4" src="https://www.w3schools.com/html/mov_bbb.mp4" />
+									</Video>
+								)}
 							</SaturateShader>
-						</DistortShader>
-					</Bus>
-					<BlurV 
-						map={null} 
-						passes={settings.blurPasses} 
-						factor={settings.blurFactor}
-					>
-						{() => busRef.current}
-					</BlurV>
-				</Surface>
+						</Bus>
+					</Surface>
+					<p style={{ margin: '10px 0', fontSize: '14px', color: '#666' }}>
+						WebGL Shader Active - Adjust sliders below to see effects
+					</p>
+				</div>
 			)}
 
 			{/* WebGL Controls */}
@@ -141,7 +169,7 @@ const WebGLVideoPlayer = () => {
 					<button onClick={() => handleVideoControl('slow')} style={{ margin: '5px' }}>🐌 Slow</button>
 					<button onClick={() => handleVideoControl('fast')} style={{ margin: '5px' }}>🚀 Fast</button>
 					<button 
-						onClick={() => handleSettingChange('showOriginal', !settings.showOriginal)}
+						onClick={() => handleVideoControl('original')}
 						style={{ margin: '5px', backgroundColor: settings.showOriginal ? '#ff6b6b' : '#4ecdc4' }}
 					>
 						{settings.showOriginal ? '🎨 Show Effects' : '📺 Show Original'}

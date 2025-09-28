@@ -7,27 +7,28 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "serve": "node server.js",
+    "start": "npm run build && npm run serve",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "clean": "rm -rf dist",
+    "rebuild": "npm run clean && npm run build"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2",
-    "prop-types": "^15.8.1",
-    "gl-react": "^3.15.0",
-    "gl-react-dom": "^3.15.0",
-    "video-react": "^0.16.0",
-    "ndarray": "^1.0.19",
-    "raf": "^3.4.1"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.3",
+    "gl-react": "^5.2.0",
+    "gl-react-dom": "^5.2.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.4.10",
-    "vitest": "^2.1.1",
+    "@vitejs/plugin-react": "^5.0.4",
+    "vite": "^7.1.7",
+    "vitest": "^3.2.4",
     "@testing-library/react": "^16.0.0",
     "@testing-library/jest-dom": "^6.4.2",
-    "jsdom": "^25.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "jsdom": "^27.0.0",
     "sass": "^1.77.8"
   },
   "keywords": [

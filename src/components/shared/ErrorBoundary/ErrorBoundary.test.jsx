@@ -47,8 +47,8 @@ describe('Error Boundary', () => {
 
 		it('should render error message when child component throws error', () => {
 			// Mock console.error to avoid error output in test
-			const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-
+			const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+			
 			render(
 				<ErrorBoundary>
 					<BuggyComponent />
@@ -56,7 +56,7 @@ describe('Error Boundary', () => {
 			);
 
 			expect(screen.getByText('Something went wrong.')).toBeInTheDocument();
-
+			
 			consoleSpy.mockRestore();
 		});
 	});
