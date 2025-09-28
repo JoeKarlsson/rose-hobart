@@ -1,5 +1,27 @@
 # Dependabot configuration
-# This file disables Dependabot alerts for this repository
+# This file enables dependency updates while minimizing security alert noise
 
 version: 2
-updates: []
+updates:
+  # Enable package updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    # Limit concurrent PRs to avoid overwhelming
+    open-pull-requests-limit: 3
+    # Group minor and patch updates together to reduce noise
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    # Only update to newer versions, not security patches
+    reviewers:
+      - "JoeKarlsson"
+    assignees:
+      - "JoeKarlsson"
