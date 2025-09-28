@@ -1,6 +1,8 @@
 import React, { useState, useRef, useMemo, useCallback } from 'react';
-import videoMP4 from '../../../assets/video/video.mp4';
 import WebGLVideoPlayer from '../../WebGLVideoPlayer/WebGLVideoPlayer';
+
+// Use direct path reference for video
+const videoMP4 = './assets/video-Bk2zJxfg.mp4';
 
 const Home = () => {
 	console.log('Home component rendering...');
