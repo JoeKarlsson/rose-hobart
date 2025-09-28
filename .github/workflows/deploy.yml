@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 # Disabled due to environment protection rules
 # Use 'npm run deploy' for manual deployment instead
 on:
-  workflow_dispatch:  # Only run manually if needed
+  workflow_dispatch: # Only run manually if needed
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
