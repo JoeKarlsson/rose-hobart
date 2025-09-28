@@ -37,7 +37,7 @@ export default defineConfig({
         chunkSizeWarningLimit: 1000
     },
     assetsInclude: ['**/*.mp4', '**/*.mp3', '**/*.woff', '**/*.woff2'],
-    base: './',
+    base: process.env.NODE_ENV === 'production' ? '/rose-hobart/' : './',
     // Optimize dependencies
     optimizeDeps: {
         include: ['react', 'react-dom', 'react-router-dom']
