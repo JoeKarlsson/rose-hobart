@@ -1,0 +1,5 @@
+# Dependabot configuration
+# This file disables Dependabot alerts for this repository
+
+version: 2
+updates: []
