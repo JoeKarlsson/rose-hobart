@@ -1,4 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
+
+// Import video file using Vite's asset handling
 import videoMP4 from '../../assets/video/video.mp4';
 
 const WebGLVideoPlayer = () => {
@@ -72,6 +74,9 @@ const WebGLVideoPlayer = () => {
 					width="800"
 					height="450"
 					controls
+					preload="metadata"
+					muted
+					playsInline
 					style={{ 
 						maxWidth: '100%', 
 						height: 'auto',

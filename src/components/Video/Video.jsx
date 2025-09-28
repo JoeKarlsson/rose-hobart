@@ -4,6 +4,8 @@
 */
 
 import React, { useRef, useEffect, forwardRef } from 'react';
+
+// Import video file using Vite's asset handling
 import videoMP4 from '../../assets/video/video.mp4';
 
 export { videoMP4 };
