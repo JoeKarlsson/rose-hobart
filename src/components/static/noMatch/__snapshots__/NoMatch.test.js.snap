@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`NoMatch Page rendering initial state match the snapshot 1`] = `
-<div
-  className="NoMatch"
->
-  No Page Found
-</div>
-`;

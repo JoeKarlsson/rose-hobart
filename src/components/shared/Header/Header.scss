@@ -1,3 +1,196 @@
-.header-logo {
-	padding-left: 2% !important;
+// Dark Theater Header Styles
+.art-deco-header {
+	position: relative;
+	z-index: 15;
+	background: #000000; // Pure black theater header
+	box-shadow: 
+		0 4px 20px rgba(0,0,0,0.8),
+		inset 0 1px 0 rgba(220, 20, 60, 0.3); // Red accent instead of gold
+	margin: 0;
+	padding: 0;
+	
+	// Geometric Deco Pattern Borders
+	.deco-border-top,
+	.deco-border-bottom {
+		height: 20px;
+		background: linear-gradient(90deg, 
+			var(--primary-gold) 0%, 
+			var(--bronze-accent) 25%, 
+			var(--primary-gold) 50%, 
+			var(--bronze-accent) 75%, 
+			var(--primary-gold) 100%);
+		position: relative;
+		overflow: hidden;
+		
+		.geometric-pattern {
+			height: 100%;
+			background-image: 
+				repeating-linear-gradient(45deg, transparent 0px, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px),
+				repeating-linear-gradient(-45deg, transparent 0px, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px);
+			animation: patternShift 10s linear infinite;
+		}
+	}
+	
+	.deco-border-bottom {
+		background: linear-gradient(90deg, 
+			var(--bronze-accent) 0%, 
+			var(--primary-gold) 25%, 
+			var(--bronze-accent) 50%, 
+			var(--primary-gold) 75%, 
+			var(--bronze-accent) 100%);
+	}
+	
+	// Navigation
+	.art-deco-nav {
+		position: relative;
+		padding: 20px 0;
+		
+		.nav-wrapper {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: relative;
+		}
+		
+		// Main Brand Logo - Theater Marquee
+		.brand-logo {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			text-decoration: none;
+			color: #FFD700; // Gold marquee color
+			text-shadow: 
+				0 0 10px #FFD700,
+				0 0 20px #FFA500,
+				0 0 30px #FF4500,
+				2px 2px 4px rgba(0,0,0,0.9);
+			transition: all 0.3s ease;
+			position: relative;
+			background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+			padding: 20px 40px;
+			border: 3px solid #FFD700;
+			border-radius: 8px;
+			box-shadow: 
+				0 0 20px rgba(255, 215, 0, 0.3),
+				inset 0 0 20px rgba(0,0,0,0.5);
+			
+			.title-text {
+				font-size: 3.5rem;
+				font-weight: 700;
+				line-height: 1;
+				margin-bottom: 16px;
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+				font-family: 'Oswald', sans-serif;
+			}
+			
+			.subtitle-text {
+				font-size: 1.4rem;
+				font-style: italic;
+				color: #FFA500;
+				letter-spacing: 0.1em;
+				font-family: 'Playfair Display', serif;
+			}
+			
+			&:hover {
+				transform: scale(1.02);
+				text-shadow: 
+					0 0 15px #FFD700,
+					0 0 25px #FFA500,
+					0 0 35px #FF4500,
+					0 0 45px #FF0000,
+					2px 2px 4px rgba(0,0,0,0.9);
+				box-shadow: 
+					0 0 30px rgba(255, 215, 0, 0.5),
+					inset 0 0 20px rgba(0,0,0,0.7);
+			}
+		}
+		
+		// Navigation Menu
+		.nav-menu {
+			position: absolute;
+			right: 40px;
+			top: 50%;
+			transform: translateY(-50%);
+			display: flex;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			gap: 20px;
+			
+			li {
+				margin: 0;
+			}
+			
+			.nav-link {
+				text-decoration: none;
+				transition: all 0.3s ease;
+				position: relative;
+				
+				&:hover {
+					transform: translateY(-2px);
+				}
+			}
+		}
+		
+	}
+}
+
+// Art Deco Animations
+@keyframes patternShift {
+	0% { transform: translateX(0); }
+	100% { transform: translateX(20px); }
+}
+
+
+// Mobile Responsive Design
+@media (max-width: 768px) {
+	.art-deco-header {
+		.art-deco-nav {
+			.nav-wrapper {
+				padding: 0 20px;
+				flex-direction: column;
+				gap: 20px;
+			}
+			
+			.brand-logo {
+				padding: 15px 30px;
+				
+				.title-text {
+					font-size: 2.5rem;
+				}
+				
+				.subtitle-text {
+					font-size: 1rem;
+				}
+			}
+			
+			.nav-menu {
+				position: static;
+				transform: none;
+				justify-content: center;
+			}
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.art-deco-header {
+		.art-deco-nav {
+			.brand-logo {
+				padding: 12px 25px;
+				
+				.title-text {
+					font-size: 2rem;
+				}
+				
+				.subtitle-text {
+					font-size: 0.9rem;
+				}
+			}
+		}
+	}
 }

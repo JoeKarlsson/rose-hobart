@@ -9,6 +9,8 @@
 [![WebGL](https://img.shields.io/badge/WebGL-Enabled-orange?logo=webgl&logoColor=white)](https://webgl.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
+![Image](https://github.com/user-attachments/assets/f451896e-f174-4539-ada4-9ec9a3ef83f1)
+
 > An interactive digital humanities project exploring the (lack of) performativity in Joseph Cornell's short film *Rose Hobart* through real-time video manipulation and WebGL effects.
 
 ## 🎬 Introduction

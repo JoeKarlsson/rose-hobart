@@ -12,24 +12,29 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "clean": "rm -rf dist",
-    "rebuild": "npm run clean && npm run build"
+    "rebuild": "npm run clean && npm run build",
+    "deploy": "npm run build && gh-pages -d dist",
+    "deploy:preview": "npm run build && gh-pages -d dist --branch preview",
+    "deploy:setup": "gh-pages -d dist --add",
+    "deploy:vite": "vite build && gh-pages -d dist"
   },
   "dependencies": {
+    "prop-types": "^15.8.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.9.3",
-    "gl-react": "^5.2.0",
-    "gl-react-dom": "^5.2.1"
+    "react-router-dom": "^7.9.3"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^5.0.4",
-    "vite": "^7.1.7",
-    "vitest": "^3.2.4",
-    "@testing-library/react": "^16.0.0",
     "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
+    "@vitejs/plugin-react": "^5.0.4",
+    "gh-pages": "^6.1.1",
     "jsdom": "^27.0.0",
-    "sass": "^1.77.8"
+    "sass": "^1.77.8",
+    "vite": "^7.1.7",
+    "vite-plugin-gh-pages": "^0.2.0",
+    "vitest": "^3.2.4"
   },
   "keywords": [
     "react",
@@ -39,5 +44,17 @@
     "interactive"
   ],
   "author": "Joe Karlson and Laurel Karlsson",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoeKarlsson/rose-hobart.git"
+  },
+  "homepage": "https://joeKarlsson.github.io/rose-hobart",
+  "bugs": {
+    "url": "https://github.com/JoeKarlsson/rose-hobart/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
 }

@@ -1,3 +1,274 @@
+// Dark Theater Video Controls - Subtle Dark Theme
+.VideoControls,
+.VideoControls *,
+.VideoControls .row,
+.VideoControls .col,
+.VideoControls form,
+.VideoControls div {
+	background: transparent !important;
+	color: #cccccc !important;
+}
+
+// Target the main container div specifically
 .VideoControls {
-	padding-top: 4%;
+	padding: 20px !important;
+	background: #000000 !important;
+	border: 1px solid #333333 !important;
+	border-radius: 8px !important;
+	margin: 20px 0 !important;
+	box-shadow: 
+		0 2px 8px rgba(0,0,0,0.3),
+		inset 0 1px 0 rgba(255,255,255,0.05) !important;
+	color: #cccccc !important;
+	
+	// Form styling
+	form {
+		background: transparent !important;
+		color: #ffffff !important;
+		
+		.row {
+			margin-bottom: 20px !important;
+			background: transparent !important;
+			
+			&:last-child {
+				margin-bottom: 0 !important;
+			}
+		}
+	}
+	
+	// Override Materialize grid classes
+	.row {
+		background: #000000 !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		padding: 15px !important;
+		border-radius: 6px !important;
+		border: 1px solid #333333 !important;
+	}
+	
+	.col {
+		background: transparent !important;
+	}
+	
+	.col.s12 {
+		background: transparent !important;
+	}
+	
+	// Target the specific div structure
+	> .row {
+		background: #000000 !important;
+		border: 1px solid #333333 !important;
+		border-radius: 6px !important;
+		padding: 15px !important;
+		margin-bottom: 15px !important;
+	}
+	
+	// Labels - Subtle text
+	label {
+		color: #cccccc !important;
+		font-family: 'Oswald', sans-serif;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+		margin-bottom: 10px;
+		display: block;
+		
+		strong {
+			color: #ffffff;
+			text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+		}
+	}
+	
+	// Control buttons container
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 15px;
+		align-items: center;
+		margin-bottom: 15px;
+		
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+	
+	// Individual control sections
+	> form > .row > div {
+		background: rgba(0,0,0,0.2);
+		padding: 15px;
+		border-radius: 6px;
+		border: 1px solid #333333;
+		flex: 1;
+		min-width: 200px;
+		
+		&:hover {
+			background: rgba(0,0,0,0.4);
+			border-color: #555555;
+		}
+	}
+	
+	// Subtle dark buttons
+	.btn {
+		background: #333333 !important;
+		color: #ffffff !important;
+		border: 1px solid #555555 !important;
+		border-radius: 6px !important;
+		padding: 10px 20px !important;
+		font-family: 'Oswald', sans-serif !important;
+		font-weight: 500 !important;
+		text-transform: uppercase !important;
+		letter-spacing: 0.05em !important;
+		box-shadow: 
+			0 2px 4px rgba(0,0,0,0.3),
+			inset 0 1px 0 rgba(255,255,255,0.1) !important;
+		transition: all 0.3s ease !important;
+		margin: 5px !important;
+		
+		&:hover {
+			background: #444444 !important;
+			box-shadow: 
+				0 4px 8px rgba(0,0,0,0.4),
+				0 0 10px rgba(255, 255, 255, 0.1),
+				inset 0 1px 0 rgba(255,255,255,0.2) !important;
+			transform: translateY(-1px) scale(1.02) !important;
+		}
+		
+		&:active {
+			transform: translateY(0) scale(1.01) !important;
+		}
+		
+		.material-icons {
+			color: #ffffff !important;
+			font-size: 18px !important;
+		}
+	}
+	
+	// Subtle dark sliders
+	input[type="range"] {
+		-webkit-appearance: none;
+		appearance: none;
+		height: 8px;
+		background: #333333;
+		border-radius: 4px;
+		outline: none;
+		border: 1px solid #555555;
+		box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+		
+		&::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 20px;
+			height: 20px;
+			background: #666666;
+			border-radius: 50%;
+			border: 2px solid #333333;
+			box-shadow: 
+				0 0 5px rgba(255, 255, 255, 0.1),
+				0 2px 4px rgba(0,0,0,0.3);
+			cursor: pointer;
+			transition: all 0.3s ease;
+			
+			&:hover {
+				background: #777777;
+				box-shadow: 
+					0 0 8px rgba(255, 255, 255, 0.2),
+					0 4px 8px rgba(0,0,0,0.4);
+				transform: scale(1.05);
+			}
+		}
+		
+		&::-moz-range-thumb {
+			width: 20px;
+			height: 20px;
+			background: #666666;
+			border-radius: 50%;
+			border: 2px solid #333333;
+			box-shadow: 
+				0 0 5px rgba(255, 255, 255, 0.1),
+				0 2px 4px rgba(0,0,0,0.3);
+			cursor: pointer;
+			transition: all 0.3s ease;
+			
+			&:hover {
+				background: #777777;
+				box-shadow: 
+					0 0 8px rgba(255, 255, 255, 0.2),
+					0 4px 8px rgba(0,0,0,0.4);
+				transform: scale(1.05);
+			}
+		}
+	}
+	
+	// Selector styling
+	select {
+		background: #000000 !important;
+		color: #cccccc !important;
+		border: 1px solid #555555 !important;
+		border-radius: 6px !important;
+		padding: 10px 15px !important;
+		font-family: 'Oswald', sans-serif !important;
+		font-weight: 500 !important;
+		text-transform: uppercase !important;
+		letter-spacing: 0.05em !important;
+		box-shadow: 
+			0 0 5px rgba(0, 0, 0, 0.3),
+			inset 0 0 10px rgba(0,0,0,0.5) !important;
+		
+		&:focus {
+			outline: none !important;
+			box-shadow: 
+				0 0 8px rgba(255, 255, 255, 0.1),
+				inset 0 0 10px rgba(0,0,0,0.7) !important;
+		}
+		
+		option {
+			background: #000000 !important;
+			color: #cccccc !important;
+		}
+	}
+	
+	// Override any Materialize input styling
+	input, textarea, select {
+		background: #000000 !important;
+		color: #cccccc !important;
+		border: 1px solid #555555 !important;
+	}
+	
+	// Override any Materialize card or panel styling
+	.card, .card-panel {
+		background: transparent !important;
+		color: #cccccc !important;
+	}
+	
+	// Force dark theme on all child elements
+	* {
+		color: #cccccc !important;
+	}
+	
+	// Override any white backgrounds
+	div, span, p, label, strong {
+		background: transparent !important;
+		color: #cccccc !important;
+	}
+	
+	// Force dark background on all divs within VideoControls
+	div {
+		background: #000000 !important;
+		color: #cccccc !important;
+	}
+	
+	// Override any Materialize white backgrounds
+	.row, .col, .card, .card-panel, .input-field, .select-wrapper {
+		background: #000000 !important;
+		color: #cccccc !important;
+	}
+}
+
+// Additional global override for VideoControls container
+.VideoControls div[class*="row"],
+.VideoControls div[class*="col"],
+.VideoControls div[class*="card"] {
+	background: #000000 !important;
+	color: #cccccc !important;
 }

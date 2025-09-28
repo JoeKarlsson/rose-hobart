@@ -1,8 +1,213 @@
-.footer {
-	padding-top: 1%;
-	padding-bottom: 1%;
+// Dark Theater Footer Styles
+.art-deco-footer {
+	position: relative;
+	z-index: 15;
+	background: #000000; // Pure black theater footer
+	box-shadow: 
+		0 -4px 20px rgba(0,0,0,0.8),
+		inset 0 1px 0 rgba(220, 20, 60, 0.3); // Red accent instead of gold
+	
+	// Geometric Deco Pattern Borders
+	.deco-border-top,
+	.deco-border-bottom {
+		height: 20px;
+		background: linear-gradient(90deg, 
+			var(--bronze-accent) 0%, 
+			var(--primary-gold) 25%, 
+			var(--bronze-accent) 50%, 
+			var(--primary-gold) 75%, 
+			var(--bronze-accent) 100%);
+		position: relative;
+		overflow: hidden;
+		
+		.geometric-pattern {
+			height: 100%;
+			background-image: 
+				repeating-linear-gradient(45deg, transparent 0px, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px),
+				repeating-linear-gradient(-45deg, transparent 0px, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px);
+			animation: patternShift 10s linear infinite reverse;
+		}
+	}
+	
+	.deco-border-bottom {
+		background: linear-gradient(90deg, 
+			var(--primary-gold) 0%, 
+			var(--bronze-accent) 25%, 
+			var(--primary-gold) 50%, 
+			var(--bronze-accent) 75%, 
+			var(--primary-gold) 100%);
+	}
+	
+	// Footer Content
+	.footer-content {
+		padding: 30px 0;
+		
+		.footer-wrapper {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 40px;
+			position: relative;
+		}
+		
+		// Navigation Links
+		.footer-navigation {
+			display: flex;
+			justify-content: center;
+			gap: 30px;
+			margin-bottom: 20px;
+			position: relative;
+			z-index: 2;
+			
+			.footer-link {
+				color: #FFD700;
+				text-decoration: none;
+				font-size: 1rem;
+				font-weight: 500;
+				transition: all 0.3s ease;
+				position: relative;
+				padding: 8px 16px;
+				border: 1px solid transparent;
+				border-radius: 4px;
+				
+				&:hover {
+					color: #FF4500;
+					text-shadow: 
+						0 0 10px #FFD700,
+						0 0 15px #FF4500,
+						1px 1px 2px rgba(0,0,0,0.8);
+					border-color: #FFD700;
+					background: rgba(255, 215, 0, 0.1);
+				}
+				
+				&::after {
+					content: '';
+					position: absolute;
+					bottom: 2px;
+					left: 50%;
+					transform: translateX(-50%);
+					width: 0;
+					height: 2px;
+					background: #FFD700;
+					transition: width 0.3s ease;
+				}
+				
+				&:hover::after {
+					width: 80%;
+				}
+			}
+		}
+		
+		// Footer Text
+		.footer-text {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			position: relative;
+			z-index: 2;
+			
+			.copyright-section,
+			.credits-section {
+				flex: 1;
+			}
+			
+			.copyright-text {
+				color: #ffffff;
+				font-size: 0.9rem;
+				margin: 0;
+				text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+			}
+			
+			.credits-text {
+				color: #DC143C;
+				font-size: 0.9rem;
+				margin: 0;
+				text-align: right;
+				text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+				
+				.credit-link {
+					color: #FFD700; // Gold for links
+					text-decoration: none;
+					transition: all 0.3s ease;
+					position: relative;
+					
+					&:hover {
+						color: #FF4500;
+						text-shadow: 
+							0 0 10px #FFD700,
+							0 0 15px #FF4500,
+							1px 1px 2px rgba(0,0,0,0.8);
+					}
+					
+					&::after {
+						content: '';
+						position: absolute;
+						bottom: -2px;
+						left: 0;
+						width: 0;
+						height: 1px;
+						background: #FFD700;
+						transition: width 0.3s ease;
+					}
+					
+					&:hover::after {
+						width: 100%;
+					}
+				}
+			}
+		}
+	}
+}
 
-	.footer_content {
-		text-align: center;
+// Mobile Responsive Design
+@media (max-width: 768px) {
+	.art-deco-footer {
+		.footer-content {
+			.footer-wrapper {
+				padding: 0 20px;
+			}
+			
+			.footer-navigation {
+				flex-direction: column;
+				gap: 15px;
+				align-items: center;
+				
+				.footer-link {
+					font-size: 0.9rem;
+					padding: 6px 12px;
+				}
+			}
+			
+			.footer-text {
+				flex-direction: column;
+				gap: 15px;
+				text-align: center;
+				
+				.credits-text {
+					text-align: center;
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.art-deco-footer {
+		.footer-content {
+			padding: 20px 0;
+			
+			.footer-navigation {
+				.footer-link {
+					font-size: 0.8rem;
+					padding: 4px 8px;
+				}
+			}
+			
+			.footer-text {
+				.copyright-text,
+				.credits-text {
+					font-size: 0.8rem;
+				}
+			}
+		}
 	}
 }

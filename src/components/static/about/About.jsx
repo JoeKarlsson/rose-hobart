@@ -9,15 +9,16 @@ import './About.scss';
 const About = () => {
 	return (
 		<div className="About">
-			<h1>Supporting Statement</h1>
-			<p>
-				The first showing of Joseph Cornell’s short film Rose Hobart is the stuff of legend.
-				Famously, the film’s 1936 premier ended with Salvador Dalí storming out, claiming that the film
-				had been stolen directly from his subconscious (Pigott 5). Very little else is known about this
-				original showing; Cornell would not show the film again for nearly thirty years. Currently, only
-				one version of Rose Hobart continues to be circulated; this version comes from Cornell’s 1960s
-				showings, leaving the performative details of the premier shrouded in mystery (Pigott 21).
-			</p>
+			<div className="about-content">
+				<h1>Supporting Statement</h1>
+				<p>
+					The first showing of Joseph Cornell's short film Rose Hobart is the stuff of legend.
+					Famously, the film's 1936 premier ended with Salvador Dalí storming out, claiming that the film
+					had been stolen directly from his subconscious (Pigott 5). Very little else is known about this
+					original showing; Cornell would not show the film again for nearly thirty years. Currently, only
+					one version of Rose Hobart continues to be circulated; this version comes from Cornell's 1960s
+					showings, leaving the performative details of the premier shrouded in mystery (Pigott 21).
+				</p>
 			<p>
 				Screenings of Rose Hobart were originally highly performative. In contrast to the
 				currently available digital version which is “frozen” in time, several aspects of Cornell’s
@@ -96,6 +97,7 @@ const About = () => {
 				Rose Hobart. Directed by Joseph Cornell, 1936. <br />
 				“Rose Hobart.” Monthly Film Bulletin, vol. 54, no. 646, 1987, p. 349. <br />
 			</p>
+			</div>
 		</div>
 	);
 };

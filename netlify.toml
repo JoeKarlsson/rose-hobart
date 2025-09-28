@@ -1,0 +1,113 @@
+[build]
+# Build command
+command = "npm run build"
+
+# Directory to publish
+publish = "dist"
+
+# Functions directory (if using Netlify Functions)
+functions = "netlify/functions"
+
+[build.environment]
+# Node.js version
+NODE_VERSION = "18"
+
+# NPM version
+NPM_VERSION = "9"
+
+# Redirect rules for SPA routing
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
+
+# Headers for security and performance
+[[headers]]
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-XSS-Protection = "1; mode=block"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Cache static assets
+[[headers]]
+for = "/assets/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache video files
+[[headers]]
+for = "*.mp4"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache audio files
+[[headers]]
+for = "*.mp3"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache font files
+[[headers]]
+for = "*.woff*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache images
+[[headers]]
+for = "*.png"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "*.jpg"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "*.jpeg"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "*.svg"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache CSS and JS
+[[headers]]
+for = "*.css"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "*.js"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+# Form processing (if needed)
+[build.processing]
+skip_processing = false
+
+[build.processing.css]
+bundle = true
+minify = true
+
+[build.processing.js]
+bundle = true
+minify = true
+
+[build.processing.html]
+pretty_urls = true
+
+# Branch-specific builds
+[context.production]
+command = "npm run build"
+
+[context.deploy-preview]
+command = "npm run build"
+
+[context.branch-deploy]
+command = "npm run build"

@@ -1,8 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { ghPages } from 'vite-plugin-gh-pages'
 
 export default defineConfig({
-    plugins: [react()],
+    plugins: [
+        react(),
+        ghPages({
+            branch: 'gh-pages',
+            dir: 'dist'
+        })
+    ],
     define: {
         global: 'globalThis',
     },
@@ -18,8 +25,7 @@ export default defineConfig({
         rollupOptions: {
             output: {
                 manualChunks: {
-                    vendor: ['react', 'react-dom', 'react-router-dom'],
-                    gl: ['gl-react', 'gl-react-dom']
+                    vendor: ['react', 'react-dom', 'react-router-dom']
                 },
                 chunkFileNames: 'assets/[name]-[hash].js',
                 entryFileNames: 'assets/[name]-[hash].js',
@@ -34,6 +40,6 @@ export default defineConfig({
     base: './',
     // Optimize dependencies
     optimizeDeps: {
-        include: ['react', 'react-dom', 'react-router-dom', 'gl-react', 'gl-react-dom']
+        include: ['react', 'react-dom', 'react-router-dom']
     }
 })

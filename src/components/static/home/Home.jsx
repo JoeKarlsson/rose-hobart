@@ -82,47 +82,10 @@ const Home = () => {
 	return (
 		<div className="Home">
 			<div className="container">
-				<h1 className="center-align">Rose Hobart - Digital Humanities Project</h1>
-				<p className="center-align flow-text">
-					An interactive exploration of Joseph Cornell's short film with real-time video filters and effects.
-				</p>
-
-				{/* Tab Navigation */}
-				<div style={{ margin: '20px 0', textAlign: 'center' }}>
-					<div style={{ display: 'inline-block', border: '1px solid #ccc', borderRadius: '8px', overflow: 'hidden' }}>
-						<button
-							onClick={() => setActiveTab('css')}
-							style={{
-								padding: '12px 24px',
-								border: 'none',
-								backgroundColor: activeTab === 'css' ? '#4ecdc4' : '#f5f5f5',
-								color: activeTab === 'css' ? 'white' : 'black',
-								cursor: 'pointer',
-								fontSize: '16px'
-							}}
-						>
-							🎨 CSS Effects
-						</button>
-						<button
-							onClick={() => setActiveTab('webgl')}
-							style={{
-								padding: '12px 24px',
-								border: 'none',
-								backgroundColor: activeTab === 'webgl' ? '#4ecdc4' : '#f5f5f5',
-								color: activeTab === 'webgl' ? 'white' : 'black',
-								cursor: 'pointer',
-								fontSize: '16px'
-							}}
-						>
-							🚀 WebGL Shaders
-						</button>
-					</div>
-				</div>
 
 				{/* CSS Video Player */}
 				{activeTab === 'css' && (
 					<div style={{ margin: '20px 0', textAlign: 'center' }}>
-						<h3>CSS Effects Video Player</h3>
 						<video
 							ref={videoRef}
 							width="800"
@@ -139,14 +102,14 @@ const Home = () => {
 						</video>
 
 						{/* Video Controls */}
-						<div style={{ margin: '20px 0', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-							<h4>Video Controls</h4>
+						<div style={{ margin: '20px 0', padding: '20px', backgroundColor: '#000000', border: '1px solid #333333', borderRadius: '8px' }}>
+							<h4 style={{ color: '#cccccc' }}>Video Controls</h4>
 							<div style={{ margin: '10px 0' }}>
-								<button onClick={() => handleVideoControl('play')} style={{ margin: '5px' }}>▶️ Play</button>
-								<button onClick={() => handleVideoControl('pause')} style={{ margin: '5px' }}>⏸️ Pause</button>
-								<button onClick={() => handleVideoControl('mute')} style={{ margin: '5px' }}>🔇 Mute</button>
-								<button onClick={() => handleVideoControl('slow')} style={{ margin: '5px' }}>🐌 Slow</button>
-								<button onClick={() => handleVideoControl('fast')} style={{ margin: '5px' }}>🚀 Fast</button>
+								<button onClick={() => handleVideoControl('play')} style={{ margin: '5px', padding: '8px 16px', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #555555', borderRadius: '4px', cursor: 'pointer' }}>▶️ Play</button>
+								<button onClick={() => handleVideoControl('pause')} style={{ margin: '5px', padding: '8px 16px', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #555555', borderRadius: '4px', cursor: 'pointer' }}>⏸️ Pause</button>
+								<button onClick={() => handleVideoControl('mute')} style={{ margin: '5px', padding: '8px 16px', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #555555', borderRadius: '4px', cursor: 'pointer' }}>🔇 Mute</button>
+								<button onClick={() => handleVideoControl('slow')} style={{ margin: '5px', padding: '8px 16px', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #555555', borderRadius: '4px', cursor: 'pointer' }}>🐌 Slow</button>
+								<button onClick={() => handleVideoControl('fast')} style={{ margin: '5px', padding: '8px 16px', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #555555', borderRadius: '4px', cursor: 'pointer' }}>🚀 Fast</button>
 							</div>
 
 							{/* Color Presets */}

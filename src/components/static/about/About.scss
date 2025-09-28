@@ -1,3 +1,226 @@
 .About {
-	padding: 5%;
+	// Art Deco Cinema About Page Styling
+	background: var(--charcoal-black);
+	color: var(--warm-cream);
+	padding: 0;
+	position: relative;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	
+	// Film grain texture overlay
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-image: 
+			radial-gradient(circle at 20% 20%, rgba(255,255,255,0.02) 0%, transparent 50%),
+			radial-gradient(circle at 80% 80%, rgba(255,255,255,0.02) 0%, transparent 50%),
+			radial-gradient(circle at 40% 60%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
+		background-size: 3px 3px, 2px 2px, 4px 4px;
+		pointer-events: none;
+		z-index: 1;
+	}
+	
+	// Main content container
+	.about-content {
+		position: relative;
+		z-index: 2;
+		max-width: 900px;
+		width: 100%;
+		padding: 60px 40px;
+		background: linear-gradient(135deg, 
+			rgba(44, 44, 44, 0.95) 0%, 
+			rgba(28, 28, 28, 0.98) 50%, 
+			rgba(44, 44, 44, 0.95) 100%);
+		border: 2px solid var(--primary-gold);
+		border-radius: 8px;
+		box-shadow: 
+			0 20px 40px rgba(0,0,0,0.6),
+			inset 0 1px 0 rgba(212, 175, 55, 0.2),
+			0 0 30px rgba(212, 175, 55, 0.1);
+		margin: 20px;
+		
+		// Art Deco frame effect
+		&::before {
+			content: '';
+			position: absolute;
+			top: -4px;
+			left: -4px;
+			right: -4px;
+			bottom: -4px;
+			background: linear-gradient(45deg, var(--primary-gold), var(--bronze-accent));
+			border-radius: 10px;
+			z-index: -1;
+			opacity: 0.8;
+		}
+		
+		// Subtle inner glow
+		&::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: linear-gradient(135deg, 
+				rgba(212, 175, 55, 0.05) 0%, 
+				transparent 50%, 
+				rgba(205, 127, 50, 0.05) 100%);
+			border-radius: 6px;
+			pointer-events: none;
+		}
+	}
+	
+	// Title styling
+	h1 {
+		font-family: 'Oswald', sans-serif;
+		font-size: 2.5rem;
+		font-weight: 600;
+		color: var(--primary-gold);
+		text-align: center;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		margin-bottom: 40px;
+		text-shadow: 
+			0 0 10px rgba(212, 175, 55, 0.5),
+			2px 2px 4px rgba(0,0,0,0.7);
+		position: relative;
+		
+		// Decorative underline
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: -15px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 100px;
+			height: 3px;
+			background: linear-gradient(90deg, 
+				transparent 0%, 
+				var(--primary-gold) 20%, 
+				var(--bronze-accent) 50%, 
+				var(--primary-gold) 80%, 
+				transparent 100%);
+			border-radius: 2px;
+		}
+	}
+	
+	// Paragraph styling
+	p {
+		font-family: 'Crimson Text', serif;
+		font-size: 1.1rem;
+		line-height: 1.8;
+		color: var(--warm-cream);
+		margin-bottom: 25px;
+		text-align: justify;
+		text-indent: 1.5em;
+		position: relative;
+		
+		// First paragraph special styling
+		&:first-of-type {
+			font-size: 1.2rem;
+			font-weight: 500;
+			color: var(--primary-gold);
+			text-indent: 0;
+			text-align: center;
+			font-style: italic;
+			margin-bottom: 35px;
+			padding: 20px;
+			background: rgba(212, 175, 55, 0.1);
+			border-left: 4px solid var(--primary-gold);
+			border-radius: 4px;
+		}
+		
+		// Works Consulted section
+		&:nth-last-child(2) {
+			font-family: 'Oswald', sans-serif;
+			font-size: 1.3rem;
+			font-weight: 500;
+			color: var(--primary-gold);
+			text-align: center;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			margin-top: 40px;
+			margin-bottom: 20px;
+			text-indent: 0;
+			position: relative;
+			
+			&::before {
+				content: '';
+				position: absolute;
+				top: -10px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 200px;
+				height: 2px;
+				background: linear-gradient(90deg, 
+					transparent 0%, 
+					var(--primary-gold) 20%, 
+					var(--bronze-accent) 50%, 
+					var(--primary-gold) 80%, 
+					transparent 100%);
+			}
+		}
+		
+		// Bibliography styling
+		&:last-child {
+			font-family: 'Crimson Text', serif;
+			font-size: 0.95rem;
+			line-height: 1.6;
+			color: var(--warm-cream);
+			text-indent: 0;
+			text-align: left;
+			background: rgba(0,0,0,0.3);
+			padding: 20px;
+			border-radius: 4px;
+			border-left: 3px solid var(--bronze-accent);
+		}
+	}
+	
+	// Responsive design
+	@media (max-width: 768px) {
+		.about-content {
+			padding: 40px 30px;
+			margin: 15px;
+		}
+		
+		h1 {
+			font-size: 2rem;
+		}
+		
+		p {
+			font-size: 1rem;
+			
+			&:first-of-type {
+				font-size: 1.1rem;
+			}
+		}
+	}
+	
+	@media (max-width: 480px) {
+		.about-content {
+			padding: 30px 20px;
+			margin: 10px;
+		}
+		
+		h1 {
+			font-size: 1.8rem;
+		}
+		
+		p {
+			font-size: 0.95rem;
+			text-indent: 1em;
+			
+			&:first-of-type {
+				font-size: 1rem;
+				text-indent: 0;
+			}
+		}
+	}
 }

@@ -1,21 +1,217 @@
-body {
-	display: flex;
+// Dark Theater Cinema Layout
+.PrimaryLayout.art-deco-cinema {
+	background: #000000; // Pure black theater background
 	min-height: 100vh;
-	flex-direction: column;
-}
-
-main {
-	flex: 1 0 auto;
-}
-
-.PrimaryLayout {
-	background-color: darkgrey;
-	min-width: 768px;
-
-	.content {
-		padding-top: 2%;
+	position: relative;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	
+	// Spotlight Effects
+	.spotlight {
+		position: fixed;
+		width: 300px;
+		height: 300px;
+		background: conic-gradient(from 45deg at 50% 0%, transparent 0deg, var(--spotlight-amber) 30deg, transparent 60deg);
+		opacity: 0.2;
+		pointer-events: none;
+		z-index: 1;
+		animation: spotlightFlicker 8s ease-in-out infinite;
+		
+		&.spotlight-top-left {
+			top: -150px;
+			left: -150px;
+			transform: rotate(-45deg);
+		}
+		
+		&.spotlight-top-right {
+			top: -150px;
+			right: -150px;
+			transform: rotate(45deg);
+		}
+	}
+	
+	// Red Velvet Theater Curtains
+	.velvet-curtain {
+		position: fixed;
+		top: 0;
+		width: 50vw; // Half screen width each
+		height: 100vh;
+		z-index: 20; // Above header
+		transform: translateX(0); // Start closed (covering screen)
+		animation: curtainOpen 2s ease-out forwards;
+		
+		&.curtain-left {
+			left: 0;
+			background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #4B0000 100%); // Rich red gradient
+			box-shadow: 
+				inset -30px 0 60px rgba(0,0,0,0.8),
+				0 0 20px rgba(220, 20, 60, 0.3);
+		}
+		
+		&.curtain-right {
+			right: 0;
+			background: linear-gradient(225deg, #8B0000 0%, #DC143C 50%, #4B0000 100%); // Rich red gradient
+			box-shadow: 
+				inset 30px 0 60px rgba(0,0,0,0.8),
+				0 0 20px rgba(220, 20, 60, 0.3);
+			transform: translateX(0); // Start closed (covering screen)
+		}
+		
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+			animation: curtainShimmer 4s ease-in-out infinite;
+		}
+		
+		// Brass curtain rod
+		&::after {
+			content: '';
+			position: absolute;
+			top: 20px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 4px;
+			height: 4px;
+			background: var(--bronze-accent);
+			border-radius: 50%;
+			box-shadow: 0 0 10px var(--primary-gold);
+		}
+	}
+	
+	// Content Wrapper - Movie Screen Area
+	.content-wrapper {
+		position: relative;
+		z-index: 5;
+		padding: 20px 10vw; // Space for partially visible curtains
+		min-height: calc(100vh - 200px); // Account for header and footer
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		
+		.content-frame {
+			width: 100%;
+			max-width: 1200px;
+			background: #000000; // Black frame like movie screen
+			padding: 20px;
+			position: relative;
+			border: 3px solid #333333; // Dark frame border
+			box-shadow: 
+				0 0 50px rgba(0,0,0,0.8),
+				inset 0 0 20px rgba(255,255,255,0.05);
+			
+			// Inner content styling - Movie screen
+			.content {
+				background: #1a1a1a; // Dark screen background
+				color: #ffffff;
+				padding: 40px;
+				border-radius: 4px;
+				box-shadow: 
+					inset 0 0 30px rgba(0,0,0,0.5),
+					0 0 20px rgba(255,255,255,0.1);
+				position: relative;
+				z-index: 2;
+				
+				// Movie screen texture
+				&::before {
+					content: '';
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					background-image: 
+						radial-gradient(circle at 20% 20%, rgba(255,255,255,0.02) 0%, transparent 50%),
+						radial-gradient(circle at 80% 80%, rgba(255,255,255,0.02) 0%, transparent 50%);
+					pointer-events: none;
+					z-index: 1;
+				}
+			}
+		}
+	}
+}
+
+// Additional Art Deco Animations
+@keyframes spotlightFlicker {
+	0%, 90%, 100% { opacity: 0.2; }
+	95% { opacity: 0.4; }
+}
+
+@keyframes curtainOpen {
+	0% { 
+		transform: translateX(0); // Start closed (covering screen)
+	}
+	100% { 
+		transform: translateX(-80%); // Open to left side but stay partially visible
+	}
+}
+
+@keyframes curtainOpenRight {
+	0% { 
+		transform: translateX(0); // Start closed (covering screen)
+	}
+	100% { 
+		transform: translateX(80%); // Open to right side but stay partially visible
+	}
+}
+
+// Mobile Responsive Design
+@media (max-width: 768px) {
+	.PrimaryLayout.art-deco-cinema {
+		.velvet-curtain {
+			width: 50vw; // Keep full width on mobile too
+			
+			&.curtain-left {
+				background: linear-gradient(90deg, #8B0000 0%, #DC143C 50%, #4B0000 100%);
+			}
+			
+			&.curtain-right {
+				background: linear-gradient(270deg, #8B0000 0%, #DC143C 50%, #4B0000 100%);
+			}
+		}
+		
+		.content-wrapper {
+			padding: 20px 8vw; // Space for partially visible curtains on mobile
+		}
+		
+		.spotlight {
+			width: 200px;
+			height: 200px;
+			
+			&.spotlight-top-left {
+				top: -100px;
+				left: -100px;
+			}
+			
+			&.spotlight-top-right {
+				top: -100px;
+				right: -100px;
+			}
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.PrimaryLayout.art-deco-cinema {
+		.velvet-curtain {
+			width: 50vw; // Keep full width on small screens
+		}
+		
+		.content-wrapper {
+			padding: 10px 6vw; // Space for partially visible curtains on small screens
+			
+			.content-frame {
+				padding: 15px;
+				
+				.content {
+					padding: 20px;
+				}
+			}
+		}
 	}
 }
