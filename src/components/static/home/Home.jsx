@@ -2,8 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import './Home.scss';
 
 import videoMP4 from '../../../assets/video/video.mp4';
-import mvbSoon from '../../../assets/audio/My Bloody Valentine - Soon.mp3';
-import roseHobartAudio from '../../../assets/audio/Rose Hobart (1936) by Joseph Cornell.mp3';
+import { TRACKS, useAudio } from '../../../context/AudioContext';
 
 const TINT_PRESETS = [
 	{ name: 'None',      color: '#000000', opacity: 0    },
@@ -17,11 +16,6 @@ const TINT_PRESETS = [
 
 const BLEND_MODES = ['multiply', 'color', 'screen', 'overlay'];
 
-const TRACKS = [
-	{ name: 'My Bloody Valentine – Soon', src: mvbSoon },
-	{ name: 'Rose Hobart (1936)',         src: roseHobartAudio },
-];
-
 const EFFECTS = [
 	{ key: 'brightness', label: 'Brightness', min: 0, max: 2,   step: 0.1, fmt: v => v.toFixed(2) },
 	{ key: 'contrast',   label: 'Contrast',   min: 0, max: 2,   step: 0.1, fmt: v => v.toFixed(2) },
@@ -33,52 +27,26 @@ const EFFECTS = [
 
 const Home = () => {
 	const videoRef = useRef(null);
-	const audioRef = useRef(null);
-	const musicAutoStarted = useRef(false);
+	const { activeTrack, musicPlaying, musicVolume, handleTrackSelect, handleVolumeChange, autoStartMusic } = useAudio();
 
 	const [tintColor,     setTintColor]     = useState('#000000');
 	const [tintOpacity,   setTintOpacity]   = useState(0);
 	const [tintBlendMode, setTintBlendMode] = useState('multiply');
 	const [activeTint,    setActiveTint]    = useState('None');
 
-	const [activeTrack,  setActiveTrack]  = useState(null);
-	const [musicPlaying, setMusicPlaying] = useState(false);
-	const [musicVolume,  setMusicVolume]  = useState(0.8);
-
 	const [videoSettings, setVideoSettings] = useState({
 		brightness: 1, contrast: 1, saturation: 1,
 		hue: 0, sepia: 0, invert: 0,
 	});
 
-	useEffect(() => {
-		const audio = new Audio();
-		audio.loop = true;
-		audioRef.current = audio;
-		return () => {
-			audio.pause();
-			audio.src = '';
-		};
-	}, []);
-
 	// Auto-start Rose Hobart (1936) the first time the video plays
 	useEffect(() => {
 		const video = videoRef.current;
 		if (!video) return;
-		const onFirstPlay = () => {
-			if (musicAutoStarted.current) return;
-			musicAutoStarted.current = true;
-			const audio = audioRef.current;
-			if (!audio) return;
-			audio.src = TRACKS[1].src; // Rose Hobart (1936)
-			audio.volume = musicVolume;
-			audio.play().then(() => {
-				setActiveTrack(1);
-				setMusicPlaying(true);
-			}).catch(() => {});
-		};
+		const onFirstPlay = () => autoStartMusic();
 		video.addEventListener('play', onFirstPlay);
 		return () => video.removeEventListener('play', onFirstPlay);
-	}, [musicVolume]);
+	}, [autoStartMusic]);
 
 	const applyFilters = useCallback((settings) => {
 		const video = videoRef.current;
@@ -99,25 +67,6 @@ const Home = () => {
 		setTintColor(preset.color);
 		setTintOpacity(preset.opacity);
 	}, []);
-
-	const handleTrackSelect = useCallback((trackIndex) => {
-		const audio = audioRef.current;
-		if (!audio) return;
-		if (activeTrack === trackIndex) {
-			if (musicPlaying) {
-				audio.pause();
-				setMusicPlaying(false);
-			} else {
-				audio.play().then(() => setMusicPlaying(true)).catch(() => {});
-			}
-			return;
-		}
-		audio.pause();
-		audio.src = TRACKS[trackIndex].src;
-		audio.volume = musicVolume;
-		setActiveTrack(trackIndex);
-		audio.play().then(() => setMusicPlaying(true)).catch(() => {});
-	}, [activeTrack, musicPlaying, musicVolume]);
 
 	const handleVideoControl = useCallback((action) => {
 		const video = videoRef.current;
@@ -242,11 +191,7 @@ const Home = () => {
 							className="art-deco-range"
 							min="0" max="1" step="0.05"
 							value={musicVolume}
-							onChange={(e) => {
-								const v = parseFloat(e.target.value);
-								setMusicVolume(v);
-								if (audioRef.current) audioRef.current.volume = v;
-							}}
+							onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
 						/>
 					</div>
 

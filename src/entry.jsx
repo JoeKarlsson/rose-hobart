@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './assets/styles/main.scss';
+import { AudioProvider } from './context/AudioContext';
 import ErrorBoundary from './components/shared/ErrorBoundary/ErrorBoundary';
 import PrimaryLayout from './components/shared/PrimaryLayout/PrimaryLayout';
 
@@ -17,7 +18,9 @@ const App = () => {
 	return (
 		<Router basename="/rose-hobart">
 			<ErrorBoundary>
-				<PrimaryLayout />
+				<AudioProvider>
+					<PrimaryLayout />
+				</AudioProvider>
 			</ErrorBoundary>
 		</Router>
 	);
