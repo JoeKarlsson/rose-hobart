@@ -10,10 +10,10 @@ import ImagePickable from './ImagePickable/ImagePickable';
 class ImagesPicker extends Component {
 	constructor() {
 		super();
-		this.imageNodewBuilder = this.imageNodewBuilder.bind(this);
+		this.imageNodeBuilder = this.imageNodeBuilder.bind(this);
 	}
 
-	imageNodewBuilder(src) {
+	imageNodeBuilder(src) {
 		const {
 			value,
 			handleChange,
@@ -38,7 +38,7 @@ class ImagesPicker extends Component {
 			style,
 		} = this.props;
 
-		const imageNode = images.map(this.imageNodewBuilder);
+		const imageNode = images.map(this.imageNodeBuilder);
 
 
 		return (

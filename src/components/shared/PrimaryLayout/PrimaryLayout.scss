@@ -52,10 +52,10 @@
 		&.curtain-right {
 			right: 0;
 			background: linear-gradient(225deg, #8B0000 0%, #DC143C 50%, #4B0000 100%); // Rich red gradient
-			box-shadow: 
+			box-shadow:
 				inset 30px 0 60px rgba(0,0,0,0.8),
 				0 0 20px rgba(220, 20, 60, 0.3);
-			transform: translateX(0); // Start closed (covering screen)
+			animation: curtainOpenRight 2s ease-out forwards;
 		}
 		
 		&::before {
@@ -100,7 +100,7 @@
 			background: #000000; // Black frame like movie screen
 			padding: 20px;
 			position: relative;
-			border: 3px solid #333333; // Dark frame border
+			border: 3px solid var(--charcoal-black);
 			box-shadow: 
 				0 0 50px rgba(0,0,0,0.8),
 				inset 0 0 20px rgba(255,255,255,0.05);
@@ -198,18 +198,20 @@
 
 @media (max-width: 480px) {
 	.PrimaryLayout.art-deco-cinema {
+		// Curtains are decorative — hide them on phones to reclaim screen space.
+		// At 480px the 40px strips are barely visible and clip content at 6vw padding.
 		.velvet-curtain {
-			width: 50vw; // Keep full width on small screens
+			display: none;
 		}
-		
+
 		.content-wrapper {
-			padding: 10px 6vw; // Space for partially visible curtains on small screens
-			
+			padding: 12px 16px;
+
 			.content-frame {
-				padding: 15px;
-				
+				padding: 10px;
+
 				.content {
-					padding: 20px;
+					padding: 16px;
 				}
 			}
 		}

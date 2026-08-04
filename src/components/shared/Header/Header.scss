@@ -43,67 +43,78 @@
 	// Navigation
 	.art-deco-nav {
 		position: relative;
-		padding: 20px 0;
-		
+		// Horizontal 10vw padding here so nav-wrapper fills only the safe zone —
+		// absolutely-positioned nav-menu with right:0 then stays within the curtain boundary.
+		padding: 20px 10vw !important;
+		height: auto !important; // Override Materialize's fixed 64px nav height
+		line-height: normal !important;
+
 		.nav-wrapper {
-			max-width: 1200px;
-			margin: 0 auto;
-			padding: 0 40px;
-			display: flex;
+			width: 100%;
+			max-width: 100% !important;
+			margin: 0 !important;
+			padding: 0 !important; // No extra horizontal padding — nav handles it
+			display: flex !important;
 			align-items: center;
 			justify-content: center;
 			position: relative;
+			height: auto !important;
+			background: transparent !important;
 		}
-		
+
 		// Main Brand Logo - Theater Marquee
 		.brand-logo {
-			display: flex;
+			display: flex !important;
 			flex-direction: column;
 			align-items: center;
 			text-decoration: none;
-			color: #FFD700; // Gold marquee color
-			text-shadow: 
-				0 0 10px #FFD700,
-				0 0 20px #FFA500,
-				0 0 30px #FF4500,
+			color: var(--marquee-glow);
+			text-shadow:
+				0 0 10px var(--marquee-glow),
+				0 0 20px var(--spotlight-amber),
+				0 0 30px var(--rich-crimson),
 				2px 2px 4px rgba(0,0,0,0.9);
-			transition: all 0.3s ease;
-			position: relative;
-			background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-			padding: 20px 40px;
-			border: 3px solid #FFD700;
+			transition: transform 0.3s ease, box-shadow 0.3s ease, text-shadow 0.3s ease;
+			// Override Materialize's `nav .brand-logo { position: absolute }` and its mobile
+			// `left: 50%; transform: translateX(-50%)` — without these the logo floats off-screen.
+			position: relative !important;
+			left: auto !important;
+			transform: none;
+			background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%) !important;
+			padding: 20px 40px !important;
+			border: 3px solid var(--marquee-glow);
 			border-radius: 8px;
-			box-shadow: 
+			box-shadow:
 				0 0 20px rgba(255, 215, 0, 0.3),
 				inset 0 0 20px rgba(0,0,0,0.5);
-			
+
 			.title-text {
 				font-size: 3.5rem;
-				font-weight: 700;
+				font-weight: 400;
 				line-height: 1;
 				margin-bottom: 16px;
 				letter-spacing: 0.15em;
 				text-transform: uppercase;
-				font-family: 'Oswald', sans-serif;
+				// inherits Poiret One from parent's art-deco-headline class
 			}
-			
+
 			.subtitle-text {
 				font-size: 1.4rem;
 				font-style: italic;
-				color: #FFA500;
+				color: var(--spotlight-amber);
 				letter-spacing: 0.1em;
-				font-family: 'Playfair Display', serif;
+				// inherits Playfair Display from art-deco-elegant class
 			}
 			
 			&:hover {
 				transform: scale(1.02);
-				text-shadow: 
-					0 0 15px #FFD700,
-					0 0 25px #FFA500,
-					0 0 35px #FF4500,
-					0 0 45px #FF0000,
+				text-shadow:
+					0 0 15px var(--marquee-glow),
+					0 0 25px var(--spotlight-amber),
+					0 0 35px var(--rich-crimson),
+					0 0 45px var(--deep-burgundy),
 					2px 2px 4px rgba(0,0,0,0.9);
-				box-shadow: 
+				box-shadow:
 					0 0 30px rgba(255, 215, 0, 0.5),
 					inset 0 0 20px rgba(0,0,0,0.7);
 			}
@@ -112,24 +123,26 @@
 		// Navigation Menu
 		.nav-menu {
 			position: absolute;
-			right: 40px;
+			right: 0; // Right edge of the nav-wrapper (which already has 10vw padding)
 			top: 50%;
 			transform: translateY(-50%);
 			display: flex;
 			list-style: none;
 			margin: 0;
 			padding: 0;
-			gap: 20px;
-			
+			gap: 12px;
+
 			li {
 				margin: 0;
 			}
-			
+
 			.nav-link {
 				text-decoration: none;
 				transition: all 0.3s ease;
 				position: relative;
-				
+				padding: 8px 16px !important; // Smaller padding for nav links
+				font-size: 0.8rem;
+
 				&:hover {
 					transform: translateY(-2px);
 				}
@@ -150,28 +163,39 @@
 @media (max-width: 768px) {
 	.art-deco-header {
 		.art-deco-nav {
+			// !important beats the desktop rule that also uses !important
+			padding: 12px 5vw !important;
+
 			.nav-wrapper {
-				padding: 0 20px;
 				flex-direction: column;
-				gap: 20px;
+				align-items: center;
+				gap: 12px;
 			}
-			
+
 			.brand-logo {
-				padding: 15px 30px;
-				
+				// width: 100% is the key fix — logo was sized by content and overflowed.
+				// With explicit width it fills the nav and the flex column centers it cleanly.
+				width: 100% !important;
+				padding: 10px 24px !important;
+				border-radius: 6px;
+
 				.title-text {
-					font-size: 2.5rem;
+					font-size: 2rem;
+					margin-bottom: 6px;
+					letter-spacing: 0.12em;
 				}
-				
+
 				.subtitle-text {
-					font-size: 1rem;
+					font-size: 0.9rem;
 				}
 			}
-			
+
 			.nav-menu {
 				position: static;
 				transform: none;
 				justify-content: center;
+				flex-wrap: wrap;
+				gap: 8px;
 			}
 		}
 	}
@@ -180,15 +204,30 @@
 @media (max-width: 480px) {
 	.art-deco-header {
 		.art-deco-nav {
+			// Curtains are hidden at this breakpoint — minimal side padding is fine
+			padding: 10px 12px !important;
+
 			.brand-logo {
-				padding: 12px 25px;
-				
+				width: 100% !important;
+				padding: 8px 16px !important;
+
 				.title-text {
-					font-size: 2rem;
+					font-size: 1.6rem;
+					margin-bottom: 4px;
+					letter-spacing: 0.1em;
 				}
-				
+
 				.subtitle-text {
-					font-size: 0.9rem;
+					font-size: 0.8rem;
+				}
+			}
+
+			.nav-menu {
+				gap: 6px;
+
+				.nav-link {
+					padding: 6px 10px !important;
+					font-size: 0.75rem;
 				}
 			}
 		}

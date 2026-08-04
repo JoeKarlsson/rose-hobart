@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
+import './assets/styles/main.scss';
 import ErrorBoundary from './components/shared/ErrorBoundary/ErrorBoundary';
 import PrimaryLayout from './components/shared/PrimaryLayout/PrimaryLayout';
 

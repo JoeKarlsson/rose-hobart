@@ -17,12 +17,19 @@ class ImagePickable extends PureComponent {
 		this.props.onChange(this.props.src);
 	}
 
+	onKeyDown(e) {
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
+			this.props.onChange(this.props.src);
+		}
+	}
+
 	render() {
 		const { src, selected, style } = this.props;
 		return (
 			<button
 				onClick={this.onClick}
-				onKeyPress={this.onClick}
+				onKeyDown={this.onKeyDown.bind(this)}
 				tabIndex="0"
 			>
 				<img

@@ -1,239 +1,267 @@
-import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import './Home.scss';
 
-// Import video file using Vite's asset handling
 import videoMP4 from '../../../assets/video/video.mp4';
+import mvbSoon from '../../../assets/audio/My Bloody Valentine - Soon.mp3';
+import roseHobartAudio from '../../../assets/audio/Rose Hobart (1936) by Joseph Cornell.mp3';
 
+const TINT_PRESETS = [
+	{ name: 'None',      color: '#000000', opacity: 0    },
+	{ name: 'Prussian',  color: '#003153', opacity: 0.50 },
+	{ name: 'Violet',    color: '#7B2FBE', opacity: 0.40 },
+	{ name: 'Rose',      color: '#E75480', opacity: 0.35 },
+	{ name: 'Amber',     color: '#FFBF00', opacity: 0.35 },
+	{ name: 'Jade',      color: '#00A550', opacity: 0.35 },
+	{ name: 'Crimson',   color: '#DC143C', opacity: 0.35 },
+];
+
+const BLEND_MODES = ['multiply', 'color', 'screen', 'overlay'];
+
+const TRACKS = [
+	{ name: 'My Bloody Valentine – Soon', src: mvbSoon },
+	{ name: 'Rose Hobart (1936)',         src: roseHobartAudio },
+];
+
+const EFFECTS = [
+	{ key: 'brightness', label: 'Brightness', min: 0, max: 2,   step: 0.1, fmt: v => v.toFixed(2) },
+	{ key: 'contrast',   label: 'Contrast',   min: 0, max: 2,   step: 0.1, fmt: v => v.toFixed(2) },
+	{ key: 'saturation', label: 'Saturation', min: 0, max: 2,   step: 0.1, fmt: v => v.toFixed(2) },
+	{ key: 'hue',        label: 'Hue',        min: 0, max: 360, step: 1,   fmt: v => `${v}°` },
+	{ key: 'sepia',      label: 'Sepia',      min: 0, max: 1,   step: 0.1, fmt: v => v.toFixed(2) },
+	{ key: 'invert',     label: 'Invert',     min: 0, max: 1,   step: 1,   fmt: v => v ? 'On' : 'Off' },
+];
 
 const Home = () => {
 	const videoRef = useRef(null);
-	const [activeTab, setActiveTab] = useState('css'); // 'css' or 'webgl'
+	const audioRef = useRef(null);
+
+	const [tintColor,     setTintColor]     = useState('#000000');
+	const [tintOpacity,   setTintOpacity]   = useState(0);
+	const [tintBlendMode, setTintBlendMode] = useState('multiply');
+	const [activeTint,    setActiveTint]    = useState('None');
+
+	const [activeTrack,  setActiveTrack]  = useState(null);
+	const [musicPlaying, setMusicPlaying] = useState(false);
+	const [musicVolume,  setMusicVolume]  = useState(0.8);
+
 	const [videoSettings, setVideoSettings] = useState({
-		brightness: 1,
-		contrast: 1,
-		saturation: 1,
-		playbackRate: 1,
-		hue: 0,
-		sepia: 0,
-		invert: 0
+		brightness: 1, contrast: 1, saturation: 1,
+		hue: 0, sepia: 0, invert: 0,
 	});
 
-	const colorPresets = useMemo(() => ({
-		'Normal': { brightness: 1, contrast: 1, saturation: 1, hue: 0, sepia: 0, invert: 0 },
-		'Vintage': { brightness: 0.9, contrast: 1.2, saturation: 0.8, hue: 0, sepia: 0.3, invert: 0 },
-		'High Contrast': { brightness: 1.1, contrast: 1.5, saturation: 1.2, hue: 0, sepia: 0, invert: 0 },
-		'Black & White': { brightness: 1, contrast: 1.2, saturation: 0, hue: 0, sepia: 0, invert: 0 },
-		'Inverted': { brightness: 1, contrast: 1, saturation: 1, hue: 0, sepia: 0, invert: 1 },
-		'Blue Tint': { brightness: 1, contrast: 1, saturation: 1.1, hue: 200, sepia: 0, invert: 0 }
-	}), []);
+	useEffect(() => {
+		const audio = new Audio();
+		audio.loop = true;
+		audioRef.current = audio;
+		return () => {
+			audio.pause();
+			audio.src = '';
+		};
+	}, []);
+
+	const applyFilters = useCallback((settings) => {
+		const video = videoRef.current;
+		if (!video) return;
+		video.style.filter = `brightness(${settings.brightness}) contrast(${settings.contrast}) saturate(${settings.saturation}) hue-rotate(${settings.hue}deg) sepia(${settings.sepia}) invert(${settings.invert})`;
+	}, []);
+
+	const handleSliderChange = useCallback((property, value) => {
+		setVideoSettings(prev => {
+			const next = { ...prev, [property]: parseFloat(value) };
+			applyFilters(next);
+			return next;
+		});
+	}, [applyFilters]);
+
+	const applyTintPreset = useCallback((preset) => {
+		setActiveTint(preset.name);
+		setTintColor(preset.color);
+		setTintOpacity(preset.opacity);
+	}, []);
+
+	const handleTrackSelect = useCallback((trackIndex) => {
+		const audio = audioRef.current;
+		if (!audio) return;
+		if (activeTrack === trackIndex) {
+			if (musicPlaying) {
+				audio.pause();
+				setMusicPlaying(false);
+			} else {
+				audio.play().then(() => setMusicPlaying(true)).catch(() => {});
+			}
+			return;
+		}
+		audio.pause();
+		audio.src = TRACKS[trackIndex].src;
+		audio.volume = musicVolume;
+		setActiveTrack(trackIndex);
+		audio.play().then(() => setMusicPlaying(true)).catch(() => {});
+	}, [activeTrack, musicPlaying, musicVolume]);
 
 	const handleVideoControl = useCallback((action) => {
 		const video = videoRef.current;
 		if (!video) return;
-
 		switch (action) {
-			case 'play':
-				video.play();
-				break;
-			case 'pause':
-				video.pause();
-				break;
-			case 'mute':
-				video.muted = !video.muted;
-				break;
-			case 'slow':
-				video.playbackRate = Math.max(0.1, video.playbackRate - 0.1);
-				setVideoSettings(prev => ({ ...prev, playbackRate: video.playbackRate }));
-				break;
-			case 'fast':
-				video.playbackRate = Math.min(3, video.playbackRate + 0.1);
-				setVideoSettings(prev => ({ ...prev, playbackRate: video.playbackRate }));
-				break;
-			default:
-				break;
+			case 'play':  video.play(); break;
+			case 'pause': video.pause(); break;
+			case 'mute':  video.muted = !video.muted; break;
+			case 'slow':  video.playbackRate = Math.max(0.1, video.playbackRate - 0.1); break;
+			case 'fast':  video.playbackRate = Math.min(3,   video.playbackRate + 0.1); break;
+			default: break;
 		}
 	}, []);
-
-	const handleSliderChange = useCallback((property, value) => {
-		const newValue = parseFloat(value);
-		setVideoSettings(prev => ({ ...prev, [property]: newValue }));
-		applyFilters({ ...videoSettings, [property]: newValue });
-	}, [videoSettings]);
-
-	const applyFilters = useCallback((settings) => {
-		const video = videoRef.current;
-		if (video) {
-			const filterString = `
-				brightness(${settings.brightness})
-				contrast(${settings.contrast})
-				saturate(${settings.saturation})
-				hue-rotate(${settings.hue}deg)
-				sepia(${settings.sepia})
-				invert(${settings.invert})
-			`.replace(/\s+/g, ' ').trim();
-			video.style.filter = filterString;
-		}
-	}, []);
-
-
-	const applyPreset = useCallback((presetName) => {
-		const preset = colorPresets[presetName];
-		setVideoSettings(preset);
-		applyFilters(preset);
-	}, [colorPresets, applyFilters]);
-
 
 	return (
 		<div className="Home">
 			<div className="container">
 
-				{/* Video Player */}
-				<div style={{ margin: '20px 0', textAlign: 'center' }}>
-					<video
-						ref={videoRef}
-						width="800"
-						height="450"
-						controls
-						preload="metadata"
-						muted
-						playsInline
-						src={videoMP4}
-						style={{
-							maxWidth: '100%',
-							height: 'auto'
-						}}
-					>
-						<source type="video/mp4" src={videoMP4} />
-						<source type="video/mp4" src="https://www.w3schools.com/html/mov_bbb.mp4" />
-						<source type="video/mp4" src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" />
-						Your browser does not support the video tag.
-					</video>
-
-						{/* Video Controls */}
-						<div style={{ margin: '20px 0', padding: '20px', backgroundColor: '#000000', border: '1px solid #333333', borderRadius: '8px' }}>
-							<h4 style={{ color: '#cccccc' }}>Video Controls</h4>
-							<div style={{ margin: '10px 0' }}>
-								<button onClick={() => handleVideoControl('play')} style={{ margin: '5px', padding: '8px 16px', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #555555', borderRadius: '4px', cursor: 'pointer' }}>▶️ Play</button>
-								<button onClick={() => handleVideoControl('pause')} style={{ margin: '5px', padding: '8px 16px', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #555555', borderRadius: '4px', cursor: 'pointer' }}>⏸️ Pause</button>
-								<button onClick={() => handleVideoControl('mute')} style={{ margin: '5px', padding: '8px 16px', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #555555', borderRadius: '4px', cursor: 'pointer' }}>🔇 Mute</button>
-								<button onClick={() => handleVideoControl('slow')} style={{ margin: '5px', padding: '8px 16px', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #555555', borderRadius: '4px', cursor: 'pointer' }}>🐌 Slow</button>
-								<button onClick={() => handleVideoControl('fast')} style={{ margin: '5px', padding: '8px 16px', backgroundColor: '#333333', color: '#ffffff', border: '1px solid #555555', borderRadius: '4px', cursor: 'pointer' }}>🚀 Fast</button>
-							</div>
-
-							{/* Color Presets */}
-							<div style={{ margin: '20px 0' }}>
-								<h5 style={{ color: '#cccccc' }}>Color Presets</h5>
-								<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', margin: '10px 0', justifyContent: 'center' }}>
-									{Object.keys(colorPresets).map(preset => (
-										<button
-											key={preset}
-											onClick={() => applyPreset(preset)}
-											style={{
-												padding: '8px 16px',
-												border: '1px solid #555555',
-												borderRadius: '4px',
-												backgroundColor: '#333333',
-												color: '#ffffff',
-												cursor: 'pointer',
-												transition: 'all 0.3s ease'
-											}}
-											onMouseEnter={(e) => {
-												e.target.style.backgroundColor = '#555555';
-												e.target.style.borderColor = '#777777';
-											}}
-											onMouseLeave={(e) => {
-												e.target.style.backgroundColor = '#333333';
-												e.target.style.borderColor = '#555555';
-											}}
-										>
-											{preset}
-										</button>
-									))}
-								</div>
-							</div>
-
-							{/* Video Effects */}
-							<div style={{ margin: '20px 0' }}>
-								<h5 style={{ color: '#cccccc' }}>Video Effects</h5>
-								<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '15px' }}>
-									<div>
-										<label>Brightness: {videoSettings.brightness.toFixed(2)}</label>
-										<input
-											type="range"
-											min="0"
-											max="2"
-											step="0.1"
-											value={videoSettings.brightness}
-											onChange={(e) => handleSliderChange('brightness', e.target.value)}
-											style={{ width: '100%', margin: '5px 0' }}
-										/>
-									</div>
-									<div>
-										<label>Contrast: {videoSettings.contrast.toFixed(2)}</label>
-										<input
-											type="range"
-											min="0"
-											max="2"
-											step="0.1"
-											value={videoSettings.contrast}
-											onChange={(e) => handleSliderChange('contrast', e.target.value)}
-											style={{ width: '100%', margin: '5px 0' }}
-										/>
-									</div>
-									<div>
-										<label>Saturation: {videoSettings.saturation.toFixed(2)}</label>
-										<input
-											type="range"
-											min="0"
-											max="2"
-											step="0.1"
-											value={videoSettings.saturation}
-											onChange={(e) => handleSliderChange('saturation', e.target.value)}
-											style={{ width: '100%', margin: '5px 0' }}
-										/>
-									</div>
-									<div>
-										<label>Hue: {videoSettings.hue}°</label>
-										<input
-											type="range"
-											min="0"
-											max="360"
-											step="1"
-											value={videoSettings.hue}
-											onChange={(e) => handleSliderChange('hue', e.target.value)}
-											style={{ width: '100%', margin: '5px 0' }}
-										/>
-									</div>
-									<div>
-										<label>Sepia: {videoSettings.sepia.toFixed(2)}</label>
-										<input
-											type="range"
-											min="0"
-											max="1"
-											step="0.1"
-											value={videoSettings.sepia}
-											onChange={(e) => handleSliderChange('sepia', e.target.value)}
-											style={{ width: '100%', margin: '5px 0' }}
-										/>
-									</div>
-									<div>
-										<label>Invert: {videoSettings.invert ? 'On' : 'Off'}</label>
-										<input
-											type="range"
-											min="0"
-											max="1"
-											step="1"
-											value={videoSettings.invert}
-											onChange={(e) => handleSliderChange('invert', e.target.value)}
-											style={{ width: '100%', margin: '5px 0' }}
-										/>
-									</div>
-								</div>
-							</div>
-						</div>
-
+				<div className="video-section">
+					<div className="video-wrapper">
+						<video
+							ref={videoRef}
+							width="800"
+							height="450"
+							controls
+							preload="metadata"
+							muted
+							playsInline
+						>
+							<source type="video/mp4" src={videoMP4} />
+							Your browser does not support the video tag.
+						</video>
+						<div
+							className="tint-overlay"
+							style={{
+								backgroundColor: tintColor,
+								opacity: tintOpacity,
+								mixBlendMode: tintBlendMode,
+							}}
+						/>
 					</div>
 				</div>
 
+				<div className="controls-panel">
+
+					{/* ─── COLOR TINT ─── */}
+					<h4 className="controls-title">Color Tint</h4>
+					<div className="tint-swatches">
+						{TINT_PRESETS.map(preset => (
+							<button
+								key={preset.name}
+								className={`tint-swatch${preset.name === 'None' ? ' tint-swatch--none' : ''}${activeTint === preset.name ? ' active' : ''}`}
+								onClick={() => applyTintPreset(preset)}
+								title={preset.name}
+								style={preset.name !== 'None' ? {
+									backgroundColor: preset.color,
+									'--swatch-glow': preset.color,
+								} : { '--swatch-glow': '#555' }}
+							/>
+						))}
+						<label
+							className={`tint-swatch tint-swatch--custom${activeTint === 'custom' ? ' active' : ''}`}
+							title="Custom color"
+							style={{ '--swatch-glow': tintColor }}
+						>
+							<input
+								type="color"
+								className="tint-color-input"
+								value={tintColor === '#000000' ? '#6A5ACD' : tintColor}
+								onChange={(e) => {
+									setTintColor(e.target.value);
+									setActiveTint('custom');
+									if (tintOpacity === 0) setTintOpacity(0.35);
+								}}
+							/>
+						</label>
+					</div>
+
+					<div className="tint-controls">
+						<div className="effect-row">
+							<label className="effect-label">Intensity: {Math.round(tintOpacity * 100)}%</label>
+							<input
+								type="range"
+								className="art-deco-range"
+								min="0" max="0.8" step="0.01"
+								value={tintOpacity}
+								onChange={(e) => setTintOpacity(parseFloat(e.target.value))}
+							/>
+						</div>
+						<div className="effect-row">
+							<label className="effect-label">Blend Mode</label>
+							<select
+								className="tint-blend-select"
+								value={tintBlendMode}
+								onChange={(e) => setTintBlendMode(e.target.value)}
+							>
+								{BLEND_MODES.map(mode => (
+									<option key={mode} value={mode}>{mode}</option>
+								))}
+							</select>
+						</div>
+					</div>
+
+					{/* ─── MUSIC ─── */}
+					<h5 className="controls-subtitle">Music</h5>
+					<div className="music-tracks">
+						{TRACKS.map((track, i) => (
+							<button
+								key={track.name}
+								className={`art-deco-button small music-track-btn${activeTrack === i ? ' active-track' : ''}`}
+								onClick={() => handleTrackSelect(i)}
+							>
+								<span className="music-icon">{activeTrack === i && musicPlaying ? '⏸' : '▶'}</span>
+								{track.name}
+							</button>
+						))}
+					</div>
+					<div className="music-volume">
+						<label className="effect-label">Volume: {Math.round(musicVolume * 100)}%</label>
+						<input
+							type="range"
+							className="art-deco-range"
+							min="0" max="1" step="0.05"
+							value={musicVolume}
+							onChange={(e) => {
+								const v = parseFloat(e.target.value);
+								setMusicVolume(v);
+								if (audioRef.current) audioRef.current.volume = v;
+							}}
+						/>
+					</div>
+
+					{/* ─── PLAYBACK ─── */}
+					<h5 className="controls-subtitle">Playback</h5>
+					<div className="controls-buttons">
+						{['play', 'pause', 'mute', 'slow', 'fast'].map(action => (
+							<button
+								key={action}
+								className="art-deco-button small"
+								onClick={() => handleVideoControl(action)}
+							>
+								{action.charAt(0).toUpperCase() + action.slice(1)}
+							</button>
+						))}
+					</div>
+
+					{/* ─── VIDEO EFFECTS ─── */}
+					<h5 className="controls-subtitle">Video Effects</h5>
+					<div className="effects-grid">
+						{EFFECTS.map(({ key, label, min, max, step, fmt }) => (
+							<div key={key} className="effect-row">
+								<label className="effect-label">{label}: {fmt(videoSettings[key])}</label>
+								<input
+									type="range"
+									className="art-deco-range"
+									min={min} max={max} step={step}
+									value={videoSettings[key]}
+									onChange={(e) => handleSliderChange(key, e.target.value)}
+								/>
+							</div>
+						))}
+					</div>
+
+				</div>
+			</div>
 		</div>
 	);
 };

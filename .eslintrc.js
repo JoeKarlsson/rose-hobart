@@ -15,7 +15,6 @@ module.exports = {
 		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
 		"arrow-body-style": 0,
 		"no-tabs": 0,
-		"no-tabs": 0,
 		"indent": ["error", "tab"],
 		"react/jsx-indent": [2, 'tab'],
 		"react/jsx-indent-props": [2, 'tab'],

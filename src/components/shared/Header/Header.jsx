@@ -9,6 +9,11 @@ const activeStyles = {
 	textShadow: '0 0 10px var(--primary-gold)',
 };
 
+const getNavLinkClass = ({ isActive }) =>
+	`nav-link art-deco-title brass-button${isActive ? ' active' : ''}`;
+
+const getNavLinkStyle = ({ isActive }) => (isActive ? activeStyles : undefined);
+
 const Header = () => {
 	useEffect(() => {
 		// Trigger marquee sequence animation on page load
@@ -38,12 +43,21 @@ const Header = () => {
 					{/* Navigation Menu */}
 					<ul className="nav-menu">
 						<li>
-							<NavLink 
-								className="nav-link art-deco-title brass-button" 
-								to="/about" 
-								activeStyle={activeStyles}
+							<NavLink
+								className={getNavLinkClass}
+								style={getNavLinkStyle}
+								to="/"
 							>
-								About
+								Film
+							</NavLink>
+						</li>
+						<li>
+							<NavLink
+								className={getNavLinkClass}
+								style={getNavLinkStyle}
+								to="/about"
+							>
+								Supporting Statement
 							</NavLink>
 						</li>
 					</ul>

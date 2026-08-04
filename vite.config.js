@@ -1,14 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { ghPages } from 'vite-plugin-gh-pages'
 
 export default defineConfig({
     plugins: [
         react(),
-        ghPages({
-            branch: 'gh-pages',
-            dir: 'dist'
-        })
     ],
     define: {
         global: 'globalThis',
@@ -24,8 +19,10 @@ export default defineConfig({
         minify: 'esbuild',
         rollupOptions: {
             output: {
-                manualChunks: {
-                    vendor: ['react', 'react-dom', 'react-router-dom']
+                manualChunks(id) {
+                    if (id.includes('/node_modules/react') || id.includes('/node_modules/react-dom') || id.includes('/node_modules/react-router')) {
+                        return 'vendor';
+                    }
                 },
                 chunkFileNames: 'assets/[name]-[hash].js',
                 entryFileNames: 'assets/[name]-[hash].js',
@@ -35,6 +32,14 @@ export default defineConfig({
         // Optimize asset handling
         assetsInlineLimit: 4096, // Inline assets smaller than 4kb
         chunkSizeWarningLimit: 1000
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                // Legacy Materialize CSS uses deprecated Sass APIs — silence until migrated
+                silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'slash-div'],
+            },
+        },
     },
     assetsInclude: ['**/*.mp4', '**/*.mp3', '**/*.woff', '**/*.woff2'],
     base: '/rose-hobart/',

@@ -5,8 +5,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NearestCopy } from 'gl-react';
-import { Surface } from 'gl-react-dom';
+// import { NearestCopy } from 'gl-react';
+// import { Surface } from 'gl-react-dom';
 import StaticBlurMap from './StaticBlurMap/StaticBlurMap.jsx';
 import FloatSlider from './FloatSlider/FloatSlider';
 import VideoControlButton from './VideoControlButton/VideoControlButton';
@@ -15,10 +15,9 @@ import colorScales from '../VideoPlayer/helper/colorScales';
 import hash from '../../helper/hash';
 import './VideoControls.scss';
 
-const ToolboxFooter = ({ color }) => (
-	<Surface style={{ minWidth: '100%' }} width={400} height={20}>
-		<NearestCopy>{colorScales[color]}</NearestCopy>
-	</Surface>
+// ToolboxFooter requires gl-react — re-enable when WebGL support is restored
+const ToolboxFooter = ({ color }) => ( // eslint-disable-line no-unused-vars
+	<div style={{ minWidth: '100%', height: 20, background: '#333' }} aria-label={`Color scale: ${color}`} />
 );
 
 ToolboxFooter.propTypes = {
