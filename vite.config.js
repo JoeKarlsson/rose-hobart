@@ -1,9 +1,21 @@
+import { copyFileSync } from 'fs'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+
+// GitHub Pages has no server-side routing — any direct URL hit on a sub-path
+// returns a 404. Copying index.html → 404.html makes Pages serve the React
+// bundle for every unknown path, letting React Router handle the route.
+const ghPagesSpaPlugin = {
+    name: 'gh-pages-spa-404',
+    closeBundle() {
+        copyFileSync('dist/index.html', 'dist/404.html')
+    }
+}
 
 export default defineConfig({
     plugins: [
         react(),
+        ghPagesSpaPlugin,
     ],
     define: {
         global: 'globalThis',
