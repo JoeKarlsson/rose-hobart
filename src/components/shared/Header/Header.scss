@@ -53,17 +53,21 @@
 			width: 100%;
 			max-width: 100% !important;
 			margin: 0 !important;
-			padding: 0 !important; // No extra horizontal padding — nav handles it
-			display: flex !important;
+			padding: 0 !important;
+			// 3-column grid: left spacer | logo | nav
+			// Logo sits in the center column; nav in the right column.
+			// This prevents the nav from overlapping the logo (the old
+			// position:absolute approach caused the overlap).
+			display: grid !important;
+			grid-template-columns: 1fr auto 1fr;
 			align-items: center;
-			justify-content: center;
-			position: relative;
 			height: auto !important;
 			background: transparent !important;
 		}
 
 		// Main Brand Logo - Theater Marquee
 		.brand-logo {
+			grid-column: 2; // center column of the 3-col grid
 			display: flex !important;
 			flex-direction: column;
 			align-items: center;
@@ -122,10 +126,10 @@
 		
 		// Navigation Menu
 		.nav-menu {
-			position: absolute;
-			right: 0; // Right edge of the nav-wrapper (which already has 10vw padding)
-			top: 50%;
-			transform: translateY(-50%);
+			grid-column: 3; // right column of the 3-col grid
+			justify-self: end;
+			position: static;
+			transform: none;
 			display: flex;
 			list-style: none;
 			margin: 0;
@@ -140,7 +144,7 @@
 				text-decoration: none;
 				transition: all 0.3s ease;
 				position: relative;
-				padding: 8px 16px !important; // Smaller padding for nav links
+				padding: 8px 16px !important;
 				font-size: 0.8rem;
 
 				&:hover {
@@ -167,14 +171,15 @@
 			padding: 12px 5vw !important;
 
 			.nav-wrapper {
+				// Switch from 3-col grid back to a simple vertical stack on mobile
+				display: flex !important;
 				flex-direction: column;
 				align-items: center;
 				gap: 12px;
 			}
 
 			.brand-logo {
-				// width: 100% is the key fix — logo was sized by content and overflowed.
-				// With explicit width it fills the nav and the flex column centers it cleanly.
+				grid-column: unset;
 				width: 100% !important;
 				padding: 10px 24px !important;
 				border-radius: 6px;
@@ -191,6 +196,8 @@
 			}
 
 			.nav-menu {
+				grid-column: unset;
+				justify-self: unset;
 				position: static;
 				transform: none;
 				justify-content: center;

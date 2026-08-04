@@ -34,6 +34,7 @@ const EFFECTS = [
 const Home = () => {
 	const videoRef = useRef(null);
 	const audioRef = useRef(null);
+	const musicAutoStarted = useRef(false);
 
 	const [tintColor,     setTintColor]     = useState('#000000');
 	const [tintOpacity,   setTintOpacity]   = useState(0);
@@ -58,6 +59,26 @@ const Home = () => {
 			audio.src = '';
 		};
 	}, []);
+
+	// Auto-start Rose Hobart (1936) the first time the video plays
+	useEffect(() => {
+		const video = videoRef.current;
+		if (!video) return;
+		const onFirstPlay = () => {
+			if (musicAutoStarted.current) return;
+			musicAutoStarted.current = true;
+			const audio = audioRef.current;
+			if (!audio) return;
+			audio.src = TRACKS[1].src; // Rose Hobart (1936)
+			audio.volume = musicVolume;
+			audio.play().then(() => {
+				setActiveTrack(1);
+				setMusicPlaying(true);
+			}).catch(() => {});
+		};
+		video.addEventListener('play', onFirstPlay);
+		return () => video.removeEventListener('play', onFirstPlay);
+	}, [musicVolume]);
 
 	const applyFilters = useCallback((settings) => {
 		const video = videoRef.current;
