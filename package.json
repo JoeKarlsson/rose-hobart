@@ -34,7 +34,7 @@
     "sass": "^1.102.0",
     "vite": "^8.2.0",
     "vite-plugin-gh-pages": "^1.0.1",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.0"
   },
   "keywords": [
     "react",
