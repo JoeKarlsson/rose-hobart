@@ -3,15 +3,18 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect, vi } from 'vitest';
 import Home from './Home';
+import { AudioProvider } from '../../../context/AudioContext';
 
 // Vite resolves .mp4 to a URL string in tests — stub it explicitly so the
 // <source src> is predictable and the test doesn't depend on asset pipeline output.
 vi.mock('../../../assets/video/video.mp4', () => ({ default: 'test-video.mp4' }));
 
 const renderHome = () => render(
-	<MemoryRouter>
-		<Home />
-	</MemoryRouter>
+	<AudioProvider>
+		<MemoryRouter>
+			<Home />
+		</MemoryRouter>
+	</AudioProvider>
 );
 
 describe('Home', () => {
@@ -29,9 +32,10 @@ describe('Home', () => {
 			expect(source).toBeInTheDocument();
 		});
 
-		it('renders all six color preset buttons', () => {
+		it('renders all seven tint preset buttons', () => {
 			renderHome();
-			['Normal', 'Vintage', 'High Contrast', 'Black & White', 'Inverted', 'Blue Tint'].forEach(name => {
+			// Buttons use title={preset.name} — no text content — so accessible name comes from title
+			['None', 'Prussian', 'Violet', 'Rose', 'Amber', 'Jade', 'Crimson'].forEach(name => {
 				expect(screen.getByRole('button', { name })).toBeInTheDocument();
 			});
 		});
@@ -43,9 +47,10 @@ describe('Home', () => {
 			});
 		});
 
-		it('renders all six effect sliders', () => {
+		it('renders all eight sliders', () => {
 			renderHome();
-			expect(screen.getAllByRole('slider')).toHaveLength(6);
+			// 1 tint intensity + 1 music volume + 6 effect sliders
+			expect(screen.getAllByRole('slider')).toHaveLength(8);
 		});
 
 		it('shows initial slider label values', () => {
@@ -59,50 +64,46 @@ describe('Home', () => {
 		});
 	});
 
-	describe('color presets', () => {
-		it('clicking Vintage updates slider labels', () => {
+	describe('color tint presets', () => {
+		it('clicking a tint preset marks its button active', () => {
 			renderHome();
-			fireEvent.click(screen.getByRole('button', { name: 'Vintage' }));
-			expect(screen.getByText('Brightness: 0.90')).toBeInTheDocument();
-			expect(screen.getByText('Contrast: 1.20')).toBeInTheDocument();
-			expect(screen.getByText('Sepia: 0.30')).toBeInTheDocument();
+			const btn = screen.getByRole('button', { name: 'Prussian' });
+			fireEvent.click(btn);
+			expect(btn.classList.contains('active')).toBe(true);
 		});
 
-		it('clicking Black & White sets saturation to zero', () => {
-			renderHome();
-			fireEvent.click(screen.getByRole('button', { name: 'Black & White' }));
-			expect(screen.getByText('Saturation: 0.00')).toBeInTheDocument();
+		it('clicking None sets tint overlay opacity to 0', () => {
+			const { container } = renderHome();
+			fireEvent.click(screen.getByRole('button', { name: 'Prussian' }));
+			fireEvent.click(screen.getByRole('button', { name: 'None' }));
+			const overlay = container.querySelector('.tint-overlay');
+			expect(parseFloat(overlay.style.opacity)).toBe(0);
 		});
 
-		it('clicking Inverted sets invert to On', () => {
-			renderHome();
-			fireEvent.click(screen.getByRole('button', { name: 'Inverted' }));
-			expect(screen.getByText('Invert: On')).toBeInTheDocument();
+		it('clicking a preset applies a non-zero opacity to the overlay', () => {
+			const { container } = renderHome();
+			fireEvent.click(screen.getByRole('button', { name: 'Prussian' }));
+			const overlay = container.querySelector('.tint-overlay');
+			expect(parseFloat(overlay.style.opacity)).toBeGreaterThan(0);
 		});
 
-		it('clicking Normal after Vintage resets all labels', () => {
+		it('clicking a second preset deactivates the first', () => {
 			renderHome();
-			fireEvent.click(screen.getByRole('button', { name: 'Vintage' }));
-			fireEvent.click(screen.getByRole('button', { name: 'Normal' }));
-			expect(screen.getByText('Brightness: 1.00')).toBeInTheDocument();
-			expect(screen.getByText('Sepia: 0.00')).toBeInTheDocument();
-		});
-
-		it('clicking a preset applies CSS filter to the video element', () => {
-			renderHome();
-			fireEvent.click(screen.getByRole('button', { name: 'Vintage' }));
-			const video = document.querySelector('video');
-			expect(video.style.filter).toContain('brightness(0.9)');
-			expect(video.style.filter).toContain('sepia(0.3)');
-			expect(video.style.filter).toContain('saturate(0.8)');
+			const prussian = screen.getByRole('button', { name: 'Prussian' });
+			const violet = screen.getByRole('button', { name: 'Violet' });
+			fireEvent.click(prussian);
+			fireEvent.click(violet);
+			expect(prussian.classList.contains('active')).toBe(false);
+			expect(violet.classList.contains('active')).toBe(true);
 		});
 	});
 
 	describe('effect sliders', () => {
 		it('changing brightness slider updates the label and CSS filter', () => {
 			renderHome();
+			// DOM order: [0]=tint intensity, [1]=music volume, [2]=brightness
 			const sliders = screen.getAllByRole('slider');
-			const brightnessSlider = sliders[0];
+			const brightnessSlider = sliders[2];
 			fireEvent.change(brightnessSlider, { target: { value: '1.5' } });
 			expect(screen.getByText('Brightness: 1.50')).toBeInTheDocument();
 			const video = document.querySelector('video');
@@ -111,8 +112,9 @@ describe('Home', () => {
 
 		it('changing hue slider updates the label', () => {
 			renderHome();
+			// DOM order: [0]=tint intensity, [1]=volume, [2]=brightness, [3]=contrast, [4]=saturation, [5]=hue
 			const sliders = screen.getAllByRole('slider');
-			const hueSlider = sliders[3];
+			const hueSlider = sliders[5];
 			fireEvent.change(hueSlider, { target: { value: '180' } });
 			expect(screen.getByText('Hue: 180°')).toBeInTheDocument();
 		});
