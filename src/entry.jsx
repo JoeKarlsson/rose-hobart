@@ -16,7 +16,7 @@ const root = createRoot(container);
 
 const App = () => {
 	return (
-		<Router basename="/rose-hobart">
+		<Router>
 			<ErrorBoundary>
 				<AudioProvider>
 					<PrimaryLayout />

@@ -28,7 +28,6 @@ export default defineConfig({
     build: {
         outDir: 'dist',
         sourcemap: false, // Disable sourcemaps for production
-        minify: 'esbuild',
         rollupOptions: {
             output: {
                 manualChunks(id) {
@@ -54,7 +53,7 @@ export default defineConfig({
         },
     },
     assetsInclude: ['**/*.mp4', '**/*.mp3', '**/*.woff', '**/*.woff2'],
-    base: '/rose-hobart/',
+    base: '/',
     // Optimize dependencies
     optimizeDeps: {
         include: ['react', 'react-dom', 'react-router-dom']
