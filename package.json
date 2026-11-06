@@ -12,7 +12,7 @@
     "test:e2e": "playwright test",
     "test:visual": "docker run --rm --ipc=host -v \"$PWD\":/work -v /work/node_modules -w /work mcr.microsoft.com/playwright:v1.65.0-noble sh -c 'npm ci --ignore-scripts && npx playwright test visual \"$@\"' sh",
     "test:coverage": "vitest run src --coverage",
-    "deploy": "astro build && gh-pages -d dist --nojekyll"
+    "deploy": "astro build && gh-pages -d dist --nojekyll --dotfiles"
   },
   "devDependencies": {
     "@astrojs/sitemap": "3.7.4",
