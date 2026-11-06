@@ -1,0 +1,1 @@
+import{t as e}from"./analytics.ClseCUGk.js";addEventListener(`load`,()=>e(`404`,{path:location.pathname}));
