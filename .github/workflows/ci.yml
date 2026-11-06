@@ -52,7 +52,11 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # gh-pages can't parse "[bot]" in --user, so it commits as the git identity set here
+      - run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898099+github-actions[bot]@users.noreply.github.com"
       - name: Build and publish to the gh-pages branch
-        run: npm run deploy -- --user "github-actions[bot] <41898099+github-actions[bot]@users.noreply.github.com>" --repo "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        run: npm run deploy -- --repo "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
