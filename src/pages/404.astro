@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Reel not found: Rose Hobart" description="This page isn't on the program. Go back to the film and run the projector yourself." noindex mainClass="prose">
+	<h1>This reel isn't on the program</h1>
+	<p>The page you asked for doesn't exist. <a href="/">Go back to the film</a>.</p>
+	<script>
+		import { track } from '../scripts/analytics';
+		addEventListener('load', () => track('404', { path: location.pathname }));
+	</script>
+</Base>

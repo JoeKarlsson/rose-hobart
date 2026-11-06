@@ -1,0 +1,107 @@
+---
+import '../styles/base.css';
+
+interface Props {
+	title: string;
+	description: string;
+	noindex?: boolean;
+	/** The main element's class, so a page can lay itself out */
+	mainClass?: string;
+}
+
+const { title, description, noindex = false, mainClass } = Astro.props;
+// The file build format gives paths like /about.html and /index.html; the live URLs are /about and /
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$|\/$/, '');
+const canonical = new URL(path || '/', Astro.site);
+const ogImage = new URL('/og.png', Astro.site);
+const isProduction = import.meta.env.PROD;
+// Styles and scripts are bundled files; media and fonts are served from this site.
+// Plausible is the only third party. Vite's dev server injects inline styles, so the
+// policy only goes on built pages.
+const csp = [
+	"default-src 'self'",
+	"script-src 'self' https://plausible.joekarlsson.io",
+	"connect-src 'self' https://plausible.joekarlsson.io",
+	"img-src 'self' data:",
+	"media-src 'self'",
+	"style-src 'self'",
+	"font-src 'self'",
+	"base-uri 'self'",
+	"form-action 'none'",
+	"object-src 'none'",
+].join('; ');
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		{isProduction && <meta http-equiv="Content-Security-Policy" content={csp} />}
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="author" content="Joe Karlsson and Laurel Karlsson" />
+		{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+
+		<meta name="color-scheme" content="only dark" />
+		<meta name="darkreader-lock" />
+		<meta name="theme-color" content="#0b0907" />
+
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+
+		<link rel="preload" href="/fonts/limelight-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<slot name="head" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Rose Hobart" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Rose Hobart in a doorway, tinted Cornell blue, under the film's title" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@joekarlsson1" />
+		<meta name="twitter:creator" content="@joekarlsson1" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:image:alt" content="Rose Hobart in a doorway, tinted Cornell blue, under the film's title" />
+
+		<script src="../scripts/analytics.ts"></script>
+	</head>
+	<body>
+		<a class="skip-link" href="#main">Skip to content</a>
+		<header class="site-header">
+			<a class="marquee" href="/">
+				<span class="marquee-title">Rose Hobart</span>
+				<span class="marquee-credit">Joseph Cornell, 1936</span>
+			</a>
+			<nav aria-label="Site">
+				<ul>
+					<li><a href="/" aria-current={path === '' ? 'page' : undefined}>The film</a></li>
+					<li><a href="/about" aria-current={path === '/about' ? 'page' : undefined}>About</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main id="main" class={mainClass}>
+			<slot />
+		</main>
+		<footer class="site-footer">
+			<p>
+				A digital humanities project by
+				<a href="https://www.joekarlsson.com/">Joe Karlsson</a> and Laurel Karlsson, 2018–2026.
+				For study.
+			</p>
+			<p><a href="https://github.com/JoeKarlsson/rose-hobart">Source on GitHub</a></p>
+		</footer>
+	</body>
+</html>

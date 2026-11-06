@@ -1,0 +1,180 @@
+---
+import Base from '../layouts/Base.astro';
+import {
+	EFFECTS,
+	GELS,
+	GROUP_LABELS,
+	PRESETS,
+	SPEED,
+	SPEED_DETENTS,
+	formatEffect,
+	formatSpeed,
+	type EffectGroup,
+} from '../theater/effects';
+import { FILM_TRACK_ID, TRACKS } from '../theater/tracks';
+import '../styles/theater.css';
+
+const groups = Object.keys(GROUP_LABELS) as EffectGroup[];
+const groupNotes: Partial<Record<EffectGroup, string>> = {
+	print: 'The circulating print has a blue gel baked in. Turn print color down to strip it back to black and white, then project through your own gel.',
+	glitch: 'Damage only a digital copy can take. Tears and corruption move the picture but never flash more than twice a second.',
+};
+---
+
+<Base
+	title="Rose Hobart: project Joseph Cornell's 1936 film yourself"
+	description="Run the projector for Joseph Cornell's Rose Hobart: pick the gel, the speed and the record, add film damage or glitches, and watch it full screen."
+	mainClass="theater-page"
+>
+	<link slot="head" rel="preload" href="/media/poster.webp" as="image" fetchpriority="high" />
+
+	<h1 class="visually-hidden">Rose Hobart, projected by you</h1>
+
+	<div class="stage" id="stage">
+		<div class="curtain curtain-left" aria-hidden="true"></div>
+		<div class="curtain curtain-right" aria-hidden="true"></div>
+		<div class="screen">
+			<video
+				id="film"
+				src="/media/rose-hobart.mp4"
+				poster="/media/poster.webp"
+				width="496"
+				height="360"
+				preload="none"
+				playsinline
+				aria-describedby="film-description"></video>
+			<canvas id="projection" width="992" height="720" aria-hidden="true"></canvas>
+		</div>
+		<p id="film-description" class="visually-hidden">
+			Rose Hobart, Joseph Cornell's 1936 film, recut from the 1931 jungle melodrama East of Borneo. It has no dialogue.
+		</p>
+
+		<div class="transport" id="transport">
+			<button type="button" class="button" id="play" aria-keyshortcuts="Space">Play</button>
+			<label class="visually-hidden" for="scrub">Position in the film</label>
+			<input type="range" id="scrub" min="0" max="1124" step="1" value="0" />
+			<output id="time" for="scrub">0:00 / 18:44</output>
+			<button type="button" class="button" id="controls-toggle" aria-expanded="false" aria-controls="panel">Controls</button>
+			<button type="button" class="button" id="theater" aria-pressed="false" aria-keyshortcuts="T">Theater</button>
+			<button type="button" class="button" id="fullscreen" aria-keyshortcuts="F">Full screen</button>
+		</div>
+
+		<div class="panel" id="panel">
+			<button type="button" class="button" id="controls-close">Close controls</button>
+			<p id="effects-note" class="note" role="status" hidden></p>
+
+			<section class="panel-section" aria-labelledby="presets-heading">
+				<h2 id="presets-heading">Programs</h2>
+				<div class="button-row">
+					{PRESETS.map((preset) => (
+						<button type="button" class="button" data-preset={preset.id} aria-pressed={preset.id === 'circulated' ? 'true' : 'false'}>
+							{preset.label}
+						</button>
+					))}
+				</div>
+			</section>
+
+			<section class="panel-section" aria-labelledby="speed-heading">
+				<h2 id="speed-heading">Speed</h2>
+				<div class="slider">
+					<label for="speed">Projector speed</label>
+					<output id="speed-value" for="speed">{formatSpeed(1)}</output>
+					<input type="range" id="speed" min={SPEED.min} max={SPEED.max} step={SPEED.step} value="1" list="speed-detents" aria-keyshortcuts="[ ]" />
+					<datalist id="speed-detents">
+						{SPEED_DETENTS.map((d) => <option value={d.value} label={d.label} />)}
+					</datalist>
+				</div>
+				<div class="button-row">
+					{SPEED_DETENTS.map((d) => (
+						<button type="button" class="button" data-speed={d.value}>{d.label}</button>
+					))}
+				</div>
+			</section>
+
+			<section class="panel-section" aria-labelledby="gel-heading">
+				<h2 id="gel-heading">Gel</h2>
+				<div class="gels" role="group" aria-label="Gel color">
+					{GELS.map((gel) => (
+						<button type="button" class="gel" data-gel={gel.id} data-color={gel.color} aria-pressed={gel.id === 'none' ? 'true' : 'false'}>
+							<span class="gel-swatch" data-swatch={gel.id}></span>
+							{gel.label}
+						</button>
+					))}
+					<label class="gel gel-custom">
+						<input type="color" id="gel-custom" value="#7a3fd0" />
+						Your own
+					</label>
+				</div>
+			</section>
+
+			{groups.map((group) => (
+				<details class="panel-section" open={group !== 'glitch'}>
+					<summary><h2>{GROUP_LABELS[group]}</h2></summary>
+					{groupNotes[group] && <p class="note">{groupNotes[group]}</p>}
+					<div class="sliders">
+						{EFFECTS.filter((e) => e.group === group).map((effect) => (
+							<div class="slider">
+								<label for={`fx-${effect.key}`}>{effect.label}</label>
+								<output id={`fx-${effect.key}-value`} for={`fx-${effect.key}`}>{formatEffect(effect, effect.initial)}</output>
+								<input
+									type="range"
+									id={`fx-${effect.key}`}
+									data-effect={effect.key}
+									min={effect.min}
+									max={effect.max}
+									step={effect.step}
+									value={effect.initial}
+								/>
+							</div>
+						))}
+					</div>
+				</details>
+			))}
+
+			<section class="panel-section" aria-labelledby="music-heading">
+				<h2 id="music-heading">Music</h2>
+				<p class="note">
+					Cornell changed the records from screening to screening. The 78s here were released between 1919 and 1924, and play one after another.
+				</p>
+				<fieldset class="tracks">
+					<legend class="visually-hidden">Accompaniment</legend>
+					{TRACKS.map((track) => (
+						<label class="track">
+							<input type="radio" name="track" value={track.id} checked={track.id === FILM_TRACK_ID} />
+							<span class="track-title">{track.title}</span>
+							<span class="track-artist">{track.artist}{track.year && `, ${track.year}`}</span>
+						</label>
+					))}
+				</fieldset>
+				<div class="slider">
+					<label for="volume">Volume</label>
+					<output id="volume-value" for="volume">80%</output>
+					<input type="range" id="volume" min="0" max="1" step="0.01" value="0.8" />
+				</div>
+				<p id="now-playing" class="now-playing" aria-live="polite"></p>
+			</section>
+
+			<div class="button-row panel-end">
+				<button type="button" class="button" id="reset" aria-keyshortcuts="R">Reset everything</button>
+				<button type="button" class="button" id="help-open" aria-keyshortcuts="?">Keyboard shortcuts</button>
+			</div>
+		</div>
+	</div>
+
+	<dialog id="help" aria-labelledby="help-heading">
+		<h2 id="help-heading">Keyboard shortcuts</h2>
+		<dl class="shortcuts">
+			<dt>Space</dt><dd>Play or pause</dd>
+			<dt>F</dt><dd>Full screen</dd>
+			<dt>T</dt><dd>Theater mode</dd>
+			<dt>[ and ]</dt><dd>Slower and faster</dd>
+			<dt>← and →</dt><dd>Back and forward ten seconds</dd>
+			<dt>M</dt><dd>Mute</dd>
+			<dt>R</dt><dd>Reset everything</dd>
+			<dt>?</dt><dd>This list</dd>
+		</dl>
+		<button type="button" class="button" id="help-close">Close</button>
+	</dialog>
+
+	<script src="../theater/stage.ts"></script>
+</Base>
