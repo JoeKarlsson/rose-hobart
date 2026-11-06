@@ -21,8 +21,10 @@ npm install
 npm run dev               # http://localhost:4321
 npm test                  # unit tests (Vitest)
 npx playwright install chromium webkit
-npx playwright test       # browser tests against the built site: desktop, iPhone, Pixel, axe, metadata
-node tools/render-images.mjs   # re-render icons and the share card after changing them
+npx playwright test       # browser tests against the built site: desktop, iPhone, Pixel, axe, metadata, links
+npm run test:visual       # screenshot tests, in Playwright's Linux image (needs Docker); add -- --update-snapshots after a deliberate change
+npm run test:coverage     # unit test coverage
+node tools/render-images.mjs   # re-render icons, the share card and .github/social-preview.png after changing them
 ```
 
 ## Deploy

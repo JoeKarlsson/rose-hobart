@@ -44,3 +44,10 @@ export function findTrack(id: string): Track {
 	if (!track) throw new Error(`Unknown track: ${id}`);
 	return track;
 }
+
+/** Previous and next on the record player: through every choice, wrapping at the ends */
+export function stepTrack(currentId: string, direction: 1 | -1): Track {
+	const index = TRACKS.findIndex((t) => t.id === currentId);
+	if (index === -1) throw new Error(`Unknown track: ${currentId}`);
+	return TRACKS[(index + direction + TRACKS.length) % TRACKS.length];
+}

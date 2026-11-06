@@ -1,20 +1,37 @@
-/* The stage: velvet tabs either side of the screen, the transport under it, then the
-   projection booth panel. Theater mode turns the stage into the whole window. */
+/* Three layouts for the stage:
+   - default: the booth (controls) sits beside the screen and scrolls on its own while
+     the film stays in view, so every slider can be watched as it moves. On phones the
+     film sticks to the top and the booth scrolls under it.
+   - theater (html.theater): the film spreads across the page, the booth moves below.
+   - full screen (html.immersive): the film fills the display; the booth is a drawer. */
 
 .theater-page {
-	max-width: 1280px;
+	max-width: 1440px;
 	margin: 0 auto;
-	padding: var(--space-5) var(--gutter) 0;
+	padding: var(--space-4) var(--gutter) 0;
 }
 
 .stage {
+	--transport-height: 76px;
+	--booth-width: 400px;
 	display: grid;
-	grid-template-columns: minmax(16px, 1fr) minmax(0, 820px) minmax(16px, 1fr);
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-4);
+	background: var(--color-house);
+}
+
+.projection {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	display: grid;
+	grid-template-columns: 12px minmax(0, 1fr) 12px;
 	grid-template-areas:
 		'left screen right'
-		'transport transport transport'
-		'panel panel panel';
+		'transport transport transport';
+	padding-top: max(var(--space-2), env(safe-area-inset-top));
 	background: var(--color-house);
+	border-bottom: var(--rule);
 }
 
 .curtain {
@@ -50,10 +67,13 @@
 
 .screen {
 	grid-area: screen;
+	justify-self: center;
 	position: relative;
 	aspect-ratio: var(--screen-ratio);
 	width: 100%;
-	background: #000;
+	/* Never taller than the window leaves room for */
+	max-width: calc((100dvh - var(--transport-height) - 3rem) * 496 / 360);
+	background: var(--color-screen);
 	border: var(--rule);
 }
 
@@ -113,43 +133,55 @@
 /* ---- The booth panel ---- */
 
 .panel {
-	grid-area: panel;
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-	gap: var(--space-5) var(--space-6);
-	padding-top: var(--space-5);
-	border-top: var(--rule);
+	align-content: start;
+	gap: var(--space-4);
 }
 
-.panel-section {
-	min-width: 0;
+/* Tabs: Projector holds the master controls; the rest hold every slider */
+.tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 var(--space-4);
+	border-bottom: var(--rule);
 }
 
-.panel-section > summary {
+.tabs [role='tab'] {
+	min-height: 44px;
+	padding: var(--space-2) 0;
+	border: 0;
+	background: none;
+	color: var(--color-ink);
+	font: inherit;
 	cursor: pointer;
-	list-style-position: outside;
-	margin-left: 1.1em;
 }
 
-.panel-section > summary h2 {
-	display: inline;
-}
-
-.panel-section > summary::marker {
+.tabs [role='tab'][aria-selected='true'] {
 	color: var(--color-gold);
+	text-decoration: underline;
+	text-underline-offset: 0.35em;
 }
 
-.panel-section[open] > summary {
-	margin-bottom: var(--space-3);
+.pane {
+	display: grid;
+	gap: var(--space-5);
+}
+
+.pane[hidden] {
+	display: none;
+}
+
+.pane:not(#pane-projector) {
+	gap: var(--space-3);
 }
 
 .note {
 	font-size: var(--text-sm);
 	max-width: var(--measure);
+	margin: 0;
 }
 
 .note[role='status']:not([hidden]) {
-	grid-column: 1 / -1;
 	padding: var(--space-3);
 	background: var(--color-booth);
 	border-left: 4px solid var(--color-gold);
@@ -159,20 +191,11 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--space-2);
-	margin-top: var(--space-3);
 }
 
-.panel-section .button-row:first-of-type {
-	margin-top: 0;
-}
-
-.panel-end {
-	grid-column: 1 / -1;
-}
-
-.sliders {
-	display: grid;
-	gap: var(--space-3);
+.button.small {
+	min-height: 40px;
+	padding: var(--space-1) var(--space-3);
 }
 
 .slider {
@@ -190,86 +213,105 @@
 	font-variant-numeric: tabular-nums;
 }
 
-.gels {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-	gap: var(--space-2);
+.master h2 {
+	margin: 0;
 }
 
-.gel {
+.master output {
+	color: var(--color-gold);
+}
+
+.master + .button-row {
+	margin-top: var(--space-2);
+}
+
+.gel-block h2 {
+	margin-bottom: var(--space-2);
+}
+
+.swatches {
 	display: flex;
-	align-items: center;
+	flex-wrap: wrap;
 	gap: var(--space-2);
+	margin-bottom: var(--space-2);
+}
+
+.swatch {
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	border: 1px solid var(--color-ink);
+	border-radius: var(--radius);
+	background: var(--color-booth);
+	cursor: pointer;
+}
+
+/* "No gel" is an empty frame with a slash through it */
+.swatch[data-gel='none'] {
+	position: relative;
+}
+
+.swatch[data-gel='none']::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	top: 4px;
+	bottom: 4px;
+	width: 2px;
+	background: var(--color-ink);
+	transform: translateX(-50%) rotate(45deg);
+}
+
+.swatch[aria-pressed='true'],
+.swatch.is-active {
+	outline: 3px solid var(--color-gold);
+	outline-offset: 2px;
+}
+
+.player {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: center;
+	gap: var(--space-2) var(--space-3);
+	margin-bottom: var(--space-2);
+}
+
+.now-playing {
+	margin: 0;
+	min-width: 0;
+	display: grid;
+}
+
+.now-playing strong {
+	font-weight: 500;
+	color: var(--color-gold);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.now-playing span {
+	font-size: var(--text-sm);
+}
+
+.player select {
+	grid-column: 1 / -1;
 	min-height: 44px;
-	padding: var(--space-2);
+	padding: 0 var(--space-2);
 	border: 1px solid var(--color-gold);
 	border-radius: var(--radius);
 	background: var(--color-booth);
 	color: var(--color-ink);
 	font: inherit;
 	font-size: var(--text-sm);
-	text-align: left;
-	cursor: pointer;
 }
 
-.gel[aria-pressed='true'],
-.gel.is-active {
-	background: var(--color-gold);
-	color: var(--color-on-gold);
+.player .volume {
+	grid-column: 1 / -1;
 }
 
-.gel-swatch {
-	flex: none;
-	width: 24px;
-	height: 24px;
-	border: 1px solid var(--color-ink);
-	border-radius: var(--radius);
-}
-
-.gel-custom input {
-	flex: none;
-	width: 28px;
-	height: 28px;
-	padding: 0;
-	border: 1px solid var(--color-ink);
-	border-radius: var(--radius);
-	background: none;
-	cursor: pointer;
-}
-
-.tracks {
-	display: grid;
-	gap: var(--space-1);
-	margin: 0 0 var(--space-4);
-	padding: 0;
-	border: 0;
-}
-
-.track {
-	display: grid;
-	grid-template-columns: 20px 1fr;
-	gap: 0 var(--space-3);
-	align-items: center;
-	padding: var(--space-2) 0;
-	cursor: pointer;
-}
-
-.track input {
-	grid-row: span 2;
-}
-
-.track-artist {
-	font-size: var(--text-sm);
-}
-
-.track:has(input:checked) .track-title {
-	color: var(--color-gold);
-}
-
-.now-playing {
-	margin-top: var(--space-3);
-	font-size: var(--text-sm);
-	min-height: 1.6em;
+.record-player h2 {
+	margin-bottom: var(--space-2);
 }
 
 /* ---- Keyboard help ---- */
@@ -283,7 +325,7 @@ dialog {
 }
 
 dialog::backdrop {
-	background: #000c;
+	background: var(--color-backdrop);
 }
 
 .shortcuts {
@@ -301,99 +343,157 @@ dialog::backdrop {
 	margin: 0;
 }
 
-/* ---- Theater mode ---- */
+/* ---- Phones: the film is capped so the booth always shows below it ---- */
 
-html.theater {
+@media (max-width: 959px) {
+	.screen {
+		max-width: min(100%, calc(42dvh * 496 / 360));
+	}
+
+	/* Theater mode is what phones already get */
+	#theater {
+		display: none;
+	}
+}
+
+/* ---- Wide screens: the booth beside the screen ---- */
+
+@media (min-width: 960px) {
+	html:not(.theater) .stage {
+		grid-template-columns: minmax(0, 1fr) var(--booth-width);
+		align-items: start;
+		gap: var(--space-6);
+	}
+
+	html:not(.theater) .projection {
+		top: var(--space-3);
+		grid-template-columns: minmax(16px, 1fr) auto minmax(16px, 1fr);
+		border-bottom: 0;
+	}
+
+	html:not(.theater) .screen {
+		width: min(
+			/* Room for the header too, so the play bar shows on first load */
+			calc((100dvh - var(--transport-height) - 13rem) * 496 / 360),
+			calc(100vw - var(--booth-width) - 2 * var(--gutter) - var(--space-6) - 32px)
+		);
+		max-width: none;
+	}
+
+	/* Theater mode: the film across the page, black to the edges */
+	html.theater .theater-page {
+		max-width: none;
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	html.theater .projection {
+		position: static;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+		background: var(--color-screen);
+		border-bottom: var(--rule);
+	}
+
+	html.theater .screen {
+		width: min(calc((100dvh - 17rem) * 496 / 360), 100vw);
+		max-width: none;
+		border: 0;
+	}
+
+	html.theater .transport {
+		padding-left: var(--gutter);
+		padding-right: var(--gutter);
+	}
+
+	html.theater .panel {
+		max-width: 720px;
+		width: 100%;
+		margin: 0 auto;
+		padding: 0 var(--gutter);
+	}
+}
+
+/* ---- Full screen ---- */
+
+html.immersive {
 	overflow: hidden;
 }
 
-html.theater .site-header,
-html.theater .site-footer,
-html.theater .skip-link {
+html.immersive .site-header,
+html.immersive .site-footer,
+html.immersive .skip-link {
 	display: none;
 }
 
-html.theater .stage {
+html.immersive .projection {
 	position: fixed;
 	inset: 0;
 	z-index: 10;
 	/* The screen takes the most room it can at the film's ratio, above the transport */
-	--transport-height: 76px;
 	grid-template-columns:
 		minmax(0, 1fr)
-		min(calc((100dvh - var(--transport-height)) * 496 / 360), 100vw - 2rem)
+		min(calc((100dvh - var(--transport-height)) * 496 / 360), 100vw)
 		minmax(0, 1fr);
 	grid-template-rows: minmax(0, 1fr) auto;
-	grid-template-areas:
-		'left screen right'
-		'transport transport transport';
 	padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-	background: #000;
-}
-
-html.theater .screen {
-	place-self: center;
+	background: var(--color-screen);
 	border: 0;
 }
 
-html.theater .transport {
+html.immersive .screen {
+	place-self: center;
+	width: 100%;
+	max-width: none;
+	border: 0;
+}
+
+html.immersive .transport {
 	padding: var(--space-3) var(--gutter);
-	background: #000;
+	background: var(--color-screen);
 }
 
-html.theater #controls-toggle,
-html.theater #controls-close {
-	display: inline-block;
-}
-
-html.theater #controls-close {
-	justify-self: start;
-}
-
-html.theater .panel {
+html.immersive #theater {
 	display: none;
 }
 
-html.theater .stage.controls-open .panel {
+html.immersive #controls-toggle,
+html.immersive #controls-close {
+	display: inline-block;
+}
+
+html.immersive #controls-close {
+	justify-self: start;
+}
+
+html.immersive .panel {
+	display: none;
+}
+
+html.immersive .stage.controls-open .panel {
 	display: grid;
 	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
+	z-index: 11;
 	width: min(440px, 100%);
 	grid-template-columns: 1fr;
-	align-content: start;
 	padding: var(--space-5) var(--gutter);
 	overflow-y: auto;
 	overscroll-behavior: contain;
-	border-top: 0;
 	border-left: var(--rule);
 	background: var(--color-house);
 }
 
-html.theater .stage.is-idle {
+html.immersive .stage.is-idle {
 	cursor: none;
 }
 
-html.theater .stage.is-idle .transport {
+html.immersive .stage.is-idle .transport {
 	opacity: 0;
 }
 
 .stage:fullscreen {
 	width: 100%;
 	height: 100%;
-}
-
-@media (max-width: 640px) {
-	.theater-page {
-		padding-top: var(--space-4);
-	}
-
-	.stage {
-		grid-template-columns: 12px minmax(0, 1fr) 12px;
-	}
-
-	html.theater .stage {
-		grid-template-columns: 0 minmax(0, 1fr) 0;
-	}
 }

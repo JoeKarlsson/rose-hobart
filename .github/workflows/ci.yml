@@ -19,6 +19,10 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # The same image the screenshot baselines are made in (npm run test:visual)
+    container:
+      image: mcr.microsoft.com/playwright:v1.65.0-noble
+      options: --ipc=host
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -26,7 +30,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium webkit
       - run: npm test
       - run: npx playwright test
       - uses: actions/upload-artifact@v7

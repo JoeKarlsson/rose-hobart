@@ -1,163 +1,207 @@
 ---
 import Base from '../layouts/Base.astro';
 import {
+	DETAIL_TABS,
 	EFFECTS,
 	GELS,
-	GROUP_LABELS,
+	MASTERS,
 	PRESETS,
 	SPEED,
 	SPEED_DETENTS,
 	formatEffect,
 	formatSpeed,
+	initialSettings,
+	masterWord,
 	type EffectGroup,
 } from '../theater/effects';
 import { FILM_TRACK_ID, TRACKS } from '../theater/tracks';
 import '../styles/theater.css';
 
-const groups = Object.keys(GROUP_LABELS) as EffectGroup[];
-const groupNotes: Partial<Record<EffectGroup, string>> = {
+const gelDensity = EFFECTS.find((e) => e.key === 'gelDensity')!;
+const firstTrack = TRACKS.find((t) => t.id === FILM_TRACK_ID)!;
+const tabNotes: Record<Exclude<EffectGroup, 'gel'>, string> = {
 	print: 'The circulating print has a blue gel baked in. Turn print color down to strip it back to black and white, then project through your own gel.',
-	glitch: 'Damage only a digital copy can take. Tears and corruption move the picture but never flash more than twice a second.',
+	film: 'The Age dial on the Projector tab moves all of these at once.',
+	glitch: 'Damage only a digital copy can take. The Glitch dial moves the first four at once. Tears and corruption never flash more than twice a second.',
 };
+const tabs = [{ id: 'projector', label: 'Projector' }, ...DETAIL_TABS.map((t) => ({ id: t.group, label: t.label }))];
 ---
 
 <Base
 	title="Rose Hobart: project Joseph Cornell's 1936 film yourself"
 	description="Run the projector for Joseph Cornell's Rose Hobart: pick the gel, the speed and the record, add film damage or glitches, and watch it full screen."
 	mainClass="theater-page"
+	structuredData={{
+		'@type': 'Movie',
+		name: 'Rose Hobart',
+		url: 'https://rosehobart.joekarlsson.com/',
+		image: 'https://rosehobart.joekarlsson.com/og.png',
+		description: "Joseph Cornell's 1936 collage film, recut from the 1931 feature East of Borneo, presented here so viewers can choose the tint, speed and music.",
+		director: { '@type': 'Person', name: 'Joseph Cornell' },
+		actor: { '@type': 'Person', name: 'Rose Hobart' },
+		dateCreated: '1936',
+		duration: 'PT18M44S',
+		isBasedOn: { '@type': 'Movie', name: 'East of Borneo', dateCreated: '1931' },
+	}}
 >
 	<link slot="head" rel="preload" href="/media/poster.webp" as="image" fetchpriority="high" />
 
 	<h1 class="visually-hidden">Rose Hobart, projected by you</h1>
 
 	<div class="stage" id="stage">
-		<div class="curtain curtain-left" aria-hidden="true"></div>
-		<div class="curtain curtain-right" aria-hidden="true"></div>
-		<div class="screen">
-			<video
-				id="film"
-				src="/media/rose-hobart.mp4"
-				poster="/media/poster.webp"
-				width="496"
-				height="360"
-				preload="none"
-				playsinline
-				aria-describedby="film-description"></video>
-			<canvas id="projection" width="992" height="720" aria-hidden="true"></canvas>
-		</div>
-		<p id="film-description" class="visually-hidden">
-			Rose Hobart, Joseph Cornell's 1936 film, recut from the 1931 jungle melodrama East of Borneo. It has no dialogue.
-		</p>
+		<div class="projection">
+			<div class="curtain curtain-left" aria-hidden="true"></div>
+			<div class="curtain curtain-right" aria-hidden="true"></div>
+			<div class="screen">
+				<video
+					id="film"
+					src="/media/rose-hobart.mp4"
+					poster="/media/poster.webp"
+					width="496"
+					height="360"
+					preload="none"
+					playsinline
+					aria-describedby="film-description"></video>
+				<canvas id="projection" width="992" height="720" aria-hidden="true"></canvas>
+			</div>
+			<p id="film-description" class="visually-hidden">
+				Rose Hobart, Joseph Cornell's 1936 film, recut from the 1931 jungle melodrama East of Borneo. It has no dialogue.
+			</p>
 
-		<div class="transport" id="transport">
-			<button type="button" class="button" id="play" aria-keyshortcuts="Space">Play</button>
-			<label class="visually-hidden" for="scrub">Position in the film</label>
-			<input type="range" id="scrub" min="0" max="1124" step="1" value="0" />
-			<output id="time" for="scrub">0:00 / 18:44</output>
-			<button type="button" class="button" id="controls-toggle" aria-expanded="false" aria-controls="panel">Controls</button>
-			<button type="button" class="button" id="theater" aria-pressed="false" aria-keyshortcuts="T">Theater</button>
-			<button type="button" class="button" id="fullscreen" aria-keyshortcuts="F">Full screen</button>
+			<div class="transport" id="transport">
+				<button type="button" class="button" id="play" aria-keyshortcuts="Space">Play</button>
+				<label class="visually-hidden" for="scrub">Position in the film</label>
+				<input type="range" id="scrub" min="0" max="1124" step="1" value="0" />
+				<output id="time" for="scrub">0:00 / 18:44</output>
+				<button type="button" class="button" id="controls-toggle" aria-expanded="false" aria-controls="panel">Controls</button>
+				<button type="button" class="button" id="theater" aria-pressed="false" aria-keyshortcuts="T">Theater</button>
+				<button type="button" class="button" id="fullscreen" aria-keyshortcuts="F">Full screen</button>
+			</div>
 		</div>
 
 		<div class="panel" id="panel">
 			<button type="button" class="button" id="controls-close">Close controls</button>
 			<p id="effects-note" class="note" role="status" hidden></p>
 
-			<section class="panel-section" aria-labelledby="presets-heading">
-				<h2 id="presets-heading">Programs</h2>
-				<div class="button-row">
+			<div class="tabs" role="tablist" aria-label="Projector controls">
+				{tabs.map((tab, i) => (
+					<button
+						type="button"
+						role="tab"
+						id={`tab-${tab.id}`}
+						aria-controls={`pane-${tab.id}`}
+						aria-selected={i === 0 ? 'true' : 'false'}
+						tabindex={i === 0 ? '0' : '-1'}
+					>
+						{tab.label}
+					</button>
+				))}
+			</div>
+
+			<div class="pane" role="tabpanel" id="pane-projector" aria-labelledby="tab-projector">
+				<div class="button-row" role="group" aria-label="Programs">
 					{PRESETS.map((preset) => (
 						<button type="button" class="button" data-preset={preset.id} aria-pressed={preset.id === 'circulated' ? 'true' : 'false'}>
 							{preset.label}
 						</button>
 					))}
 				</div>
-			</section>
 
-			<section class="panel-section" aria-labelledby="speed-heading">
-				<h2 id="speed-heading">Speed</h2>
-				<div class="slider">
-					<label for="speed">Projector speed</label>
-					<output id="speed-value" for="speed">{formatSpeed(1)}</output>
-					<input type="range" id="speed" min={SPEED.min} max={SPEED.max} step={SPEED.step} value="1" list="speed-detents" aria-keyshortcuts="[ ]" />
-					<datalist id="speed-detents">
-						{SPEED_DETENTS.map((d) => <option value={d.value} label={d.label} />)}
-					</datalist>
+				<div class="slider master">
+					<h2><label for="master-age">Age</label></h2>
+					<output id="master-age-value" for="master-age">{masterWord(MASTERS[0], 0)}</output>
+					<input type="range" id="master-age" data-master="age" min="0" max="1" step="0.01" value="0" />
 				</div>
-				<div class="button-row">
-					{SPEED_DETENTS.map((d) => (
-						<button type="button" class="button" data-speed={d.value}>{d.label}</button>
-					))}
-				</div>
-			</section>
 
-			<section class="panel-section" aria-labelledby="gel-heading">
-				<h2 id="gel-heading">Gel</h2>
-				<div class="gels" role="group" aria-label="Gel color">
-					{GELS.map((gel) => (
-						<button type="button" class="gel" data-gel={gel.id} data-color={gel.color} aria-pressed={gel.id === 'none' ? 'true' : 'false'}>
-							<span class="gel-swatch" data-swatch={gel.id}></span>
-							{gel.label}
-						</button>
-					))}
-					<label class="gel gel-custom">
-						<input type="color" id="gel-custom" value="#7a3fd0" />
-						Your own
-					</label>
+				<div class="gel-block">
+					<h2 id="gel-heading">Gel</h2>
+					<div class="swatches" role="group" aria-labelledby="gel-heading">
+						{GELS.map((gel) => (
+							<button
+								type="button"
+								class="swatch"
+								data-gel={gel.id}
+								data-color={gel.color}
+								aria-label={gel.label}
+								title={gel.label}
+								aria-pressed={gel.id === 'none' ? 'true' : 'false'}
+							></button>
+						))}
+						<input type="color" class="swatch swatch-custom" id="gel-custom" value="#7a3fd0" aria-label="Your own gel color" title="Your own" />
+					</div>
+					<div class="slider">
+						<label for={`fx-${gelDensity.key}`}>{gelDensity.label}</label>
+						<output id={`fx-${gelDensity.key}-value`} for={`fx-${gelDensity.key}`}>{formatEffect(gelDensity.initial)}</output>
+						<input type="range" id={`fx-${gelDensity.key}`} data-effect={gelDensity.key} min={gelDensity.min} max={gelDensity.max} step={gelDensity.step} value={gelDensity.initial} />
+					</div>
 				</div>
-			</section>
 
-			{groups.map((group) => (
-				<details class="panel-section" open={group !== 'glitch'}>
-					<summary><h2>{GROUP_LABELS[group]}</h2></summary>
-					{groupNotes[group] && <p class="note">{groupNotes[group]}</p>}
-					<div class="sliders">
-						{EFFECTS.filter((e) => e.group === group).map((effect) => (
-							<div class="slider">
-								<label for={`fx-${effect.key}`}>{effect.label}</label>
-								<output id={`fx-${effect.key}-value`} for={`fx-${effect.key}`}>{formatEffect(effect, effect.initial)}</output>
-								<input
-									type="range"
-									id={`fx-${effect.key}`}
-									data-effect={effect.key}
-									min={effect.min}
-									max={effect.max}
-									step={effect.step}
-									value={effect.initial}
-								/>
-							</div>
+				<div class="slider master">
+					<h2><label for="master-glitch">Glitch</label></h2>
+					<output id="master-glitch-value" for="master-glitch">{masterWord(MASTERS[1], 0)}</output>
+					<input type="range" id="master-glitch" data-master="glitch" min="0" max="1" step="0.01" value="0" />
+				</div>
+
+				<div>
+					<div class="slider master">
+						<h2><label for="speed">Speed</label></h2>
+						<output id="speed-value" for="speed">{formatSpeed(initialSettings().speed)}</output>
+						<input type="range" id="speed" min={SPEED.min} max={SPEED.max} step={SPEED.step} value="1" list="speed-detents" aria-keyshortcuts="[ ]" />
+						<datalist id="speed-detents">
+							{SPEED_DETENTS.map((d) => <option value={d.value} label={d.label} />)}
+						</datalist>
+					</div>
+					<div class="button-row">
+						{SPEED_DETENTS.map((d) => (
+							<button type="button" class="button small" data-speed={d.value} aria-label={d.label}>{d.label.split(', ')[1]}</button>
 						))}
 					</div>
-				</details>
-			))}
-
-			<section class="panel-section" aria-labelledby="music-heading">
-				<h2 id="music-heading">Music</h2>
-				<p class="note">
-					Cornell changed the records from screening to screening. The 78s here were released between 1919 and 1924, and play one after another.
-				</p>
-				<fieldset class="tracks">
-					<legend class="visually-hidden">Accompaniment</legend>
-					{TRACKS.map((track) => (
-						<label class="track">
-							<input type="radio" name="track" value={track.id} checked={track.id === FILM_TRACK_ID} />
-							<span class="track-title">{track.title}</span>
-							<span class="track-artist">{track.artist}{track.year && `, ${track.year}`}</span>
-						</label>
-					))}
-				</fieldset>
-				<div class="slider">
-					<label for="volume">Volume</label>
-					<output id="volume-value" for="volume">80%</output>
-					<input type="range" id="volume" min="0" max="1" step="0.01" value="0.8" />
 				</div>
-				<p id="now-playing" class="now-playing" aria-live="polite"></p>
-			</section>
 
-			<div class="button-row panel-end">
-				<button type="button" class="button" id="reset" aria-keyshortcuts="R">Reset everything</button>
-				<button type="button" class="button" id="help-open" aria-keyshortcuts="?">Keyboard shortcuts</button>
+				<div class="record-player">
+					<h2>Music</h2>
+					<div class="player">
+						<button type="button" class="button small" id="track-prev" aria-label="Previous record">‹</button>
+						<p class="now-playing" id="now-playing" aria-live="polite">
+							<strong id="now-title">{firstTrack.title}</strong>
+							<span id="now-artist">{firstTrack.artist}, {firstTrack.year}</span>
+						</p>
+						<button type="button" class="button small" id="track-next" aria-label="Next record">›</button>
+						<label class="visually-hidden" for="track">Choose the music</label>
+						<select id="track">
+							{TRACKS.map((track) => (
+								<option value={track.id} selected={track.id === FILM_TRACK_ID}>
+									{track.title}{track.id !== 'silence' && `, ${track.artist}`}{track.year && `, ${track.year}`}
+								</option>
+							))}
+						</select>
+						<div class="slider volume">
+							<label for="volume">Volume</label>
+							<output id="volume-value" for="volume">80%</output>
+							<input type="range" id="volume" min="0" max="1" step="0.01" value="0.8" />
+						</div>
+					</div>
+					<p class="note">The 78s were released between 1919 and 1924, and play one after another.</p>
+				</div>
+
+				<div class="button-row">
+					<button type="button" class="button" id="reset" aria-keyshortcuts="R">Reset everything</button>
+					<button type="button" class="button" id="help-open" aria-keyshortcuts="?">Keyboard shortcuts</button>
+				</div>
 			</div>
+
+			{DETAIL_TABS.map(({ group }) => (
+				<div class="pane" role="tabpanel" id={`pane-${group}`} aria-labelledby={`tab-${group}`} hidden>
+					<p class="note">{tabNotes[group]}</p>
+					{EFFECTS.filter((e) => e.group === group).map((effect) => (
+						<div class="slider">
+							<label for={`fx-${effect.key}`}>{effect.label}</label>
+							<output id={`fx-${effect.key}-value`} for={`fx-${effect.key}`}>{formatEffect(effect.initial)}</output>
+							<input type="range" id={`fx-${effect.key}`} data-effect={effect.key} min={effect.min} max={effect.max} step={effect.step} value={effect.initial} />
+						</div>
+					))}
+				</div>
+			))}
 		</div>
 	</div>
 

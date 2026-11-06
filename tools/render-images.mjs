@@ -1,4 +1,5 @@
-// Renders the PNG icons and the share card from public/favicon.svg and a film still.
+// Renders the PNG icons, the share card and the GitHub social preview from
+// public/favicon.svg and a film still.
 // Run after changing either: node tools/render-images.mjs
 import { chromium } from '@playwright/test';
 import { readFileSync } from 'node:fs';
@@ -33,5 +34,16 @@ await page.setContent(`<style>
 await page.evaluate(() => document.fonts.ready);
 await page.screenshot({ path: new URL('og.png', publicDir).pathname });
 
+// The same card at GitHub's social preview size; upload it in the repo's settings
+await page.setViewportSize({ width: 1280, height: 640 });
+await page.evaluate(() => {
+	document.body.style.width = '1280px';
+	document.body.style.height = '640px';
+	const img = document.querySelector('img');
+	img.style.width = '640px';
+	img.style.height = '640px';
+});
+await page.screenshot({ path: new URL('../.github/social-preview.png', publicDir).pathname });
+
 await browser.close();
-console.log('Rendered icons and og.png');
+console.log('Rendered icons, og.png and .github/social-preview.png');

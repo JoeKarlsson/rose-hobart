@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { TRACKS, findTrack, nextRecord } from './tracks';
+import { TRACKS, findTrack, nextRecord, stepTrack } from './tracks';
 
 describe('tracks', () => {
 	it('every record file exists in public/', () => {
@@ -17,6 +17,12 @@ describe('tracks', () => {
 		const records = TRACKS.filter((t) => t.src);
 		expect(nextRecord(records[0].id)).toBe(records[1]);
 		expect(nextRecord(records.at(-1)!.id)).toBe(records[0]);
+	});
+
+	it('previous and next step through every choice and wrap', () => {
+		expect(stepTrack(TRACKS[0].id, 1)).toBe(TRACKS[1]);
+		expect(stepTrack(TRACKS[0].id, -1)).toBe(TRACKS.at(-1));
+		expect(() => stepTrack('nope', 1)).toThrow('Unknown track');
 	});
 
 	it('refuses tracks that are not records', () => {

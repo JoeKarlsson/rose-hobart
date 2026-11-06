@@ -10,12 +10,15 @@
     "preview": "astro preview",
     "test": "vitest run src",
     "test:e2e": "playwright test",
+    "test:visual": "docker run --rm --ipc=host -v \"$PWD\":/work -v /work/node_modules -w /work mcr.microsoft.com/playwright:v1.65.0-noble sh -c 'npm ci --ignore-scripts && npx playwright test visual \"$@\"' sh",
+    "test:coverage": "vitest run src --coverage",
     "deploy": "astro build && gh-pages -d dist --nojekyll"
   },
   "devDependencies": {
     "@astrojs/sitemap": "3.7.4",
     "@axe-core/playwright": "4.14.0",
     "@playwright/test": "1.65.0",
+    "@vitest/coverage-v8": "^5.1.0",
     "astro": "7.4.7",
     "gh-pages": "^6.3.0",
     "vitest": "5.1.0"

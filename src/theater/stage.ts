@@ -1,7 +1,9 @@
 import { track } from '../scripts/analytics';
 import {
 	EFFECTS,
+	MASTERS,
 	PRESETS,
+	applyMaster,
 	applyPreset,
 	flickerGain,
 	formatEffect,
@@ -9,6 +11,8 @@ import {
 	gelColor,
 	hexToRgb,
 	initialSettings,
+	masterLevel,
+	masterWord,
 	nextTearDelay,
 	snapSpeed,
 	type EffectKey,
@@ -16,7 +20,7 @@ import {
 } from './effects';
 import { FilmRenderer, type FrameUniforms } from './renderer';
 import { Soundtrack } from './soundtrack';
-import { SILENCE_ID } from './tracks';
+import { stepTrack, type Track } from './tracks';
 
 const PROJECTED_FPS = 16;
 const IDLE_MS = 3000;
@@ -44,15 +48,47 @@ const speedOutput = byId<HTMLOutputElement>('speed-value');
 const customGel = byId<HTMLInputElement>('gel-custom');
 const volumeInput = byId<HTMLInputElement>('volume');
 const volumeOutput = byId<HTMLOutputElement>('volume-value');
-const nowPlaying = byId<HTMLParagraphElement>('now-playing');
+const nowTitle = byId<HTMLElement>('now-title');
+const nowArtist = byId<HTMLElement>('now-artist');
+const trackSelect = byId<HTMLSelectElement>('track');
 const effectsNote = byId<HTMLParagraphElement>('effects-note');
 const help = byId<HTMLDialogElement>('help');
 
 // Swatch colors come from the gel table, set through the CSSOM (the CSP blocks style attributes)
 for (const button of document.querySelectorAll<HTMLButtonElement>('[data-gel]')) {
-	const swatch = button.querySelector<HTMLElement>('.gel-swatch');
-	if (swatch && button.dataset.color) swatch.style.backgroundColor = button.dataset.color;
+	if (button.dataset.gel !== 'none' && button.dataset.color) button.style.backgroundColor = button.dataset.color;
 }
+
+function showNote(message: string): void {
+	effectsNote.hidden = false;
+	effectsNote.textContent = message;
+}
+
+// ---- Booth tabs ----------------------------------------------------------
+// Arrow keys move between tabs (WAI-ARIA tabs pattern, automatic activation)
+
+const tabButtons = [...document.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+
+function selectTab(tab: HTMLButtonElement, focus: boolean): void {
+	for (const other of tabButtons) {
+		const selected = other === tab;
+		other.setAttribute('aria-selected', String(selected));
+		other.tabIndex = selected ? 0 : -1;
+		byId(other.getAttribute('aria-controls')!).hidden = !selected;
+	}
+	if (focus) tab.focus();
+}
+
+tabButtons.forEach((tab, i) => {
+	tab.addEventListener('click', () => selectTab(tab, false));
+	tab.addEventListener('keydown', (event) => {
+		const moves: Record<string, number> = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabButtons.length - 1 };
+		if (!(event.key in moves)) return;
+		event.preventDefault();
+		event.stopPropagation();
+		selectTab(tabButtons[(moves[event.key] + tabButtons.length) % tabButtons.length], true);
+	});
+});
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let settings: Settings = initialSettings();
@@ -88,8 +124,7 @@ function showNoWebgl(error: Error): void {
 	// Without WebGL2 the plain film still plays with the browser's own controls
 	stage.classList.add('no-webgl');
 	video.controls = true;
-	effectsNote.hidden = false;
-	effectsNote.textContent = `This browser can't run the projector effects (${error.message}), so the film plays as circulated. Speed and music still work.`;
+	showNote(`This browser can't run the projector effects (${error.message}), so the film plays as circulated. Speed and music still work.`);
 	for (const input of document.querySelectorAll<HTMLInputElement>('[data-effect], #gel-custom')) input.disabled = true;
 	for (const button of document.querySelectorAll<HTMLButtonElement>('[data-gel], [data-preset]')) button.disabled = true;
 }
@@ -176,8 +211,7 @@ function requestFrame(): void {
 
 poster.addEventListener('load', requestFrame);
 poster.addEventListener('error', () => {
-	effectsNote.hidden = false;
-	effectsNote.textContent = 'The poster frame did not load. Press play to start the film.';
+	showNote('The poster frame did not load. Press play to start the film.');
 });
 video.addEventListener('loadeddata', requestFrame);
 video.addEventListener('seeked', requestFrame);
@@ -199,8 +233,7 @@ function showTime(): void {
 function togglePlay(): void {
 	if (video.paused) {
 		video.play().catch((error: Error) => {
-			effectsNote.hidden = false;
-			effectsNote.textContent = `The film did not start: ${error.message}`;
+			showNote(`The film did not start: ${error.message}`);
 		});
 	} else {
 		video.pause();
@@ -220,8 +253,7 @@ video.addEventListener('pause', () => {
 video.addEventListener('timeupdate', showTime);
 video.addEventListener('loadedmetadata', showTime);
 video.addEventListener('error', () => {
-	effectsNote.hidden = false;
-	effectsNote.textContent = 'The film could not be loaded. Check your connection and reload the page.';
+	showNote('The film could not be loaded. Check your connection and reload the page.');
 });
 
 playButton.addEventListener('click', togglePlay);
@@ -253,12 +285,17 @@ function showSettings(): void {
 	for (const effect of EFFECTS) {
 		const input = byId<HTMLInputElement>(`fx-${effect.key}`);
 		input.value = String(settings[effect.key]);
-		byId<HTMLOutputElement>(`fx-${effect.key}-value`).textContent = formatEffect(effect, settings[effect.key]);
+		byId<HTMLOutputElement>(`fx-${effect.key}-value`).textContent = formatEffect(settings[effect.key]);
 	}
 	for (const button of document.querySelectorAll<HTMLButtonElement>('[data-gel]')) {
 		button.setAttribute('aria-pressed', String(button.dataset.gel === settings.gel));
 	}
-	customGel.closest('.gel')?.classList.toggle('is-active', settings.gel.startsWith('#'));
+	customGel.classList.toggle('is-active', settings.gel.startsWith('#'));
+	for (const master of MASTERS) {
+		const level = masterLevel(settings, master);
+		byId<HTMLInputElement>(`master-${master.id}`).value = String(level);
+		byId<HTMLOutputElement>(`master-${master.id}-value`).textContent = masterWord(master, level);
+	}
 	setSpeed(settings.speed);
 	requestFrame();
 }
@@ -282,20 +319,32 @@ for (const input of document.querySelectorAll<HTMLInputElement>('[data-effect]')
 	});
 }
 
-for (const button of document.querySelectorAll<HTMLButtonElement>('[data-gel]')) {
-	button.addEventListener('click', () => {
-		settings.gel = button.dataset.gel ?? 'none';
-		if (settings.gel !== 'none' && settings.gelDensity === 0) settings.gelDensity = 0.6;
+for (const master of MASTERS) {
+	const input = byId<HTMLInputElement>(`master-${master.id}`);
+	input.addEventListener('input', () => {
+		settings = applyMaster(settings, master, Number(input.value));
 		markPreset(null);
 		showSettings();
 	});
 }
 
-customGel.addEventListener('input', () => {
-	settings.gel = customGel.value;
+// Picking a gel should show that color, so the print's baked-in blue is stripped too,
+// unless the viewer has already set print color themselves
+function chooseGel(gel: string): void {
+	const initial = initialSettings();
+	settings.gel = gel;
+	if (gel !== 'none') {
+		if (settings.printColor === initial.printColor) settings.printColor = 0;
+		if (settings.gelDensity === 0) settings.gelDensity = initial.gelDensity;
+	}
 	markPreset(null);
 	showSettings();
-});
+}
+
+for (const button of document.querySelectorAll<HTMLButtonElement>('[data-gel]')) {
+	button.addEventListener('click', () => chooseGel(button.dataset.gel ?? 'none'));
+}
+customGel.addEventListener('input', () => chooseGel(customGel.value));
 
 for (const button of document.querySelectorAll<HTMLButtonElement>('[data-preset]')) {
 	button.addEventListener('click', () => {
@@ -306,8 +355,7 @@ for (const button of document.querySelectorAll<HTMLButtonElement>('[data-preset]
 		showSettings();
 		const hasMotion = EFFECTS.some((e) => e.motion && (preset.settings[e.key] ?? 0) > 0);
 		if (reducedMotion.matches && hasMotion) {
-			effectsNote.hidden = false;
-			effectsNote.textContent = 'Your system asks for reduced motion, so grain, flicker, weave and tears start switched off. Turn them up with the sliders if you want them.';
+			showNote('Your system asks for reduced motion, so grain, flicker, weave and tears start switched off. Turn them up with the sliders if you want them.');
 		}
 		track('Program', { program: preset.id });
 	});
@@ -330,26 +378,22 @@ byId<HTMLButtonElement>('reset').addEventListener('click', reset);
 
 // ---- Music ---------------------------------------------------------------
 
-const soundtrack = new Soundtrack(
-	video,
-	(current) => {
-		nowPlaying.textContent = current.id === SILENCE_ID
-			? 'No music.'
-			: `Now playing: ${current.title}, ${current.artist}${current.year ? ` (${current.year})` : ''}.`;
-		const radio = document.querySelector<HTMLInputElement>(`input[name="track"][value="${current.id}"]`);
-		if (radio) radio.checked = true;
-	},
-	(message) => {
-		nowPlaying.textContent = message;
-	},
-);
-
-for (const radio of document.querySelectorAll<HTMLInputElement>('input[name="track"]')) {
-	radio.addEventListener('change', () => {
-		soundtrack.select(radio.value);
-		track('Music', { track: radio.value });
-	});
+function showTrack(current: Track): void {
+	nowTitle.textContent = current.title;
+	nowArtist.textContent = [current.artist, current.year].filter(Boolean).join(', ');
+	trackSelect.value = current.id;
 }
+
+const soundtrack = new Soundtrack(video, showTrack, showNote);
+
+function chooseTrack(id: string): void {
+	soundtrack.select(id);
+	track('Music', { track: id });
+}
+
+trackSelect.addEventListener('change', () => chooseTrack(trackSelect.value));
+byId<HTMLButtonElement>('track-prev').addEventListener('click', () => chooseTrack(stepTrack(soundtrack.current.id, -1).id));
+byId<HTMLButtonElement>('track-next').addEventListener('click', () => chooseTrack(stepTrack(soundtrack.current.id, 1).id));
 
 volumeInput.addEventListener('input', () => {
 	const volume = Number(volumeInput.value);
@@ -359,13 +403,20 @@ volumeInput.addEventListener('input', () => {
 soundtrack.setVolume(Number(volumeInput.value));
 
 // ---- Theater mode and full screen -----------------------------------------
+// Theater mode widens the film across the page (the booth moves below it).
+// Full screen puts the film on the whole display, with the booth in a drawer; where
+// the browser can't do element full screen (iPhone Safari), it fills the window instead.
 
 let idleTimer = 0;
+
+function isImmersive(): boolean {
+	return root.classList.contains('immersive');
+}
 
 function wake(): void {
 	stage.classList.remove('is-idle');
 	clearTimeout(idleTimer);
-	if (!root.classList.contains('theater')) return;
+	if (!isImmersive()) return;
 	idleTimer = window.setTimeout(() => {
 		// Never hide the controls from someone using them with a keyboard
 		const keyboardFocus = document.activeElement?.matches(':focus-visible') ?? false;
@@ -376,6 +427,11 @@ function wake(): void {
 function setTheater(on: boolean): void {
 	root.classList.toggle('theater', on);
 	theaterButton.setAttribute('aria-pressed', String(on));
+}
+
+function setImmersive(on: boolean): void {
+	root.classList.toggle('immersive', on);
+	fullscreenButton.textContent = on ? 'Exit full screen' : 'Full screen';
 	if (!on) setControlsOpen(false);
 	wake();
 }
@@ -385,34 +441,26 @@ function setControlsOpen(open: boolean): void {
 	controlsToggle.setAttribute('aria-expanded', String(open));
 }
 
+// iPhone Safari can only take a bare <video> full screen, which would drop the projection
 const canFullscreen = typeof stage.requestFullscreen === 'function' && document.fullscreenEnabled;
-if (!canFullscreen) {
-	// iPhone Safari can only take a bare <video> full screen, which would drop the projection
-	fullscreenButton.hidden = true;
-}
 
 function toggleFullscreen(): void {
 	if (!canFullscreen) {
-		setTheater(!root.classList.contains('theater'));
+		setImmersive(!isImmersive());
 		return;
 	}
 	if (document.fullscreenElement) {
 		document.exitFullscreen();
 	} else {
 		stage.requestFullscreen().catch((error: Error) => {
-			effectsNote.hidden = false;
-			effectsNote.textContent = `Full screen was refused: ${error.message}. Theater mode fills the window instead.`;
-			setTheater(true);
+			showNote(`Full screen was refused: ${error.message}. The film fills the window instead.`);
+			setImmersive(true);
 		});
 		track('Full screen');
 	}
 }
 
-document.addEventListener('fullscreenchange', () => {
-	const on = document.fullscreenElement === stage;
-	fullscreenButton.textContent = on ? 'Exit full screen' : 'Full screen';
-	setTheater(on);
-});
+document.addEventListener('fullscreenchange', () => setImmersive(document.fullscreenElement === stage));
 
 theaterButton.addEventListener('click', () => {
 	setTheater(!root.classList.contains('theater'));
@@ -474,7 +522,11 @@ document.addEventListener('keydown', (event) => {
 			break;
 		case 'm':
 		case 'M':
-			nowPlaying.textContent = soundtrack.toggleMute() ? 'Muted.' : 'Sound on.';
+			if (soundtrack.toggleMute()) {
+				showNote('Sound is off. Press M to turn it back on.');
+			} else {
+				effectsNote.hidden = true;
+			}
 			break;
 		case 'r':
 		case 'R':
@@ -487,7 +539,9 @@ document.addEventListener('keydown', (event) => {
 			if (stage.classList.contains('controls-open')) {
 				setControlsOpen(false);
 				controlsToggle.focus();
-			} else if (root.classList.contains('theater') && !document.fullscreenElement) {
+			} else if (isImmersive() && !document.fullscreenElement) {
+				setImmersive(false);
+			} else if (root.classList.contains('theater')) {
 				setTheater(false);
 			}
 			break;

@@ -9,6 +9,16 @@ const records = TRACKS.filter((t) => t.source);
 	title="About Rose Hobart: a performative screening, unfrozen"
 	description="Why this project lets you choose the tint, speed and music for Joseph Cornell's Rose Hobart, and the sources behind it."
 	mainClass="prose"
+	structuredData={{
+		'@type': 'ScholarlyArticle',
+		headline: 'Supporting statement',
+		url: 'https://rosehobart.joekarlsson.com/about',
+		author: [
+			{ '@type': 'Person', name: 'Joe Karlsson', url: 'https://www.joekarlsson.com/' },
+			{ '@type': 'Person', name: 'Laurel Karlsson' },
+		],
+		about: { '@type': 'Movie', name: 'Rose Hobart', director: { '@type': 'Person', name: 'Joseph Cornell' } },
+	}}
 >
 	<h1>Supporting statement</h1>
 
@@ -36,14 +46,14 @@ const records = TRACKS.filter((t) => t.source);
 	</p>
 	<p>
 		This collaborative digital humanities project is an exploration of the lack of performativity in the current version
-		available of Joseph Cornell’s <cite>Rose Hobart</cite>. It is an attempt to bring the performative aspects of screening
+		available of Joseph Cornell’s <cite>Rose Hobart</cite>. It is an attempt to bring the performative aspects of screening{' '}
 		<cite>Rose Hobart</cite> back to the film by allowing viewers to change the soundtrack, filter, speed, and other options
 		as they view the film. Due to the digital nature of this project, it is by no means an attempt to perfectly imitate
-		Cornell’s original screenings. Rather, it is an attempt to “unfreeze” the currently available version of
+		Cornell’s original screenings. Rather, it is an attempt to “unfreeze” the currently available version of{' '}
 		<cite>Rose Hobart</cite> from its place in time.
 	</p>
 	<p>
-		This project also emphasizes the digital nature of the film today. While there are physical copies of
+		This project also emphasizes the digital nature of the film today. While there are physical copies of{' '}
 		<cite>Rose Hobart</cite> available for viewing, the film is widely circulated online, which suggests that most viewers
 		are accessing the film via the internet rather than through physical media. Due to the film’s transfer from physical to
 		digital, signs of physical degradation of the film have been “frozen” or stopped in their tracks, bringing the film from
@@ -85,7 +95,7 @@ const records = TRACKS.filter((t) => t.source);
 			alt="The proscenium of a 1928 movie palace seen from the balcony: carved gilt columns, swagged drapes and a curtained stage above rows of seats"
 		/>
 		<figcaption>
-			The Fox Theatre, Brooklyn, opened in 1928. Historic American Buildings Survey,
+			The Fox Theatre, Brooklyn, opened in 1928. Historic American Buildings Survey,{' '}
 			<a href="https://commons.wikimedia.org/wiki/File:PROSCENIUM_AND_PART_OF_AUDITORIUM_NORTHEAST_WALL_FROM_BALCONY_-_Fox_Theatre,_20_Flatbush_Avenue_and_1_Nevins_Street,_Brooklyn,_Kings_County,_NY_HABS_NY,24-BROK,41-12.tif">public domain</a>.
 		</figcaption>
 	</figure>

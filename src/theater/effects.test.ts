@@ -2,15 +2,20 @@ import { describe, expect, it } from 'vitest';
 import {
 	EFFECTS,
 	GELS,
+	MASTERS,
 	MAX_FLICKER_SWING,
 	MIN_TEAR_GAP,
 	PRESETS,
 	SPEED,
+	applyMaster,
 	applyPreset,
 	flickerGain,
+	formatEffect,
 	gelColor,
 	hexToRgb,
 	initialSettings,
+	masterLevel,
+	masterWord,
 	nextTearDelay,
 	snapSpeed,
 } from './effects';
@@ -80,6 +85,47 @@ describe('flash safety', () => {
 			expect(nextTearDelay(amount, 1)).toBeGreaterThanOrEqual(MIN_TEAR_GAP);
 		}
 		expect(nextTearDelay(0, 0.5)).toBe(Infinity);
+	});
+});
+
+describe('master dials', () => {
+	const [age, glitch] = MASTERS;
+
+	it('only drive real effects, and never past a slider\'s range', () => {
+		for (const master of MASTERS) {
+			for (const [key, weight] of master.mix) {
+				const effect = EFFECTS.find((e) => e.key === key)!;
+				expect(effect, key).toBeDefined();
+				expect(weight).toBeLessThanOrEqual(effect.max);
+			}
+		}
+	});
+
+	it('set every effect in the mix to its share, overwriting earlier tweaks', () => {
+		const tweaked = { ...initialSettings(), grain: 0.9 };
+		const worn = applyMaster(tweaked, age, 0.5);
+		expect(worn.grain).toBe(0.3);
+		expect(worn.dust).toBe(0.43);
+		expect(worn.rgbSplit).toBe(0);
+	});
+
+	it('read back the level they were set to', () => {
+		expect(masterLevel(applyMaster(initialSettings(), age, 0.7), age)).toBe(0.7);
+		expect(masterLevel(initialSettings(), glitch)).toBe(0);
+	});
+
+	it('name the dial position', () => {
+		expect(masterWord(age, 0)).toBe('Fresh print');
+		expect(masterWord(age, 0.1)).toBe('Second run');
+		expect(masterWord(age, 0.5)).toBe('Worn reel');
+		expect(masterWord(age, 1)).toBe('Nitrate rot');
+	});
+});
+
+describe('formatEffect', () => {
+	it('reads 100% at neutral brightness and the strength for 0-to-1 effects', () => {
+		expect(formatEffect(1)).toBe('100%');
+		expect(formatEffect(0.25)).toBe('25%');
 	});
 });
 

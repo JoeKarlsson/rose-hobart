@@ -1,7 +1,8 @@
 // Every control on the projection panel is defined here once. The panel markup,
-// the presets, the URL-free reset and the shader uniforms all read from this table.
+// the presets, the master dials and the shader uniforms all read from this table.
 
-export type EffectGroup = 'print' | 'film' | 'glitch';
+/** Which booth tab an effect lives on; gel density sits with the gels on the Projector tab */
+export type EffectGroup = 'gel' | 'print' | 'film' | 'glitch';
 
 interface EffectDefinition {
 	key: string;
@@ -17,7 +18,7 @@ interface EffectDefinition {
 
 export const EFFECTS = [
 	{ key: 'printColor', label: 'Print color', group: 'print', min: 0, max: 1, step: 0.01, initial: 1, motion: false },
-	{ key: 'gelDensity', label: 'Gel density', group: 'print', min: 0, max: 1, step: 0.01, initial: 0.6, motion: false },
+	{ key: 'gelDensity', label: 'Gel density', group: 'gel', min: 0, max: 1, step: 0.01, initial: 0.6, motion: false },
 	{ key: 'brightness', label: 'Brightness', group: 'print', min: 0.4, max: 1.8, step: 0.01, initial: 1, motion: false },
 	{ key: 'contrast', label: 'Contrast', group: 'print', min: 0.5, max: 1.8, step: 0.01, initial: 1, motion: false },
 	{ key: 'soft', label: 'Soft focus', group: 'film', min: 0, max: 1, step: 0.01, initial: 0, motion: false },
@@ -37,11 +38,58 @@ export const EFFECTS = [
 export type Effect = (typeof EFFECTS)[number];
 export type EffectKey = Effect['key'];
 
-export const GROUP_LABELS: Record<EffectGroup, string> = {
-	print: 'Print and gel',
-	film: 'Film',
-	glitch: 'Impossible in 1936',
-};
+/** The booth tabs after Projector, each holding one group's sliders */
+export const DETAIL_TABS = [
+	{ group: 'print', label: 'Print' },
+	{ group: 'film', label: 'Film' },
+	{ group: 'glitch', label: 'Glitch' },
+] as const satisfies readonly { group: EffectGroup; label: string }[];
+
+// ---- Master dials -----------------------------------------------------------
+// Age and Glitch each drive a set of effects together. At a full turn every effect
+// reaches its weight; moving a master overwrites what those sliders were set to.
+
+export interface Master {
+	id: 'age' | 'glitch';
+	label: string;
+	mix: readonly (readonly [EffectKey, number])[];
+	/** Words for the dial's position, from off to full */
+	stops: readonly string[];
+}
+
+export const MASTERS: Master[] = [
+	{
+		id: 'age',
+		label: 'Age',
+		mix: [['soft', 0.25], ['grain', 0.6], ['flicker', 0.5], ['weave', 0.4], ['dust', 0.85], ['vignette', 0.6]],
+		stops: ['Fresh print', 'Second run', 'Worn reel', 'Nitrate rot'],
+	},
+	{
+		id: 'glitch',
+		label: 'Glitch',
+		mix: [['rgbSplit', 0.6], ['tear', 0.5], ['blocks', 0.7], ['trails', 0.6]],
+		stops: ['Clean', 'Dropouts', 'Corrupt', 'Datamoshed'],
+	},
+];
+
+export function applyMaster(settings: Settings, master: Master, amount: number): Settings {
+	const next = { ...settings };
+	for (const [key, weight] of master.mix) next[key] = Math.round(amount * weight * 100) / 100;
+	return next;
+}
+
+/** Where the dial sits for the current settings: the average of each effect against its weight */
+export function masterLevel(settings: Settings, master: Master): number {
+	const total = master.mix.reduce((sum, [key, weight]) => sum + Math.min(1, settings[key] / weight), 0);
+	return Math.round((total / master.mix.length) * 100) / 100;
+}
+
+/** The first stop means off; the rest split the dial's travel evenly */
+export function masterWord(master: Master, level: number): string {
+	if (level <= 0) return master.stops[0];
+	const steps = master.stops.length - 1;
+	return master.stops[1 + Math.min(steps - 1, Math.floor(level * steps))];
+}
 
 export interface Gel {
 	id: string;
@@ -137,8 +185,9 @@ export function withoutMotion(settings: Settings): Settings {
 	return still;
 }
 
-export function formatEffect(effect: Effect, value: number): string {
-	return `${Math.round((value / effect.max) * 100)}%`;
+/** Brightness and contrast read 100% at neutral; the 0-to-1 effects read their strength */
+export function formatEffect(value: number): string {
+	return `${Math.round(value * 100)}%`;
 }
 
 /** Hex color to linear-ish 0..1 RGB for the shader */

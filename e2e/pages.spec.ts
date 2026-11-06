@@ -46,11 +46,12 @@ for (const { path, name } of PAGES) {
 	}
 }
 
-test('nav links lead to the pages they name', async ({ page }) => {
+test('nav links lead to the pages they name, and the labels match their headings', async ({ page }) => {
 	await page.goto('/');
-	await page.getByRole('link', { name: 'About' }).click();
+	const nav = page.getByRole('navigation', { name: 'Site' });
+	await nav.getByRole('link', { name: 'Supporting statement' }).click();
 	await expect(page).toHaveURL(/\/about$/);
 	await expect(page.locator('h1')).toHaveText('Supporting statement');
-	await page.getByRole('link', { name: 'The film' }).click();
+	await nav.getByRole('link', { name: 'The film' }).click();
 	await expect(page).toHaveURL(/\/$/);
 });

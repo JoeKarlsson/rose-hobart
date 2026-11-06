@@ -24,6 +24,10 @@
 	--color-ink: #f1e8d4;
 	--color-gold: #dcb75e;
 	--color-on-gold: #0b0907;
+	/* The screen and the house lights down around it */
+	--color-screen: #000;
+	/* Dims the page behind a dialog; the one see-through color, so the page stays in view */
+	--color-backdrop: #000c;
 
 	--font-marquee: 'Limelight', 'Futura', serif;
 	--font-text: 'Jost', 'Futura', 'Century Gothic', sans-serif;
@@ -207,6 +211,54 @@ img {
 	width: 100%;
 	margin: var(--space-7) auto 0;
 	font-size: var(--text-sm);
+}
+
+/* Share links: one quiet row, the same link style as the rest of the footer */
+.share {
+	margin-bottom: var(--space-4);
+}
+
+.share-heading {
+	font-family: var(--font-text);
+	font-size: var(--text-sm);
+	font-weight: 600;
+	color: var(--color-ink);
+	margin-bottom: var(--space-2);
+}
+
+.share ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-1) var(--space-4);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.share a,
+.link-button {
+	display: inline-block;
+	min-height: 24px;
+	padding: var(--space-1) 0;
+}
+
+.link-button {
+	border: 0;
+	background: none;
+	color: var(--color-gold);
+	font: inherit;
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+	cursor: pointer;
+}
+
+.link-button:hover {
+	color: var(--color-ink);
+}
+
+.share-status {
+	margin: var(--space-2) 0 0;
+	min-height: 1.6em;
 }
 
 /* ---- Controls ---- */

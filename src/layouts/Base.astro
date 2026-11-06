@@ -7,14 +7,28 @@ interface Props {
 	noindex?: boolean;
 	/** The main element's class, so a page can lay itself out */
 	mainClass?: string;
+	/** schema.org data for the page, rendered as JSON-LD */
+	structuredData?: Record<string, unknown>;
 }
 
-const { title, description, noindex = false, mainClass } = Astro.props;
+const { title, description, noindex = false, mainClass, structuredData } = Astro.props;
 // The file build format gives paths like /about.html and /index.html; the live URLs are /about and /
 const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$|\/$/, '');
 const canonical = new URL(path || '/', Astro.site);
 const ogImage = new URL('/og.png', Astro.site);
 const isProduction = import.meta.env.PROD;
+// "<" is escaped so the data can never close its <script> early
+const jsonLd = structuredData && JSON.stringify({ '@context': 'https://schema.org', ...structuredData }).replace(/</g, '\\u003c');
+const shareUrl = encodeURIComponent(canonical.href);
+const shareText = encodeURIComponent(title);
+const shareLinks = [
+	{ name: 'Bluesky', href: `https://bsky.app/intent/compose?text=${shareText}%20${shareUrl}` },
+	{ name: 'Threads', href: `https://www.threads.net/intent/post?text=${shareText}%20${shareUrl}` },
+	{ name: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}` },
+	{ name: 'Reddit', href: `https://www.reddit.com/submit?url=${shareUrl}&title=${shareText}` },
+	{ name: 'Hacker News', href: `https://news.ycombinator.com/submitlink?u=${shareUrl}&t=${shareText}` },
+	{ name: 'X', href: `https://x.com/intent/post?text=${shareText}&url=${shareUrl}` },
+];
 // Styles and scripts are bundled files; media and fonts are served from this site.
 // Plausible is the only third party. Vite's dev server injects inline styles, so the
 // policy only goes on built pages.
@@ -76,7 +90,10 @@ const csp = [
 		<meta name="twitter:image" content={ogImage} />
 		<meta name="twitter:image:alt" content="Rose Hobart in a doorway, tinted Cornell blue, under the film's title" />
 
+		{jsonLd && <script type="application/ld+json" is:inline set:html={jsonLd} />}
+
 		<script src="../scripts/analytics.ts"></script>
+		<script src="../scripts/share.ts"></script>
 	</head>
 	<body>
 		<a class="skip-link" href="#main">Skip to content</a>
@@ -88,7 +105,7 @@ const csp = [
 			<nav aria-label="Site">
 				<ul>
 					<li><a href="/" aria-current={path === '' ? 'page' : undefined}>The film</a></li>
-					<li><a href="/about" aria-current={path === '/about' ? 'page' : undefined}>About</a></li>
+					<li><a href="/about" aria-current={path === '/about' ? 'page' : undefined}>Supporting statement</a></li>
 				</ul>
 			</nav>
 		</header>
@@ -96,11 +113,22 @@ const csp = [
 			<slot />
 		</main>
 		<footer class="site-footer">
+			{!noindex && (
+				<div class="share">
+					<h2 class="share-heading">Share this page</h2>
+					<ul>
+						{shareLinks.map((link) => <li><a href={link.href}>{link.name}</a></li>)}
+						<li><button type="button" class="link-button" data-copy-link={canonical.href}>Copy link</button></li>
+					</ul>
+					<p class="share-status" role="status"></p>
+				</div>
+			)}
 			<p>
-				A digital humanities project by
+				A digital humanities project by{' '}
 				<a href="https://www.joekarlsson.com/">Joe Karlsson</a> and Laurel Karlsson, 2018–2026.
 				For study.
 			</p>
+			<p>Visits are counted with Plausible, which sets no cookies and collects no personal data.</p>
 			<p><a href="https://github.com/JoeKarlsson/rose-hobart">Source on GitHub</a></p>
 		</footer>
 	</body>
