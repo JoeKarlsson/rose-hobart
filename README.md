@@ -6,9 +6,9 @@ Live at [rosehobart.joekarlsson.com](https://rosehobart.joekarlsson.com). A digi
 
 ## Recording (November 2026)
 
-[![Joseph Cornell's Rose Hobart playing between red theater curtains while the projector presets change it: Cornell 1936 blue, a pink filter, nitrate decay, a broken projector and digital decay, then amber, green and pink gels](.github/readme/2026-11-recording.webp)](.github/readme/2026-11-recording.mp4)
+![Joseph Cornell's Rose Hobart playing between red theater curtains while the projector presets change it: Cornell 1936 blue, a pink filter, nitrate decay, a broken projector and digital decay, then amber, green and pink gels](.github/readme/2026-11-recording.gif)
 
-What Rose Hobart looked like in November 2026, recorded for [its page on joekarlsson.com](https://www.joekarlsson.com/work/rose-hobart/). Click the picture to play the video.
+What Rose Hobart looked like in November 2026, recorded for [its page on joekarlsson.com](https://www.joekarlsson.com/work/rose-hobart/). The full-quality video is [2026-11-recording.mp4](.github/readme/2026-11-recording.mp4).
 
 ## How it works
 
