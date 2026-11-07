@@ -4,6 +4,12 @@ Run the projector for Joseph Cornell's *Rose Hobart* (1936): choose the gel, the
 
 Live at [rosehobart.joekarlsson.com](https://rosehobart.joekarlsson.com). A digital humanities project by Joe Karlsson and Laurel Karlsson; the [About page](https://rosehobart.joekarlsson.com/about) has the supporting statement.
 
+## Recording (November 2026)
+
+[![Joseph Cornell's Rose Hobart playing between red theater curtains while the projector presets change it: Cornell 1936 blue, a pink filter, nitrate decay, a broken projector and digital decay, then amber, green and pink gels](.github/readme/2026-11-recording.webp)](.github/readme/2026-11-recording.mp4)
+
+What Rose Hobart looked like in November 2026, recorded for [its page on joekarlsson.com](https://www.joekarlsson.com/work/rose-hobart/). Click the picture to play the video.
+
 ## How it works
 
 - **Astro 7**, static output, no client framework and no runtime dependencies.
