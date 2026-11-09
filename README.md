@@ -2,13 +2,19 @@
 
 Run the projector for Joseph Cornell's *Rose Hobart* (1936): choose the gel, the speed and the record, add film damage or digital glitches, and watch it in theater mode or full screen.
 
-Live at [rosehobart.joekarlsson.com](https://rosehobart.joekarlsson.com). A digital humanities project by Joe Karlsson and Laurel Karlsson; the [About page](https://rosehobart.joekarlsson.com/about) has the supporting statement.
+Live at [rosehobart.joekarlsson.com](https://rosehobart.joekarlsson.com). A digital humanities project by Joe Karlsson and Laurel Karlsson; the [Statements page](https://rosehobart.joekarlsson.com/about) has Joe's artist statement and the joint supporting statement.
 
 ## Recording (November 2026)
 
 ![Joseph Cornell's Rose Hobart playing between red theater curtains while the projector presets change it: Cornell 1936 blue, a pink filter, nitrate decay, a broken projector and digital decay, then amber, green and pink gels](.github/readme/2026-11-recording.gif)
 
 What Rose Hobart looked like in November 2026, recorded for [its page on joekarlsson.com](https://www.joekarlsson.com/work/rose-hobart/). The full-quality video is [2026-11-recording.mp4](.github/readme/2026-11-recording.mp4).
+
+## Artist statement
+
+Every time Joseph Cornell screened Rose Hobart, it could come out a little different. The version almost everyone watches now is one of those screenings, frozen. My sister Laurel and I wanted to give the projector back to whoever is watching.
+
+[Read the full statement](https://www.joekarlsson.com/work/rose-hobart/). The joint 2017 supporting statement, with its sources, is on the site's [Statements page](https://rosehobart.joekarlsson.com/about).
 
 ## How it works
 
