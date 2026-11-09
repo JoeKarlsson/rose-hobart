@@ -1,54 +1,67 @@
 # Rose Hobart
 
-Run the projector for Joseph Cornell's *Rose Hobart* (1936): choose the gel, the speed and the record, add film damage or digital glitches, and watch it in theater mode or full screen.
+[![Website](https://img.shields.io/badge/website-rosehobart.joekarlsson.com-ff4fd8)](https://rosehobart.joekarlsson.com/)
+[![CI](https://github.com/JoeKarlsson/rose-hobart/actions/workflows/ci.yml/badge.svg)](https://github.com/JoeKarlsson/rose-hobart/actions/workflows/ci.yml)
 
-Live at [rosehobart.joekarlsson.com](https://rosehobart.joekarlsson.com). A digital humanities project by Joe Karlsson and Laurel Karlsson; the [Statements page](https://rosehobart.joekarlsson.com/about) has Joe's artist statement and the joint supporting statement.
-
-## Recording (November 2026)
+Run the projector for Joseph Cornell's *Rose Hobart* (1936): pick the gel, the
+speed and the record, and add film damage or digital glitches while it plays.
+This repo is the static Astro site live at
+[rosehobart.joekarlsson.com](https://rosehobart.joekarlsson.com), a digital
+humanities project by Joe Karlsson and Laurel Karlsson.
 
 ![Joseph Cornell's Rose Hobart playing between red theater curtains while the projector presets change it: Cornell 1936 blue, a pink filter, nitrate decay, a broken projector and digital decay, then amber, green and pink gels](.github/readme/2026-11-recording.gif)
 
-What Rose Hobart looked like in November 2026, recorded for [its page on joekarlsson.com](https://www.joekarlsson.com/work/rose-hobart/). The full-quality video is [2026-11-recording.mp4](.github/readme/2026-11-recording.mp4).
-
 ## Artist statement
 
-Every time Joseph Cornell screened Rose Hobart, it could come out a little different. The version almost everyone watches now is one of those screenings, frozen. My sister Laurel and I wanted to give the projector back to whoever is watching.
+Every time Joseph Cornell screened Rose Hobart, it could come out a little
+different. The version almost everyone watches now is one of those screenings,
+frozen. My sister Laurel and I wanted to give the projector back to whoever is
+watching.
 
-[Read the full statement](https://www.joekarlsson.com/work/rose-hobart/). The joint 2017 supporting statement, with its sources, is on the site's [Statements page](https://rosehobart.joekarlsson.com/about).
+[Read the full statement](https://www.joekarlsson.com/work/rose-hobart/). The
+joint 2017 supporting statement, with its sources, is on the site's
+[Statements page](https://rosehobart.joekarlsson.com/about).
 
-## How it works
-
-- **Astro 7**, static output, no client framework and no runtime dependencies.
-- **The theater** (`src/theater/`) is plain TypeScript. The `<video>` is the source; `renderer.ts` uploads each frame to WebGL2 and runs one fragment shader (`shaders.ts`) for the gel, print color, film damage and glitches, with a ping-pong framebuffer for trails. The projector starts on the viewer's first touch of the page, so loading paints only the poster.
-- **`effects.ts`** is the single table of controls. The panel markup, the programs (presets) and the shader uniforms all read from it.
-- **Flash safety:** flicker swings brightness by at most 15% and signal tears come at most twice a second (WCAG 2.3.1). With reduced motion on, programs start with the moving effects off.
-- **Music** (`tracks.ts`): the film's own soundtrack, or 78s released in 1925 or earlier (public domain in the US) from the Internet Archive's Great 78 Project. Records follow the projector and change themselves when one ends.
-
-## Develop
+## Quick start
 
 Node 22.12 or later.
 
 ```sh
+git clone https://github.com/JoeKarlsson/rose-hobart.git
+cd rose-hobart
 npm install
 npm run dev               # http://localhost:4321
-npm test                  # unit tests (Vitest)
-npx playwright install chromium webkit
-npx playwright test       # browser tests against the built site: desktop, iPhone, Pixel, axe, metadata, links
-npm run test:visual       # screenshot tests, in Playwright's Linux image (needs Docker); add -- --update-snapshots after a deliberate change
-npm run test:coverage     # unit test coverage
-node tools/render-images.mjs   # re-render icons, the share card and .github/social-preview.png after changing them
 ```
 
-## Deploy
+## Development
 
-GitHub Pages serves the `gh-pages` branch at the custom domain (`public/CNAME`). CI runs every test on each push. To deploy, run the CI workflow by hand (Actions → CI → Run workflow, or `gh workflow run ci.yml`); it publishes only after the tests pass.
+```sh
+npm test                  # unit tests (Vitest)
+npx playwright install chromium webkit
+npm run test:e2e          # browser tests against the built site
+npm run test:visual       # screenshot tests in Playwright's Linux image (needs Docker)
+node tools/render-images.mjs   # re-render icons and share images after changing them
+```
 
-GitHub Pages can't set response headers, so the Content-Security-Policy and referrer policy are `<meta>` tags. `frame-ancestors`, HSTS and `Permissions-Policy` can't be set that way; they need a CDN in front.
+The theater in `src/theater/` is plain TypeScript. `renderer.ts` draws each
+video frame through one WebGL2 fragment shader (`shaders.ts`), and `effects.ts`
+is the single table of controls that the panel, the presets and the shader
+uniforms all read. Music lives in `tracks.ts`. Keep flicker under 15%
+brightness swing and tears at two a second or fewer (WCAG 2.3.1).
+
+CI tests every push. To deploy, run the CI workflow by hand
+(`gh workflow run ci.yml`); it publishes to the `gh-pages` branch only after the
+tests pass. GitHub Pages can't set response headers, so the CSP is a `<meta>`
+tag.
 
 ## Credits
 
-The 78s are credited with links on the About page. The velvet curtain photo is CC0 ([Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Curtain-939464.jpg)). The Fox Theatre, Brooklyn photograph is from the Historic American Buildings Survey (public domain). Fonts: Limelight and Jost (SIL Open Font License).
+The records are 78s released in 1925 or earlier, from the Internet Archive's Great 78 Project,
+credited on the About page. The velvet curtain photo is CC0
+([Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Curtain-939464.jpg)).
+The Fox Theatre, Brooklyn photograph is from the Historic American Buildings
+Survey (public domain). Fonts: Limelight and Jost (SIL Open Font License).
 
 ## License
 
-ISC
+MIT. See [LICENSE](LICENSE).
