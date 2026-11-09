@@ -3,24 +3,16 @@
 [![Website](https://img.shields.io/badge/website-rosehobart.joekarlsson.com-ff4fd8)](https://rosehobart.joekarlsson.com/)
 [![CI](https://github.com/JoeKarlsson/rose-hobart/actions/workflows/ci.yml/badge.svg)](https://github.com/JoeKarlsson/rose-hobart/actions/workflows/ci.yml)
 
-Run the projector for Joseph Cornell's *Rose Hobart* (1936): pick the gel, the
-speed and the record, and add film damage or digital glitches while it plays.
-This repo is the static Astro site live at
-[rosehobart.joekarlsson.com](https://rosehobart.joekarlsson.com), a digital
-humanities project by Joe Karlsson and Laurel Karlsson.
-
 ![Joseph Cornell's Rose Hobart playing between red theater curtains while the projector presets change it: Cornell 1936 blue, a pink filter, nitrate decay, a broken projector and digital decay, then amber, green and pink gels](.github/readme/2026-11-recording.gif)
 
-## Artist statement
+Every time Joseph Cornell screened *Rose Hobart* (1936), it could come out a
+little different, and the version almost everyone watches now is one of those
+screenings, frozen. This project gives the projector back to whoever is
+watching: pick the gel, the speed and the record, and add film damage or
+digital glitches while the film plays. I made it with my sister Laurel.
 
-Every time Joseph Cornell screened Rose Hobart, it could come out a little
-different. The version almost everyone watches now is one of those screenings,
-frozen. My sister Laurel and I wanted to give the projector back to whoever is
-watching.
-
-[Read the full statement](https://www.joekarlsson.com/work/rose-hobart/). The
-joint 2017 supporting statement, with its sources, is on the site's
-[Statements page](https://rosehobart.joekarlsson.com/about).
+[Watch it at rosehobart.joekarlsson.com](https://rosehobart.joekarlsson.com) ·
+[Read the full statement](https://www.joekarlsson.com/work/rose-hobart/)
 
 ## Quick start
 
