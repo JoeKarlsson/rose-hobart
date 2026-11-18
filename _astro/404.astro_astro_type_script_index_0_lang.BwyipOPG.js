@@ -1,0 +1,1 @@
+import{t as e}from"./analytics.CZeyjDN5.js";addEventListener(`load`,()=>e(`404`,{path:location.pathname}));
