@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     # The same image the screenshot baselines are made in (npm run test:visual)
     container:
-      image: mcr.microsoft.com/playwright:v1.65.0-noble
+      image: mcr.microsoft.com/playwright:v1.65.1-noble
       options: --ipc=host
     steps:
       - uses: actions/checkout@v7
