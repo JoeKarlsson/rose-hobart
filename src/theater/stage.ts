@@ -246,6 +246,7 @@ video.addEventListener('play', () => {
 	track('Play', { program: currentPreset() });
 	requestFrame();
 });
+video.addEventListener('ended', () => track('Watched To End', { program: currentPreset() }));
 video.addEventListener('pause', () => {
 	playButton.textContent = 'Play';
 	stage.classList.remove('is-playing');
@@ -452,11 +453,13 @@ function toggleFullscreen(): void {
 	if (document.fullscreenElement) {
 		document.exitFullscreen();
 	} else {
-		stage.requestFullscreen().catch((error: Error) => {
-			showNote(`Full screen was refused: ${error.message}. The film fills the window instead.`);
-			setImmersive(true);
-		});
-		track('Full screen');
+		stage
+			.requestFullscreen()
+			.then(() => track('Full Screen'))
+			.catch((error: Error) => {
+				showNote(`Full screen was refused: ${error.message}. The film fills the window instead.`);
+				setImmersive(true);
+			});
 	}
 }
 
@@ -464,7 +467,7 @@ document.addEventListener('fullscreenchange', () => setImmersive(document.fullsc
 
 theaterButton.addEventListener('click', () => {
 	setTheater(!root.classList.contains('theater'));
-	if (root.classList.contains('theater')) track('Theater mode');
+	if (root.classList.contains('theater')) track('Theater Mode');
 });
 fullscreenButton.addEventListener('click', toggleFullscreen);
 controlsToggle.addEventListener('click', () => {

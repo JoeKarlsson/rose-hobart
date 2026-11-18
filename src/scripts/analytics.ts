@@ -39,11 +39,17 @@ if (!isBot) {
 	script.src = 'https://plausible.joekarlsson.io/js/pa-np9XlHPacHLxCEXjnVN_s.js';
 	document.head.appendChild(script);
 
+	// Browser extensions throw into the page too; those aren't the site's errors.
+	// The site creates no Trusted Types policies, so any policy error is an extension's.
+	const isFromExtension = (message: string, source: string) =>
+		/^(chrome|moz|safari-web)-extension:\/\//.test(source) || /trusted-types|TrustedTypePolicy/i.test(message);
+
 	let reported = false;
-	const report = (message: unknown, source: string) => {
-		if (reported) return;
+	const report = (reason: unknown, source: string) => {
+		const message = String(reason);
+		if (reported || isFromExtension(message, source)) return;
 		reported = true;
-		plausible('JS Error', { props: { message: String(message).slice(0, 200), source, path: location.pathname } });
+		plausible('JS Error', { props: { message: message.slice(0, 200), source, path: location.pathname } });
 	};
 	addEventListener('error', (e) => report(e.message, `${e.filename}:${e.lineno}`));
 	addEventListener('unhandledrejection', (e) => report(e.reason, 'promise'));

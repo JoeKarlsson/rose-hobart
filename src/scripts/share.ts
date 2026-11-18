@@ -9,7 +9,7 @@ for (const button of document.querySelectorAll<HTMLButtonElement>('[data-copy-li
 			.writeText(button.dataset.copyLink!)
 			.then(() => {
 				if (status) status.textContent = 'Link copied.';
-				track('Share', { network: 'copy link' });
+				track('Share', { method: 'copy' });
 			})
 			.catch((error: Error) => {
 				if (status) status.textContent = `Couldn't copy the link (${error.message}). Copy it from the address bar instead.`;
